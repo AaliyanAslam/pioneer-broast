@@ -10,25 +10,10 @@ import { supabase } from "@/app/lib/supabase";
 import ProductCard from "@/app/components/ui/ProductCard";
 import toast from "react-hot-toast";
 
-// Helper to map color string to a hex code
-const getColorCode = (name) => {
-  if (!name) return "transparent";
-  const lower = name.toLowerCase();
-  if (lower.includes("black") || lower.includes("dark") || lower.includes("midnight") || lower.includes("graphite")) return "#18181b";
-  if (lower.includes("white") || lower.includes("starlight") || lower.includes("snow") || lower.includes("pearl")) return "#f8fafc";
-  if (lower.includes("silver") || lower.includes("gray") || lower.includes("grey") || lower.includes("titanium")) return "#94a3b8";
-  if (lower.includes("red") || lower.includes("crimson")) return "#ef4444";
-  if (lower.includes("blue") || lower.includes("navy")) return "#3b82f6";
-  if (lower.includes("green") || lower.includes("neon") || lower.includes("lime") || lower.includes("mint")) return "#C0E212";
-  if (lower.includes("gold") || lower.includes("yellow")) return "#eab308";
-  if (lower.includes("pink") || lower.includes("rose")) return "#f43f5e";
-  if (lower.includes("purple") || lower.includes("violet")) return "#a855f7";
-  if (lower.includes("orange")) return "#f97316";
-  return "#e4e4e7"; // default fallback
-};
+// Removed getColorCode helper as it is no longer needed
 
 export default function CartDrawer({ isOpen, onClose }) {
-  const { cart, removeFromCart, updateQuantity, appliedCoupon, setAppliedCoupon } = useCartStore();
+  const { cart, removeFromCart, updateQuantity, appliedCoupon, setAppliedCoupon, updateInstructions } = useCartStore();
   const [hasMounted, setHasMounted] = useState(false);
   const [couponCode, setCouponCode] = useState("");
   const [couponLoading, setCouponLoading] = useState(false);
@@ -283,16 +268,14 @@ export default function CartDrawer({ isOpen, onClose }) {
                             <PiTrash className="w-5 h-5" />
                           </button>
                         </div>
-                        <div className="flex items-center gap-1.5 mt-1 pointer-events-none">
-                          {item.chosenColor && (
-                            <span 
-                              className="w-2.5 h-2.5 rounded-full border border-zinc-200/60 shadow-sm shrink-0"
-                              style={{ backgroundColor: getColorCode(item.chosenColor) }}
-                            />
-                          )}
-                          <p className="text-[12px] text-zinc-500">
-                            {item.chosenColor || "Default Finish"}
-                          </p>
+                        <div className="mt-2">
+                          <input
+                            type="text"
+                            placeholder="Special Instructions (e.g. Extra mayo)"
+                            value={item.specialInstructions || ""}
+                            onChange={(e) => updateInstructions(uniqueId, e.target.value)}
+                            className="w-full text-[11px] sm:text-xs text-zinc-600 bg-zinc-50 border border-zinc-200 rounded p-1.5 focus:outline-none focus:border-[#e63946] focus:ring-1 focus:ring-[#e63946] transition-colors"
+                          />
                         </div>
                       </div>
                       

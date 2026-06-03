@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import ProductsList from "./ProductsList";
 import OrdersList from "./OrdersList";
-import AddProductForm from "./AddProductForm";
+import AddMenuItemForm from "./AddMenuItemForm";
 import AnalyticsDashboard from "./AnalyticsDashboard";
 import CouponsManager from "./CouponsManager";
 import { PiPackage, PiTote, PiPlusCircle, PiSquaresFour, PiSignOut, PiList, PiX, PiChartBar, PiTicket } from "react-icons/pi";
@@ -11,23 +11,23 @@ import { usePathname } from "next/navigation";
 
 export default function AdminDashboardClient() {
   const [activeTab, setActiveTab] = useState("analytics");
-  const [editingProduct, setEditingProduct] = useState(null);
+  const [editingItem, setEditingItem] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const handleEditProduct = (product) => {
-    setEditingProduct(product);
+  const handleEditItem = (item) => {
+    setEditingItem(item);
     setActiveTab("add");
     setIsSidebarOpen(false); // Close sidebar on mobile
   };
 
-  const handleProductSaved = () => {
-    setEditingProduct(null);
+  const handleItemSaved = () => {
+    setEditingItem(null);
     setActiveTab("products");
   };
 
   const handleTabSwitch = (tab) => {
     if (tab !== "add") {
-      setEditingProduct(null);
+      setEditingItem(null);
     }
     setActiveTab(tab);
     setIsSidebarOpen(false); // Close sidebar on mobile when switching tabs
@@ -97,7 +97,7 @@ export default function AdminDashboardClient() {
             }`}
           >
             <PiPackage className="w-5 h-5" /> 
-            Manage Products
+            Manage Menu
           </button>
           
           <button
@@ -133,7 +133,7 @@ export default function AdminDashboardClient() {
             }`}
           >
             <PiPlusCircle className="w-5 h-5" /> 
-            {editingProduct ? "Edit Product" : "Add Product"}
+            {editingItem ? "Edit Menu Item" : "Add Menu Item"}
           </button>
         </nav>
 
@@ -149,10 +149,10 @@ export default function AdminDashboardClient() {
       <main className="flex-1 md:ml-64 min-h-screen">
         <div className="p-4 sm:p-6 md:p-8 max-w-6xl mx-auto w-full">
           {activeTab === "analytics" && <AnalyticsDashboard onNavigate={handleTabSwitch} />}
-          {activeTab === "products" && <ProductsList onEditProduct={handleEditProduct} />}
+          {activeTab === "products" && <ProductsList onEditItem={handleEditItem} />}
           {activeTab === "orders" && <OrdersList />}
           {activeTab === "coupons" && <CouponsManager />}
-          {activeTab === "add" && <AddProductForm initialData={editingProduct} onProductAdded={handleProductSaved} />}
+          {activeTab === "add" && <AddMenuItemForm initialData={editingItem} onItemAdded={handleItemSaved} />}
         </div>
       </main>
 

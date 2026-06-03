@@ -4,6 +4,7 @@ import { Toaster } from "react-hot-toast";
 import SWRProvider from "@/app/components/SWRProvider";
 import ConditionalFooter from "@/app/components/ConditionalFooter";
 import FloatingCartWidget from "@/app/components/ui/FloatingCartWidget";
+import ClientProviders from "@/app/components/ClientProviders";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
 const outfit = Outfit({
@@ -111,6 +112,7 @@ export default function RootLayout({ children }) {
           {children}
           <ConditionalFooter />
           <FloatingCartWidget />
+          <ClientProviders />
           <Toaster position="top-center" />
         </SWRProvider>
 

@@ -2,6 +2,36 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import toast from 'react-hot-toast';
 
+// ─── Location / Order-type store (persisted) ──────────────────────────────────
+export const useLocationStore = create(
+  persist(
+    (set) => ({
+      orderType: null,       // 'Delivery' | 'Pickup' | null
+      deliveryCity: null,    // e.g. 'Karachi'
+      deliveryArea: null,    // e.g. 'DHA'
+      isLocationModalOpen: false,
+
+      setOrderType: (orderType) => set({ orderType }),
+      setDeliveryCity: (deliveryCity) => set({ deliveryCity }),
+      setDeliveryArea: (deliveryArea) => set({ deliveryArea }),
+      setLocationModalOpen: (isOpen) => set({ isLocationModalOpen: isOpen }),
+
+      // Reset everything (e.g. user wants to change location)
+      resetLocation: () =>
+        set({ orderType: null, deliveryCity: null, deliveryArea: null }),
+    }),
+    {
+      name: 'pioneer-location-storage',
+      partialize: (state) => ({
+        orderType: state.orderType,
+        deliveryCity: state.deliveryCity,
+        deliveryArea: state.deliveryArea,
+      }),
+    }
+  )
+);
+
+// ─── Cart store ───────────────────────────────────────────────────────────────
 export const useCartStore = create(
   persist(
     (set, get) => ({
@@ -15,8 +45,7 @@ export const useCartStore = create(
       // Product Cart mein dalna
       addToCart: (product) => {
         const cart = get().cart;
-        // Generate a unique ID based on the product ID and chosen color
-        const cartItemId = product.chosenColor ? `${product.id}-${product.chosenColor}` : product.id;
+        const cartItemId = product.id;
         
         const existingItem = cart.find((item) => (item.cartItemId || item.id) === cartItemId);
         const quantityToAdd = product.quantity || 1; 
@@ -64,6 +93,18 @@ export const useCartStore = create(
                 return { ...item, quantity: item.quantity + 1 };
               }
               if (action === 'decrease' && item.quantity > 1) return { ...item, quantity: item.quantity - 1 };
+            }
+            return item;
+          }),
+        });
+      },
+
+      // Update special instructions
+      updateInstructions: (cartItemId, instructions) => {
+        set({
+          cart: get().cart.map((item) => {
+            if ((item.cartItemId || item.id) === cartItemId) {
+              return { ...item, specialInstructions: instructions };
             }
             return item;
           }),

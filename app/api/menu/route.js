@@ -17,9 +17,9 @@ export async function POST(req) {
     // Auto-generate Slug if missing
     const slug = body.slug || body.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
 
-    // Insert into PostgreSQL table (Ensure `images` column is TEXT[])
+    // Insert into PostgreSQL table
     const { data, error } = await supabase
-      .from("products")
+      .from("menu_items")
       .insert([{ ...body, slug }])
       .select()
       .single();
@@ -29,7 +29,7 @@ export async function POST(req) {
       return NextResponse.json({ success: false, message: error.message }, { status: 400 });
     }
 
-    return NextResponse.json({ success: true, message: "Product successfully added!", data }, { status: 201 });
+    return NextResponse.json({ success: true, message: "Item successfully added!", data }, { status: 201 });
   } catch (error) {
     console.error("Critical API Error:", error);
     return NextResponse.json({ success: false, message: "Internal Server Error" }, { status: 500 });
@@ -39,7 +39,7 @@ export async function POST(req) {
 export async function GET() {
   try {
     const { data, error } = await supabase
-      .from("products")
+      .from("menu_items")
       .select("*")
       .order("created_at", { ascending: false });
 
@@ -61,11 +61,11 @@ export async function DELETE(req) {
     const id = searchParams.get('id');
 
     if (!id) {
-      return NextResponse.json({ success: false, message: "Product ID is required" }, { status: 400 });
+      return NextResponse.json({ success: false, message: "Item ID is required" }, { status: 400 });
     }
 
     const { error } = await supabase
-      .from("products")
+      .from("menu_items")
       .delete()
       .eq("id", id);
 
@@ -74,7 +74,7 @@ export async function DELETE(req) {
       return NextResponse.json({ success: false, message: error.message }, { status: 400 });
     }
 
-    return NextResponse.json({ success: true, message: "Product deleted successfully" }, { status: 200 });
+    return NextResponse.json({ success: true, message: "Item deleted successfully" }, { status: 200 });
   } catch (error) {
     console.error("Critical API Error:", error);
     return NextResponse.json({ success: false, message: "Internal Server Error" }, { status: 500 });
@@ -102,7 +102,7 @@ export async function PUT(req) {
     }
 
     const { data, error } = await supabase
-      .from("products")
+      .from("menu_items")
       .update(updateData)
       .eq("id", id)
       .select()
@@ -113,7 +113,7 @@ export async function PUT(req) {
       return NextResponse.json({ success: false, message: error.message }, { status: 400 });
     }
 
-    return NextResponse.json({ success: true, message: "Product successfully updated!", data }, { status: 200 });
+    return NextResponse.json({ success: true, message: "Item successfully updated!", data }, { status: 200 });
   } catch (error) {
     console.error("Critical API Error:", error);
     return NextResponse.json({ success: false, message: "Internal Server Error" }, { status: 500 });

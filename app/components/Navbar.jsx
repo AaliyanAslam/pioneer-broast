@@ -2,8 +2,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { PiShoppingCart, PiUser, PiSignIn, PiList, PiX } from "react-icons/pi";
-import { useCartStore } from "@/app/lib/store";
+import { PiShoppingCart, PiUser, PiSignIn, PiList, PiX, PiMapPin, PiMotorcycle, PiBag } from "react-icons/pi";
+import { useCartStore, useLocationStore } from "@/app/lib/store";
 import CartDrawer from "./ui/CartDrawer";
 import SearchBar from "./ui/SearchBar";
 import { usePathname } from "next/navigation";
@@ -12,6 +12,7 @@ import Tooltip from "./ui/Tooltip";
 
 export default function Navbar() {
   const { cart, isCartOpen, setCartOpen } = useCartStore();
+  const { orderType, deliveryArea, setLocationModalOpen } = useLocationStore();
   const [hasMounted, setHasMounted] = useState(false);
   const [user, setUser] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -42,18 +43,27 @@ export default function Navbar() {
     : 0;
 
   const NAV_LINKS = [
-    { name: "Earbuds", href: "/category/earbuds" },
-    { name: "Smartwatches", href: "/category/smartwatches" },
-    { name: "Accessories", href: "/category/accessories" },
+    { name: "Menu", href: "/menu" },
+    { name: "Deals", href: "/deals" },
+    { name: "About", href: "/about" },
   ];
+
+  // Build location label for the pill
+  const locationLabel = hasMounted
+    ? orderType === "Pickup"
+      ? "Pickup"
+      : orderType === "Delivery" && deliveryArea
+      ? `Delivery · ${deliveryArea}`
+      : null
+    : null;
 
   return (
     <>
       <header className="sticky top-0 z-40 w-full flex flex-col">
         {/* Announcement Bar */}
-        <div className="w-full bg-[#C0E212] text-black px-4 py-2 text-center text-[10px] sm:text-[11px] font-bold tracking-widest uppercase flex items-center justify-center gap-2">
+        <div className="w-full bg-[#e63946] text-white px-4 py-2 text-center text-[10px] sm:text-[11px] font-bold tracking-widest uppercase flex items-center justify-center gap-2">
           <span>
-            Free Delivery on orders above Rs. 3,000 - OR Use Coupon Code: <strong className="font-black bg-black text-[#C0E212] px-2 py-0.5 rounded-md ml-1 tracking-widest">FREED-180</strong>
+            🔥 Free Delivery on orders above Rs. 1,500 — Use Code: <strong className="font-black bg-white text-[#e63946] px-2 py-0.5 rounded-md ml-1 tracking-widest">BROAST50</strong>
           </span>
         </div>
 
@@ -107,6 +117,30 @@ export default function Navbar() {
             <div className="hidden lg:block w-[240px] xl:w-[280px] relative z-20">
               <SearchBar />
             </div>
+
+            {/* Location Pill */}
+            {hasMounted && (
+              <Tooltip text={locationLabel ? "Change location" : "Set your location"} position="bottom">
+                <button
+                  id="navbar-location-pill"
+                  onClick={() => setLocationModalOpen(true)}
+                  className={`hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-200 shrink-0 ${
+                    locationLabel
+                      ? "bg-[#e63946]/10 text-[#e63946] border border-[#e63946]/30 hover:bg-[#e63946]/20"
+                      : "bg-zinc-100 text-zinc-500 border border-zinc-200 hover:bg-zinc-200 hover:text-zinc-800"
+                  }`}
+                >
+                  {orderType === "Pickup" ? (
+                    <PiBag className="w-3.5 h-3.5 shrink-0" />
+                  ) : (
+                    <PiMotorcycle className="w-3.5 h-3.5 shrink-0" />
+                  )}
+                  <span className="max-w-[130px] truncate">
+                    {locationLabel ?? "Set Location"}
+                  </span>
+                </button>
+              </Tooltip>
+            )}
 
             {/* Action Icons */}
             <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
