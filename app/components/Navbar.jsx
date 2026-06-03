@@ -82,14 +82,7 @@ export default function Navbar() {
               title="Go to Home"
               className="shrink-0 transition-transform active:scale-95"
             >
-              <Image
-                src="/logo.webp"
-                alt="Kova Tech"
-                width={250}
-                height={40}
-                className="h-8 sm:h-10 w-auto object-contain"
-                priority
-              />
+              <span className="text-2xl font-black text-red-600 tracking-tight">Pioneer Broast</span>
             </Link>
           </div>
 
@@ -200,7 +193,7 @@ export default function Navbar() {
           />
           <div className="relative flex w-[85%] max-w-[320px] flex-col overflow-y-auto bg-white shadow-2xl animate-in slide-in-from-left duration-300">
             <div className="flex items-center justify-between px-5 pt-6 pb-5 border-b border-zinc-100">
-              <Image src="/logo.webp" alt="Kova Tech" width={150} height={30} className="h-7 w-auto" />
+              <span className="text-2xl font-black text-red-600 tracking-tight">Pioneer Broast</span>
               <button
                 type="button"
                 className="inline-flex items-center justify-center rounded-full p-2 bg-zinc-100 text-zinc-500 hover:text-black hover:bg-zinc-200 transition-colors"

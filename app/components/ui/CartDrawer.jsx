@@ -244,10 +244,10 @@ export default function CartDrawer({ isOpen, onClose }) {
                     {/* Image Box */}
                     <div className="w-[75px] h-[75px] sm:w-[85px] sm:h-[85px] bg-zinc-50 shrink-0 flex items-center justify-center p-1.5 sm:p-2 rounded-md relative overflow-hidden pointer-events-none">
                       <Image
-                        src={item.images?.[0] || "https://via.placeholder.com/150"}
+                        src={item.image_url || "https://via.placeholder.com/150"}
                         alt={item.name}
                         fill
-                        className="object-contain p-2"
+                        className="object-cover"
                       />
                     </div>
                     
@@ -370,7 +370,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                 <span className="font-medium text-zinc-900">Rs. {subtotal.toLocaleString()}</span>
               </div>
               <div className="flex justify-between items-center text-[13px] text-zinc-600">
-                <span>Shipping</span>
+                <span>Delivery Fee</span>
                 {appliedCoupon && appliedCoupon.discount_type === "free_delivery" ? (
                   <span className="flex items-center gap-2">
                     <span className="line-through text-zinc-400">Rs. 180</span>

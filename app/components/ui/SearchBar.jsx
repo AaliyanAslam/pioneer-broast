@@ -154,7 +154,7 @@ export default function SearchBar() {
               setShowDropdown(false);
             }
           }}
-          placeholder="Search premium gear..."
+          placeholder="Search for burgers, broast, deals..."
           className="w-full bg-transparent border-none py-2.5 sm:py-3 text-[13px] sm:text-[14px] font-medium text-black focus:outline-none placeholder:text-zinc-400 placeholder:font-normal"
         />
         <div className="pr-4 flex items-center justify-center min-w-[40px]">

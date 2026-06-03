@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
-import { useCartStore } from "@/app/lib/store";
+import { useCartStore, useLocationStore } from "@/app/lib/store";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Image from "next/image";
@@ -29,6 +29,7 @@ import { sendGAEvent } from "@next/third-parties/google";
 
 export default function CheckoutPage() {
   const { cart, clearCart, appliedCoupon, setAppliedCoupon } = useCartStore();
+  const { orderType, deliveryCity, deliveryArea } = useLocationStore();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
@@ -77,7 +78,6 @@ export default function CheckoutPage() {
     email: "",
     phone: "",
     address: "",
-    city: "Karachi",
   });
   const [hasMounted, setHasMounted] = useState(false);
 
@@ -146,7 +146,7 @@ export default function CheckoutPage() {
       }, 0)
     : 0;
 
-  let deliveryCharges = subtotal > 0 ? 180 : 0; // Flat 180 delivery charge
+  let deliveryCharges = orderType === "Delivery" && subtotal > 0 ? 150 : 0; // Flat 150 delivery charge
   let discountAmount = 0;
 
   if (appliedCoupon && subtotal > 0) {
@@ -221,12 +221,15 @@ export default function CheckoutPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          cartItems: cart,
-          customerInfo: {
-            ...customerInfo,
-            userId: user?.id || null, // Ensure we pass the userId if logged in
-          },
-          couponCode: appliedCoupon ? appliedCoupon.code : null,
+          customer_name: customerInfo.name,
+          customer_phone: customerInfo.phone,
+          customer_address: customerInfo.address,
+          order_type: orderType,
+          delivery_city: deliveryCity,
+          delivery_area: deliveryArea,
+          total_amount: total,
+          items: cart,
+          userId: user?.id || null,
         }),
       });
 
@@ -286,8 +289,8 @@ export default function CheckoutPage() {
             Order Confirmed!
           </h1>
           <p className="text-zinc-500 text-[13px] sm:text-base max-w-md mb-8 sm:mb-10 leading-relaxed relative z-10 px-2">
-            Thank you for shopping at Kova Tech. We will contact you shortly to
-            verify your Cash on Delivery order.
+            Thank you for ordering at Pioneer Broast. We will contact you shortly to
+            verify your {orderType === "Delivery" ? "delivery" : "pickup"} order.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full sm:w-auto relative z-10">
@@ -523,7 +526,7 @@ export default function CheckoutPage() {
         <div className="order-2 lg:order-1">
           <div className="flex items-center justify-between mb-4 sm:mb-6 leading-none">
             <h1 className="text-xl sm:text-2xl font-bold uppercase tracking-tight text-black px-1 sm:px-0">
-              Delivery Details
+              {orderType === "Delivery" ? "Delivery Details" : "Pickup Details"}
             </h1>
             {/* Auth Badge */}
             <span
@@ -569,39 +572,47 @@ export default function CheckoutPage() {
                   />
                 </div>
 
-                <div>
-                  <label className="block text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-0.5 ml-1">
-                    Complete Delivery Address
-                  </label>
-                  <textarea
-                    required
-                    rows="4"
-                    name="address"
-                    value={customerInfo.address}
-                    onChange={handleChange}
-                    className="w-full bg-slate-100 border-none rounded-xl px-3 py-2.5 sm:px-3.5 sm:py-3 text-[13px] sm:text-sm text-black focus:outline-none focus:ring-1 focus:ring-black transition-colors resize-none shadow-sm leading-relaxed"
-                    placeholder="House no, Street, Area..."
-                  />
-                </div>
+                {orderType === "Delivery" && (
+                  <>
+                    <div>
+                      <label className="block text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-0.5 ml-1">
+                        Complete Delivery Address
+                      </label>
+                      <textarea
+                        required
+                        rows="4"
+                        name="address"
+                        value={customerInfo.address}
+                        onChange={handleChange}
+                        className="w-full bg-slate-100 border-none rounded-xl px-3 py-2.5 sm:px-3.5 sm:py-3 text-[13px] sm:text-sm text-black focus:outline-none focus:ring-1 focus:ring-black transition-colors resize-none shadow-sm leading-relaxed"
+                        placeholder="House no, Street, Area..."
+                      />
+                    </div>
 
-                <div className="relative">
-                  <label className="block text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-0.5 ml-1">
-                    City
-                  </label>
-                  <select
-                    name="city"
-                    value={customerInfo.city}
-                    onChange={handleChange}
-                    className="w-full bg-slate-100 border-none rounded-xl px-3 py-2.5 sm:px-3.5 sm:py-3 pr-10 text-[13px] sm:text-sm text-black focus:outline-none focus:ring-1 focus:ring-black transition-colors appearance-none shadow-sm"
-                  >
-                    <option value="Karachi">Karachi</option>
-                    <option value="Lahore">Lahore</option>
-                    <option value="Islamabad">Islamabad</option>
-                  </select>
-                  <div className="absolute right-3.5 bottom-2.5 pointer-events-none text-zinc-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-                  </div>
-                </div>
+                    <div className="flex gap-3">
+                      <div className="flex-1">
+                        <label className="block text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-0.5 ml-1">
+                          City
+                        </label>
+                        <input
+                          readOnly
+                          value={deliveryCity || "Karachi"}
+                          className="w-full bg-slate-200 border-none rounded-xl px-3 py-2.5 sm:px-3.5 sm:py-3 text-[13px] sm:text-sm text-zinc-600 focus:outline-none cursor-not-allowed shadow-sm"
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <label className="block text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-0.5 ml-1">
+                          Area
+                        </label>
+                        <input
+                          readOnly
+                          value={deliveryArea || ""}
+                          className="w-full bg-slate-200 border-none rounded-xl px-3 py-2.5 sm:px-3.5 sm:py-3 text-[13px] sm:text-sm text-zinc-600 focus:outline-none cursor-not-allowed shadow-sm"
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
 
               <button
@@ -626,16 +637,18 @@ export default function CheckoutPage() {
                 <p className="text-[12px] sm:text-sm text-zinc-700 font-medium">{customerInfo.phone || "—"}</p>
               </div>
 
-              <div className="bg-zinc-50 border border-zinc-200 rounded-xl p-3.5 sm:p-5">
-                <div className="flex items-center justify-between mb-2 sm:mb-3 border-b border-zinc-200 pb-2 sm:pb-3">
-                  <h3 className="font-semibold text-[11px] sm:text-xs text-black uppercase tracking-wider">Delivery Address</h3>
-                  {checkoutStep === 2 && (
-                    <button type="button" onClick={() => setCheckoutStep(1)} className="text-[10px] sm:text-[11px] font-semibold underline text-zinc-500 uppercase tracking-wider hover:text-black">Edit</button>
-                  )}
+              {orderType === "Delivery" && (
+                <div className="bg-zinc-50 border border-zinc-200 rounded-xl p-3.5 sm:p-5">
+                  <div className="flex items-center justify-between mb-2 sm:mb-3 border-b border-zinc-200 pb-2 sm:pb-3">
+                    <h3 className="font-semibold text-[11px] sm:text-xs text-black uppercase tracking-wider">Delivery Address</h3>
+                    {checkoutStep === 2 && (
+                      <button type="button" onClick={() => setCheckoutStep(1)} className="text-[10px] sm:text-[11px] font-semibold underline text-zinc-500 uppercase tracking-wider hover:text-black">Edit</button>
+                    )}
+                  </div>
+                  <p className="text-[12px] sm:text-sm text-zinc-700 font-medium mb-0.5 line-clamp-2">{customerInfo.address || "—"}</p>
+                  <p className="text-[12px] sm:text-sm text-zinc-700 font-medium">{deliveryCity}, {deliveryArea}</p>
                 </div>
-                <p className="text-[12px] sm:text-sm text-zinc-700 font-medium mb-0.5 line-clamp-2">{customerInfo.address || "—"}</p>
-                <p className="text-[12px] sm:text-sm text-zinc-700 font-medium">{customerInfo.city}</p>
-              </div>
+              )}
 
             <div className={`${checkoutStep === 1 ? 'hidden' : 'flex'} bg-zinc-50 sm:bg-white p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border border-zinc-200 items-center gap-3 mt-3 sm:mt-4`}>
               <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white sm:bg-zinc-100 rounded-full flex items-center justify-center shrink-0 border border-zinc-100 sm:border-none shadow-sm sm:shadow-none">
@@ -671,7 +684,7 @@ export default function CheckoutPage() {
                   className="relative w-12 h-12 sm:w-16 sm:h-16 rounded overflow-hidden bg-white border border-zinc-200 shrink-0 block transition-transform hover:scale-105"
                 >
                   <Image
-                    src={item.images?.[0] || "https://via.placeholder.com/100"}
+                    src={item.image_url || "https://via.placeholder.com/100"}
                     alt={item.name}
                     fill
                     className="object-cover"
@@ -683,9 +696,9 @@ export default function CheckoutPage() {
                       {item.name}
                     </h3>
                   </Link>
-                  {item.chosenColor && (
-                    <p className="text-[9px] sm:text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mt-0.5">
-                      Color: {item.chosenColor}
+                  {item.specialInstructions && (
+                    <p className="text-[9px] sm:text-[11px] font-semibold text-zinc-500 mt-0.5">
+                      Note: {item.specialInstructions}
                     </p>
                   )}
                   <p className="text-zinc-500 text-[11px] sm:text-sm mt-0.5 font-medium">
@@ -757,7 +770,7 @@ export default function CheckoutPage() {
               {appliedCoupon &&
               appliedCoupon.discount_type === "free_delivery" ? (
                 <span className="flex items-center gap-2">
-                  <span className="line-through text-zinc-400">Rs. 180</span>
+                <span className="line-through text-zinc-400">Rs. 150</span>
                   <span className="text-green-600 font-bold uppercase text-[10px] bg-green-100 px-2 py-0.5 rounded-full">
                     Free
                   </span>

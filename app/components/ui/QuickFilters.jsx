@@ -3,32 +3,32 @@ import Image from "next/image";
 
 const CATEGORIES = [
   {
-    id: "smartwatches",
-    name: "Smartwatches",
+    id: "broast",
+    name: "Broast",
     image:
-      "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?q=80&w=2072&auto=format&fit=crop",
-    slug: "smartwatches",
+      "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?q=80&w=2070&auto=format&fit=crop",
+    slug: "broast",
   },
   {
-    id: "earbuds",
-    name: "Earbuds",
+    id: "burgers",
+    name: "Burgers",
     image:
-      "https://images.unsplash.com/photo-1588423771073-b8903fbb85b5?q=80&w=1932&auto=format&fit=crop",
-    slug: "earbuds",
+      "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1999&auto=format&fit=crop",
+    slug: "burgers",
   },
   {
-    id: "accessories",
-    name: "Accessories",
+    id: "deals",
+    name: "Deals",
     image:
-      "https://images.unsplash.com/photo-1583394838336-acd977736f90?q=80&w=1984&auto=format&fit=crop",
-    slug: "accessories",
+      "https://images.unsplash.com/photo-1606755962773-d324e0a13086?q=80&w=1974&auto=format&fit=crop",
+    slug: "deals",
   },
   {
-    id: "all",
-    name: "More Gear",
+    id: "sides",
+    name: "Sides",
     image:
-      "https://images.unsplash.com/photo-1498049794561-7780e7231661?q=80&w=2070&auto=format&fit=crop",
-    slug: "shop",
+      "https://images.unsplash.com/photo-1576107232684-1279f390859f?q=80&w=2047&auto=format&fit=crop",
+    slug: "sides",
   },
 ];
 
