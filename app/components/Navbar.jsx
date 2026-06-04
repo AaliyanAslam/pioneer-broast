@@ -95,16 +95,16 @@ export default function Navbar() {
   return (
     <>
       <header className="relative z-40 w-full flex flex-col bg-white border-b border-zinc-100">
-        {/* Decorative Bunting / Scalloped Top — matching reference image */}
-        <div className="w-full shrink-0 flex flex-col">
-          {/* Overlapping circles creating scalloped bunting effect */}
-          {/* Overlapping circles creating scalloped bunting effect */}
+        {/* Decorative Bunting / Scalloped Top — alternating gold & white */}
+        <div
+          className="w-full shrink-0"
+          style={{ filter: "drop-shadow(0 3px 4px rgba(0,0,0,0.10))" }}
+        >
           <div
             className="w-full h-[22px]"
             style={{
               backgroundImage:
-                "radial-gradient(circle at 50% -2px, #D4AF37 13px, transparent 13.5px)",
-              backgroundSize: "26px 22px",
+                `url("data:image/svg+xml,%3Csvg width='52' height='22' viewBox='0 0 52 22' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='13' cy='0' r='14' fill='%23FDD541'/%3E%3Ccircle cx='39' cy='0' r='14' fill='%23ffffff' stroke='%23FED645' stroke-width='0.8'/%3E%3C/svg%3E")`,
               backgroundRepeat: "repeat-x",
               backgroundPosition: "0 0",
             }}
