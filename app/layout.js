@@ -71,7 +71,7 @@ export const metadata = {
         url: "/og-image.png",    // place a 1200×630 image in /public/og-image.jpg
         width: 1200,
         height: 630,
-        alt: "Pioneer Broast — Premium Tech Accessories",
+        alt: "Pioneer Broast — Premium Fast Food",
       },
     ],
   },
@@ -81,7 +81,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Pioneer Broast — Premium Fast Food & Broast in Karachi",
     description:
-      "Shop the latest smartwatches, earbuds, and premium tech accessories at Pioneer Broast.",
+      "Order the best broast, burgers, and fast food at Pioneer Broast.",
     images: ["/og-image.png"],
     creator: "@pioneerbroast",    // update to your Twitter handle if you have one
   },

@@ -12,10 +12,10 @@ import {
 } from "react-icons/pi";
 
 const LINKS = {
-  shop: [
-    { label: "Earbuds",      href: "/category/earbuds" },
-    { label: "Smartwatches", href: "/category/smartwatches" },
-    { label: "Accessories",  href: "/category/accessories" },
+  menu: [
+    { label: "Broast",       href: "/category/broast" },
+    { label: "Burgers",      href: "/category/burgers" },
+    { label: "Deals",        href: "/category/deals" },
   ],
   support: [
     { label: "Track Order",    href: "/profile" },
@@ -51,7 +51,7 @@ export default function Footer() {
               />
             </Link>
             <p className="text-sm leading-relaxed text-gray-400 mb-6">
-              Premium tech accessories designed for those who demand more. Fast delivery across Pakistan.
+              Premium fast food and broast designed for those who demand more. Fast delivery across Pakistan.
             </p>
             <div className="flex items-center gap-4">
               {SOCIALS.map(({ Icon, href, label }) => (
@@ -67,11 +67,11 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Column 2: Shop */}
+          {/* Column 2: Menu */}
           <div className="flex flex-col">
-            <h3 className="text-white text-sm font-bold mb-4">SHOP</h3>
+            <h3 className="text-white text-sm font-bold mb-4">MENU</h3>
             <ul className="space-y-3">
-              {LINKS.shop.map(({ label, href }) => (
+              {LINKS.menu.map(({ label, href }) => (
                 <li key={label}>
                   <Link href={href} className="text-sm text-gray-400 hover:text-white transition-colors">
                     {label}

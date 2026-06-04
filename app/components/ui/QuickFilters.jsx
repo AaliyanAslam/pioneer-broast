@@ -6,80 +6,115 @@ const CATEGORIES = [
     id: "broast",
     name: "Broast",
     image:
-      "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?q=80&w=2070&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?q=80&w=400&auto=format&fit=crop",
     slug: "broast",
   },
   {
     id: "burgers",
     name: "Burgers",
     image:
-      "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1999&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=400&auto=format&fit=crop",
     slug: "burgers",
   },
   {
     id: "deals",
     name: "Deals",
     image:
-      "https://images.unsplash.com/photo-1606755962773-d324e0a13086?q=80&w=1974&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1606755962773-d324e0a13086?q=80&w=400&auto=format&fit=crop",
     slug: "deals",
   },
   {
     id: "sides",
     name: "Sides",
     image:
-      "https://images.unsplash.com/photo-1576107232684-1279f390859f?q=80&w=2047&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1576107232684-1279f390859f?q=80&w=400&auto=format&fit=crop",
     slug: "sides",
+  },
+  {
+    id: "wraps",
+    name: "Wraps",
+    image:
+      "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?q=80&w=400&auto=format&fit=crop",
+    slug: "wraps",
+  },
+  {
+    id: "wings",
+    name: "Wings",
+    image:
+      "https://images.unsplash.com/photo-1567620832903-9fc6debc209f?q=80&w=400&auto=format&fit=crop",
+    slug: "wings",
+  },
+  {
+    id: "pizza",
+    name: "Pizza",
+    image:
+      "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=400&auto=format&fit=crop",
+    slug: "pizza",
+  },
+  {
+    id: "rolls",
+    name: "Rolls",
+    image:
+      "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=400&auto=format&fit=crop",
+    slug: "rolls",
+  },
+  {
+    id: "drinks",
+    name: "Drinks",
+    image:
+      "https://images.unsplash.com/photo-1544145945-f90425340c7e?q=80&w=400&auto=format&fit=crop",
+    slug: "drinks",
+  },
+  {
+    id: "desserts",
+    name: "Desserts",
+    image:
+      "https://images.unsplash.com/photo-1551024601-bec78aea704b?q=80&w=400&auto=format&fit=crop",
+    slug: "desserts",
+  },
+  {
+    id: "pasta",
+    name: "Pasta",
+    image:
+      "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?q=80&w=400&auto=format&fit=crop",
+    slug: "pasta",
   },
 ];
 
 export default function QuickFilters() {
   return (
-    <section className="py-8 sm:py-12 px-4 sm:px-12 max-w-420 mx-auto">
-      <div className="flex items-center justify-between mb-6 sm:mb-8">
-        <h2 className="text-xl sm:text-3xl font-extrabold text-black tracking-tight">
-          Shop by Category
+    <section className="py-6 sm:py-8 px-4 sm:px-12 max-w-420 mx-auto">
+      <div className="flex items-center justify-between mb-3 sm:mb-4">
+        <h2 className="text-lg sm:text-2xl font-extrabold text-black tracking-tight">
+          {/* Shop by Category */}
         </h2>
       </div>
 
-      {/* Scrollable Container for Mobile */}
-      <div className="flex overflow-x-auto gap-4 sm:gap-6 lg:gap-8 pb-4 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none">
+      {/* Scrollable Container */}
+      <div className="flex overflow-x-auto flex justify-center gap-3 sm:gap-6 pb-2 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none">
         {CATEGORIES.map((cat) => (
           <Link
-            href={cat.slug === "shop" ? "/shop" : `/category/${cat.slug}`}
+            href={`/category/${cat.slug}`}
             key={cat.id}
-            className="snap-start w-28 sm:w-40 md:w-48 lg:w-56 shrink-0 group block transition-transform duration-300 active:scale-95 cursor-pointer"
+            className="snap-start shrink-0 group block transition-transform duration-200 active:scale-95 cursor-pointer w-20 sm:w-28"
           >
-            {/* Image Container */}
-            <div className="relative aspect-square rounded-2xl sm:rounded-3xl overflow-hidden bg-zinc-100 shadow-sm border border-zinc-200 group-hover:shadow-md group-hover:border-zinc-300 transition-all duration-200 active:ring-2 active:ring-[#C0E212] active:ring-offset-2">
-              <div className="absolute inset-0 z-0">
-                <Image
-                  src={cat.image}
-                  alt={cat.name}
-                  fill
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                />
-              </div>
-
-              {/* Overlay Gradient (Hidden on Mobile) */}
-              <div className="hidden sm:block absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent z-10 transition-opacity duration-300 group-hover:opacity-90" />
-
-              {/* Text Content (Overlay for Desktop) */}
-              <div className="hidden sm:flex absolute inset-0 z-20 items-end p-6 lg:p-8">
-                <div>
-                  <h3 className="text-white font-extrabold text-xl lg:text-2xl tracking-wide uppercase">
-                    {cat.name}
-                  </h3>
-                  <div className="w-0 h-0.5 bg-[#C0E212] mt-2 transition-all duration-300 group-hover:w-12"></div>
-                </div>
-              </div>
+            {/* Circle Image */}
+            <div className="relative w-20 h-20 sm:w-26 sm:h-26 rounded-full overflow-hidden bg-zinc-100 border-2 border-zinc-200 group-hover:border-[#C0392B] shadow-sm group-hover:shadow-md transition-all duration-200 mx-auto">
+              <Image
+                src={cat.image}
+                alt={cat.name}
+                fill
+                className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                sizes="104px"
+              />
+              {/* Subtle overlay on hover */}
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-200 rounded-full" />
             </div>
 
-            {/* Text Content (Below Image for Mobile) */}
-            <div className="sm:hidden mt-2.5 text-center px-1">
-              <h3 className="text-zinc-900 font-extrabold text-[11px] tracking-widest uppercase">
-                {cat.name}
-              </h3>
-            </div>
+            {/* Label */}
+            <p className="mt-2 text-center text-xs sm:text-sm font-bold text-zinc-800 group-hover:text-[#C0392B] transition-colors duration-200 tracking-widest uppercase leading-tight">
+              {cat.name}
+            </p>
           </Link>
         ))}
       </div>

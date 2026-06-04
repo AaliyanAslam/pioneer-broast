@@ -291,7 +291,7 @@ export default function CheckoutPage() {
                 href="/"
                 className="w-full sm:w-auto bg-black text-white font-bold px-8 py-4 sm:py-3.5 rounded-full active:scale-[0.98] transition-all uppercase tracking-widest text-[13px] sm:text-sm shadow-xl shadow-black/10 flex items-center justify-center"
               >
-                Continue Shopping
+                Continue Ordering
               </Link>
               <Link
                 href="/guest-orders"
@@ -326,7 +326,7 @@ export default function CheckoutPage() {
               href="/"
               className="bg-[#C0E212] text-black font-black uppercase tracking-widest px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl hover:bg-[#a6c40e] transition-all active:scale-95 shadow-md text-xs sm:text-base"
             >
-              Start Shopping
+              Start Ordering
             </Link>
           </div>
 

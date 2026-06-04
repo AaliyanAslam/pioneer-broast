@@ -231,7 +231,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                   onClick={onClose}
                   className="bg-[#C0E212] text-black font-bold px-8 py-3.5 rounded-xl hover:bg-[#a6c40e] transition-all active:scale-95 text-[13px] shadow-sm uppercase tracking-widest"
                 >
-                  Shop Now
+                  Order Now
                 </Link>
               </div>
             </div>

@@ -202,7 +202,7 @@ export default function GuestOrdersPage() {
                 href="/"
                 className="inline-block bg-black text-white text-xs font-semibold uppercase tracking-widest px-6 py-3 rounded-xl hover:bg-zinc-800 transition-colors shadow-sm"
               >
-                Start Shopping
+                Start Ordering
               </Link>
             </div>
           ) : processedOrders.length === 0 ? (
