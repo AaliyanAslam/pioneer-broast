@@ -178,9 +178,9 @@ export default function Navbar() {
                 <Image
                   src="/brandlogo.webp"
                   alt="Pioneer Broast"
-                  width={200}
-                  height={80}
-                  className="w-auto h-12 sm:h-16 lg:h-[90px] object-contain"
+                  width={240}
+                  height={100}
+                  className="w-auto h-16 sm:h-20 lg:h-[90px] object-contain"
                   priority
                 />
               </Link>
@@ -283,9 +283,9 @@ export default function Navbar() {
               <Image
                 src="/brandlogo.webp"
                 alt="Pioneer Broast"
-                width={140}
-                height={35}
-                className="w-auto h-8 object-contain"
+                width={180}
+                height={50}
+                className="w-auto h-12 object-contain"
               />
               <button
                 type="button"
