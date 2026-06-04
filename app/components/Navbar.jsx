@@ -95,15 +95,18 @@ export default function Navbar() {
   return (
     <>
       <header className="relative z-40 w-full flex flex-col bg-white border-b border-zinc-100">
-        {/* Decorative Gold Dashed Top */}
-        <div className="w-full h-[4px] bg-white shrink-0 relative">
+        {/* Decorative Bunting / Scalloped Top — matching reference image */}
+        <div className="w-full shrink-0 flex flex-col">
+          {/* Overlapping circles creating scalloped bunting effect */}
+          {/* Overlapping circles creating scalloped bunting effect */}
           <div
-            className="w-full h-full"
+            className="w-full h-[22px]"
             style={{
               backgroundImage:
-                "linear-gradient(to right, #D4AF37 65%, transparent 35%)",
-              backgroundSize: "20px 100%",
+                "radial-gradient(circle at 50% -2px, #D4AF37 13px, transparent 13.5px)",
+              backgroundSize: "26px 22px",
               backgroundRepeat: "repeat-x",
+              backgroundPosition: "0 0",
             }}
           />
         </div>
