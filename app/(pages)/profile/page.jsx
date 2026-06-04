@@ -242,7 +242,7 @@ export default function ProfilePage() {
             )}
 
             {activeTab === "orders" && (
-              <div className="max-w-4xl">
+              <div className="max-w-420">
                 <div className="mb-8 flex items-center justify-between">
                   <div>
                     <h1 className="text-3xl font-bold uppercase tracking-tighter">Order History</h1>

@@ -100,7 +100,7 @@ export default function GuestOrdersPage() {
     <>
       <Navbar />
       <div className="min-h-screen bg-zinc-50 text-black border-t border-zinc-200 p-6 md:p-12">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-420 mx-auto">
           <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <Link

@@ -9,6 +9,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-outfit), sans-serif;
+  --width-420: 420px;
 }
 
 @media (prefers-color-scheme: dark) {

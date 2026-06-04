@@ -34,7 +34,7 @@ const CATEGORIES = [
 
 export default function QuickFilters() {
   return (
-    <section className="py-8 sm:py-12 px-4 sm:px-12 max-w-7xl mx-auto">
+    <section className="py-8 sm:py-12 px-4 sm:px-12 max-w-420 mx-auto">
       <div className="flex items-center justify-between mb-6 sm:mb-8">
         <h2 className="text-xl sm:text-3xl font-extrabold text-black tracking-tight">
           Shop by Category

@@ -59,7 +59,7 @@ export default async function HomePage() {
         url: SITE_URL,
         logo: {
           "@type": "ImageObject",
-          url: `${SITE_URL}/logo.webp`,
+          url: `${SITE_URL}/brandlogo.webp`,
         },
         description: "Leading tech store in Pakistan for smartwatches, earbuds, and premium accessories.",
       },
@@ -81,7 +81,7 @@ export default async function HomePage() {
       <QuickFilters />
 
       {/* Menu Sections */}
-      <div className="py-10 sm:py-24 px-4 sm:px-12 max-w-7xl mx-auto space-y-16">
+      <div className="py-10 sm:py-24 px-4 sm:px-12 max-w-420 mx-auto space-y-16">
         {(!menuItems || menuItems.length === 0) ? (
           <div className="text-center py-20 text-zinc-500 border border-dashed border-zinc-300 rounded-2xl bg-zinc-50">
             <p className="text-lg font-medium">No menu items found. Please add them from the admin panel.</p>

@@ -76,7 +76,7 @@ export default function HeroCarousel() {
   }, [currentIndex]);
 
   return (
-    <div className="relative max-w-7xl mx-auto px-4 sm:px-6 mt-6 rounded-2xl overflow-hidden group">
+    <div className="relative max-w-420 mx-auto px-4 sm:px-6 mt-6 rounded-2xl overflow-hidden group">
       
       {/* Carousel Container */}
       <div 

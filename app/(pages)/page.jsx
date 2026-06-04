@@ -46,7 +46,7 @@ export default async function HomePage() {
         url: SITE_URL,
         logo: {
           "@type": "ImageObject",
-          url: `${SITE_URL}/logo.webp`
+          url: `${SITE_URL}/brandlogo.webp`
         },
         sameAs: [
           "https://www.facebook.com/kovatech",
@@ -65,7 +65,7 @@ export default async function HomePage() {
       <main className="min-h-screen bg-black text-zinc-50">
       
       {/* Minimalist Hero Section */}
-      <section className="py-24 px-6 sm:px-12 max-w-7xl mx-auto text-center border-b border-zinc-900">
+      <section className="py-24 px-6 sm:px-12 max-w-420 mx-auto text-center border-b border-zinc-900">
         <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 text-white">
           Next-Gen <span className="text-transparent bg-clip-text bg-linear-to-r from-zinc-400 to-zinc-100">Gear.</span>
         </h1>
@@ -75,7 +75,7 @@ export default async function HomePage() {
       </section>
 
       {/* Product Grid Section */}
-      <section className="py-16 px-6 sm:px-12 max-w-7xl mx-auto">
+      <section className="py-16 px-6 sm:px-12 max-w-420 mx-auto">
         <div className="flex items-center justify-between mb-10">
           <h2 className="text-2xl font-bold text-white tracking-tight">New Arrivals</h2>
         </div>

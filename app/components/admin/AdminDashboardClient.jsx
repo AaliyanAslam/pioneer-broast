@@ -147,7 +147,7 @@ export default function AdminDashboardClient() {
 
       {/* Main Content Area */}
       <main className="flex-1 md:ml-64 min-h-screen">
-        <div className="p-4 sm:p-6 md:p-8 max-w-6xl mx-auto w-full">
+        <div className="p-4 sm:p-6 md:p-8 max-w-420 mx-auto w-full">
           {activeTab === "analytics" && <AnalyticsDashboard onNavigate={handleTabSwitch} />}
           {activeTab === "products" && <ProductsList onEditItem={handleEditItem} />}
           {activeTab === "orders" && <OrdersList />}

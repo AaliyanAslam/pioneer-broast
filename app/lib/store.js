@@ -9,16 +9,18 @@ export const useLocationStore = create(
       orderType: null,       // 'Delivery' | 'Pickup' | null
       deliveryCity: null,    // e.g. 'Karachi'
       deliveryArea: null,    // e.g. 'DHA'
+      exactLocation: null,   // e.g. { lat, lng, address }
       isLocationModalOpen: false,
 
       setOrderType: (orderType) => set({ orderType }),
       setDeliveryCity: (deliveryCity) => set({ deliveryCity }),
       setDeliveryArea: (deliveryArea) => set({ deliveryArea }),
+      setExactLocation: (exactLocation) => set({ exactLocation }),
       setLocationModalOpen: (isOpen) => set({ isLocationModalOpen: isOpen }),
 
       // Reset everything (e.g. user wants to change location)
       resetLocation: () =>
-        set({ orderType: null, deliveryCity: null, deliveryArea: null }),
+        set({ orderType: null, deliveryCity: null, deliveryArea: null, exactLocation: null }),
     }),
     {
       name: 'pioneer-location-storage',
@@ -26,6 +28,7 @@ export const useLocationStore = create(
         orderType: state.orderType,
         deliveryCity: state.deliveryCity,
         deliveryArea: state.deliveryArea,
+        exactLocation: state.exactLocation,
       }),
     }
   )

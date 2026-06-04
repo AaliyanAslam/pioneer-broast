@@ -238,7 +238,7 @@ export default function ProductDetailsClient({ product, recommendedProducts = []
   return (
     <div className="bg-white text-zinc-950 selection:bg-zinc-100">
 
-      <main className="max-w-6xl mx-auto px-5 sm:px-6 py-5 md:py-8 lg:py-12">
+      <main className="max-w-420 mx-auto px-5 sm:px-6 py-5 md:py-8 lg:py-12">
         <div className="mb-4 md:mb-6">
           <Link href="/" className="inline-flex items-center gap-2 text-[10px] md:text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-black transition-colors">
             <PiArrowLeft className="w-3.5 h-3.5 md:w-4 md:h-4" /> Back to Store

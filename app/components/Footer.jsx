@@ -36,15 +36,15 @@ export default function Footer() {
   return (
     <footer className="bg-zinc-950 text-gray-400 border-t border-gray-800">
       {/* ── Main Footer Grid ── */}
-      <div className="max-w-7xl mx-auto px-5 sm:px-6 py-12 lg:py-16">
+      <div className="max-w-420 mx-auto px-5 sm:px-6 py-12 lg:py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           
           {/* Column 1: Brand Info */}
           <div className="flex flex-col items-start">
-            <Link href="/" className="inline-block transition-opacity hover:opacity-80 active:scale-95 mb-4">
+            <Link href="/" className="inline-block mb-6 transition-transform hover:scale-105 active:scale-95">
               <Image
-                src="/logo.webp"
-                alt="Kova Tech"
+                src="/brandlogo.webp"
+                alt="Pioneer Broast Logo"
                 width={150}
                 height={24}
                 className="h-8 w-auto object-contain brightness-0 invert"
@@ -138,7 +138,7 @@ export default function Footer() {
 
       {/* ── Bottom Bar ── */}
       <div className="border-t border-gray-800">
-        <div className="max-w-7xl mx-auto px-5 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="max-w-420 mx-auto px-5 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-sm text-gray-400 text-center sm:text-left">
             © 2026 Kova Tech. All rights reserved.
           </p>

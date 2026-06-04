@@ -347,7 +347,7 @@ export default function CheckoutPage() {
           </div>
 
           {/* Product Suggestions */}
-          <div className="max-w-7xl mx-auto px-4 sm:px-12 mt-2 sm:mt-4">
+          <div className="max-w-420 mx-auto px-4 sm:px-12 mt-2 sm:mt-4">
             <div className="flex items-center justify-between mb-6 sm:mb-8 border-b border-zinc-200 pb-3 sm:pb-4">
               <h2 className="text-lg sm:text-xl font-black uppercase tracking-tighter text-black">
                 You might also like
@@ -446,7 +446,7 @@ export default function CheckoutPage() {
       {authModal}
       <div className={`min-h-screen overflow-x-hidden bg-white text-zinc-950 px-4 sm:px-6 lg:p-12 pb-48 lg:pb-12 pt-20 sm:pt-24 lg:pt-12 relative ${authModal ? 'h-screen overflow-hidden pointer-events-none blur-sm' : ''}`}>
       {/* Mobile / Desktop Absolute Back Button */}
-      <div className="w-full max-w-6xl mx-auto absolute top-4 sm:top-6 left-0 right-0 px-4 sm:px-6 lg:top-8 lg:px-8 flex justify-start z-10">
+      <div className="w-full max-w-420 mx-auto absolute top-4 sm:top-6 left-0 right-0 px-4 sm:px-6 lg:top-8 lg:px-8 flex justify-start z-10">
         {checkoutStep === 2 ? (
           <button
             type="button"
@@ -521,7 +521,7 @@ export default function CheckoutPage() {
         </div>
       </div>
 
-      <div ref={stepContainerRef} className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 mt-2 sm:mt-0">
+      <div ref={stepContainerRef} className="max-w-420 mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 mt-2 sm:mt-0">
         {/* Left: Checkout Form */}
         <div className="order-2 lg:order-1">
           <div className="flex items-center justify-between mb-4 sm:mb-6 leading-none">

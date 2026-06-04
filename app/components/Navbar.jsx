@@ -12,7 +12,7 @@ import Tooltip from "./ui/Tooltip";
 
 export default function Navbar() {
   const { cart, isCartOpen, setCartOpen } = useCartStore();
-  const { orderType, deliveryArea, setLocationModalOpen } = useLocationStore();
+  const { orderType, deliveryArea, exactLocation, setLocationModalOpen } = useLocationStore();
   const [hasMounted, setHasMounted] = useState(false);
   const [user, setUser] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -52,6 +52,8 @@ export default function Navbar() {
   const locationLabel = hasMounted
     ? orderType === "Pickup"
       ? "Pickup"
+      : exactLocation
+      ? `Delivery · ${exactLocation.address.split(',')[0]}` // Only show first part of full address
       : orderType === "Delivery" && deliveryArea
       ? `Delivery · ${deliveryArea}`
       : null
@@ -61,14 +63,14 @@ export default function Navbar() {
     <>
       <header className="sticky top-0 z-40 w-full flex flex-col">
         {/* Announcement Bar */}
-        <div className="w-full bg-[#e63946] text-white px-4 py-2 text-center text-[10px] sm:text-[11px] font-bold tracking-widest uppercase flex items-center justify-center gap-2">
+        <div className="w-full bg-[#D21716] text-white px-4 py-2.5 text-center text-[10px] sm:text-[12px] font-bold tracking-widest uppercase flex items-center justify-center gap-2">
           <span>
-            🔥 Free Delivery on orders above Rs. 1,500 — Use Code: <strong className="font-black bg-white text-[#e63946] px-2 py-0.5 rounded-md ml-1 tracking-widest">BROAST50</strong>
+            🔥 Free Delivery on orders above Rs. 1,500 — Use Code: <strong className="font-black bg-white text-[#ed1c24] px-2 py-0.5 rounded-md ml-1 tracking-widest">BROAST50</strong>
           </span>
         </div>
 
         <nav className="w-full bg-white/90 backdrop-blur-xl border-b border-zinc-100 shadow-sm relative z-30">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 sm:h-16 lg:h-18 flex items-center justify-between">
+          <div className="max-w-420 mx-auto px-4 sm:px-6 h-16 sm:h-20 lg:h-24 flex items-center justify-between">
           {/* Left: Mobile Menu Toggle & Brand Logo */}
           <div className="flex-1 flex items-center justify-start gap-3">
             <button 
@@ -80,9 +82,16 @@ export default function Navbar() {
             <Link
               href="/"
               title="Go to Home"
-              className="shrink-0 transition-transform active:scale-95"
+              className="shrink-0 transition-transform active:scale-95 flex items-center"
             >
-              <span className="text-2xl font-black text-red-600 tracking-tight">Pioneer Broast</span>
+              <Image 
+                src="/brandlogo.webp" 
+                alt="Pioneer Broast" 
+                width={200} 
+                height={72} 
+                className="w-auto h-10 sm:h-12 lg:h-[122px] object-contain"
+                priority
+              />
             </Link>
           </div>
 
@@ -179,8 +188,6 @@ export default function Navbar() {
           <SearchBar />
         </div>
 
-        {/* Neon Gradient Line */}
-        <div className="absolute bottom-0 left-0 w-full h-[2px] bg-linear-to-r from-transparent via-[#C0E212] to-transparent opacity-80 z-10" />
       </nav>
       </header>
 
@@ -193,7 +200,13 @@ export default function Navbar() {
           />
           <div className="relative flex w-[85%] max-w-[320px] flex-col overflow-y-auto bg-white shadow-2xl animate-in slide-in-from-left duration-300">
             <div className="flex items-center justify-between px-5 pt-6 pb-5 border-b border-zinc-100">
-              <span className="text-2xl font-black text-red-600 tracking-tight">Pioneer Broast</span>
+              <Image 
+                src="/brandlogo.webp" 
+                alt="Pioneer Broast" 
+                width={140} 
+                height={35} 
+                className="w-auto h-8 object-contain"
+              />
               <button
                 type="button"
                 className="inline-flex items-center justify-center rounded-full p-2 bg-zinc-100 text-zinc-500 hover:text-black hover:bg-zinc-200 transition-colors"

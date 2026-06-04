@@ -182,7 +182,7 @@ export default function AddProductForm({ initialData, onProductAdded }) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto pb-10">
+    <div className="max-w-420 mx-auto pb-10">
       <h2 className="text-xl font-bold tracking-tight mb-5 text-zinc-900">
         {initialData ? "Edit Product" : "Add New Product"}
       </h2>
