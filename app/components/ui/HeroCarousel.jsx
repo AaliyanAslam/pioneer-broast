@@ -8,41 +8,24 @@ import { PiCaretLeft, PiCaretRight } from "react-icons/pi";
 const BANNERS = [
   {
     id: 1,
-    image: "https://images.unsplash.com/photo-1626082895617-2c63c7b998f5?q=80&w=2070&auto=format&fit=crop",
-    title: "Crispy Pioneer Broast",
-    subtitle: "The crunch you've been craving all day.",
-    buttonText: "Order Now",
-    buttonLink: "#featured",
+    image: "/b1.webp",
   },
   {
     id: 2,
-    image: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?q=80&w=2080&auto=format&fit=crop",
-    title: "Juicy Zinger Burgers",
-    subtitle: "Spicy, crispy, and packed with flavor.",
-    buttonText: "Explore Burgers",
-    buttonLink: "#featured",
+    image: "/b2.webp",
   },
   {
     id: 3,
-    image: "https://images.unsplash.com/photo-1594212691516-7d686f0283c7?q=80&w=2070&auto=format&fit=crop",
-    title: "Sizzling Family Deals",
-    subtitle: "Perfect meals for sharing with everyone.",
-    buttonText: "View Deals",
-    buttonLink: "#featured",
-  },
-  {
-    id: 4,
-    image: "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?q=80&w=2070&auto=format&fit=crop",
-    title: "Crispy Hot Sides",
-    subtitle: "The perfect companions for your meal.",
-    buttonText: "Shop Sides",
-    buttonLink: "#featured",
+    image: "/b3.webp",
   },
 ];
 
 export default function HeroCarousel() {
   const scrollRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
 
   // Update indicator dots when scrolling
   const handleScroll = () => {
@@ -75,52 +58,58 @@ export default function HeroCarousel() {
     return () => clearInterval(timer);
   }, [currentIndex]);
 
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setStartX(e.pageX - scrollRef.current.offsetLeft);
+    setScrollLeft(scrollRef.current.scrollLeft);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = (x - startX) * 2; // scroll speed multiplier
+    scrollRef.current.scrollLeft = scrollLeft - walk;
+  };
+
   return (
-    <div className="relative max-w-420 mx-auto px-4 sm:px-6 mt-6 rounded-2xl overflow-hidden group">
+    <div className="select-none relative max-w-400 mx-auto px-4 sm:px-6 mt-6 rounded-2xl overflow-hidden group">
       
       {/* Carousel Container */}
       <div 
         ref={scrollRef}
         onScroll={handleScroll}
-        className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar rounded-2xl h-[350px] sm:h-[500px] lg:h-[600px] relative"
+        onMouseDown={handleMouseDown}
+        onMouseLeave={handleMouseLeave}
+        onMouseUp={handleMouseUp}
+        onMouseMove={handleMouseMove}
+        className={`flex overflow-x-auto hide-scrollbar rounded-2xl relative cursor-grab active:cursor-grabbing touch-pan-y ${isDragging ? '' : 'snap-x snap-mandatory scroll-smooth'}`}
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {BANNERS.map((banner, index) => (
           <div 
             key={banner.id} 
-            className="w-full shrink-0 snap-center relative"
+            className="w-full shrink-0 snap-center relative aspect-4/3 sm:aspect-video lg:aspect-21/9 xl:aspect-2.5/1"
           >
             {/* Background Image */}
-            <div className="absolute inset-0 bg-black">
+            <div className="absolute inset-0">
               <Image 
                 src={banner.image} 
-                alt={banner.title} 
+                alt={`Hero Banner ${index + 1}`} 
                 fill 
-                className="object-cover opacity-60 transition-transform duration-700 ease-out hover:scale-105"
+                className="object-cover transition-transform duration-1000 ease-out hover:scale-[1.02] pointer-events-none"
                 priority={index === 0}
+                quality={100}
+                unoptimized={true}
               />
-            </div>
-
-            {/* Overlay Gradients for readability */}
-            <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
-            <div className="absolute inset-0 bg-linear-to-r from-black/90 via-black/40 to-transparent sm:w-2/3 pointer-events-none" />
-
-            {/* Content Container */}
-            <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-16 lg:p-24 pb-16 sm:pb-24">
-              <h1 className="text-[28px] leading-tight sm:text-5xl md:text-6xl font-extrabold text-white mb-3 sm:mb-4 tracking-tight drop-shadow-md">
-                {banner.title}
-              </h1>
-              <p className="text-sm sm:text-xl text-zinc-200 mb-6 sm:mb-8 max-w-2xl drop-shadow-md">
-                {banner.subtitle}
-              </p>
-              <div>
-                <Link 
-                  href={banner.buttonLink} 
-                  className="inline-block bg-[#C0E212] text-black font-extrabold px-6 py-3 sm:px-10 sm:py-4 text-[13px] sm:text-base rounded-md active:rounded-3xl hover:bg-[#a5c20e] active:scale-95 transition-all shadow-lg"
-                >
-                  {banner.buttonText}
-                </Link>
-              </div>
             </div>
           </div>
         ))}
