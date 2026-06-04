@@ -5,6 +5,7 @@ import SWRProvider from "@/app/components/SWRProvider";
 import ConditionalFooter from "@/app/components/ConditionalFooter";
 import FloatingCartWidget from "@/app/components/ui/FloatingCartWidget";
 import ClientProviders from "@/app/components/ClientProviders";
+import DeleteConfirmModal from "@/app/components/ui/DeleteConfirmModal";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
 const outfit = Outfit({
@@ -113,6 +114,7 @@ export default function RootLayout({ children }) {
           <ConditionalFooter />
           <FloatingCartWidget />
           <ClientProviders />
+          <DeleteConfirmModal />
           <Toaster position="top-center" />
         </SWRProvider>
 

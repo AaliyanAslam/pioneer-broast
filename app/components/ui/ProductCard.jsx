@@ -12,7 +12,7 @@ export default function ProductCard({ product }) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isAdding, setIsAdding] = useState(false);
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0] || null);
-  const { cart, addToCart, updateQuantity, removeFromCart } = useCartStore();
+  const { cart, addToCart, updateQuantity, removeFromCart, setItemToDelete } = useCartStore();
   const segments = Array.from({ length: 9 });
 
   const cartItem = cart.find(item => (item.cartItemId || item.id) === product.id);
@@ -99,7 +99,7 @@ export default function ProductCard({ product }) {
                     e.preventDefault();
                     e.stopPropagation();
                     if (quantityInCart === 1) {
-                      removeFromCart(product.id);
+                      setItemToDelete(product.id);
                     } else {
                       updateQuantity(product.id, 'decrease');
                     }

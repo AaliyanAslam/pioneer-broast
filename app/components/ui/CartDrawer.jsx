@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 // Removed getColorCode helper as it is no longer needed
 
 export default function CartDrawer({ isOpen, onClose }) {
-  const { cart, removeFromCart, updateQuantity, appliedCoupon, setAppliedCoupon, updateInstructions } = useCartStore();
+  const { cart, removeFromCart, updateQuantity, appliedCoupon, setAppliedCoupon, updateInstructions, setItemToDelete } = useCartStore();
   const { exactLocation, deliveryArea, deliveryCity, orderType } = useLocationStore();
   const router = useRouter();
   
@@ -134,34 +134,12 @@ export default function CartDrawer({ isOpen, onClose }) {
   };
 
   const handleRemoveItem = (id) => {
-    const el = itemRefs.current[id];
-    if (el) {
-      gsap.to(el, {
-        x: -50,
-        opacity: 0,
-        backgroundColor: "#fef2f2", // reddish tint (red-50)
-        duration: 0.3,
-        ease: "power2.out",
-        onComplete: () => {
-          gsap.to(el, {
-            height: 0,
-            paddingTop: 0,
-            paddingBottom: 0,
-            borderBottomWidth: 0,
-            duration: 0.2,
-            ease: "power2.inOut",
-            onComplete: () => removeFromCart(id)
-          });
-        }
-      });
-    } else {
-      removeFromCart(id);
-    }
+    setItemToDelete(id);
   };
 
   const handleQtyChange = (id, currentQty, action) => {
     if (action === "decrease" && currentQty <= 1) {
-      handleRemoveItem(id);
+      setItemToDelete(id);
     } else {
       updateQuantity(id, action);
     }

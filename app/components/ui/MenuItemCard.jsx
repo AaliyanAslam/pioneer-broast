@@ -11,7 +11,7 @@ export default function MenuItemCard({ item }) {
   const imageUrl = item.image_url || "https://via.placeholder.com/600";
   const [isAdding, setIsAdding] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { cart, addToCart, updateQuantity, removeFromCart } = useCartStore();
+  const { cart, addToCart, updateQuantity, removeFromCart, setItemToDelete } = useCartStore();
 
   const cartItem = cart.find(cartObj => (cartObj.cartItemId || cartObj.id) === item.id);
   const quantityInCart = cartItem ? cartItem.quantity : 0;
@@ -83,7 +83,7 @@ export default function MenuItemCard({ item }) {
                   e.preventDefault();
                   e.stopPropagation();
                   if (quantityInCart === 1) {
-                    removeFromCart(item.id);
+                    setItemToDelete(item.id);
                   } else {
                     updateQuantity(item.id, 'decrease');
                   }

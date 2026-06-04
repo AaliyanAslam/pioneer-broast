@@ -41,9 +41,11 @@ export const useCartStore = create(
       cart: [],
       isCartOpen: false,
       appliedCoupon: null,
+      itemToDelete: null,
 
       setCartOpen: (isOpen) => set({ isCartOpen: isOpen }),
       setAppliedCoupon: (coupon) => set({ appliedCoupon: coupon }),
+      setItemToDelete: (cartItemId) => set({ itemToDelete: cartItemId }),
       
       // Product Cart mein dalna
       addToCart: (product, openCart = false) => {
