@@ -20,8 +20,7 @@ import {
   PiTag,
   PiXCircle,
 } from "react-icons/pi";
-import AuthForm from "@/app/components/ui/AuthForm";
-import { supabase } from "@/app/lib/supabase";
+
 import Navbar from "@/app/components/Navbar";
 import ProductCard from "@/app/components/ui/ProductCard";
 import useSWR from "swr";
@@ -35,10 +34,6 @@ export default function CheckoutPage() {
   const [orderSuccess, setOrderSuccess] = useState(false);
 
   // Auth & Mode States
-  const [user, setUser] = useState(null);
-  const [checkingAuth, setCheckingAuth] = useState(true);
-  const [isGuestMode, setIsGuestMode] = useState(false);
-  const [showLoginForm, setShowLoginForm] = useState(false);
   const [checkoutStep, setCheckoutStep] = useState(1);
   const stepContainerRef = useRef(null);
   const step1Ref = useRef(null);
@@ -83,45 +78,6 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     setHasMounted(true);
-
-    const checkSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (session?.user) {
-        setUser(session.user);
-        setCustomerInfo((prev) => ({
-          ...prev,
-          name:
-            session.user.user_metadata?.full_name ||
-            session.user.email?.split("@")[0] ||
-            "",
-          email: session.user.email || "",
-        }));
-      }
-      setCheckingAuth(false);
-    };
-    checkSession();
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session?.user) {
-        setUser(session.user);
-        setCustomerInfo((prev) => ({
-          ...prev,
-          name:
-            session.user.user_metadata?.full_name ||
-            session.user.email?.split("@")[0] ||
-            "",
-          email: session.user.email || "",
-        }));
-      } else {
-        setUser(null);
-      }
-    });
-
-    return () => subscription.unsubscribe();
   }, []);
 
   const { data: suggestions = [], isLoading: isLoadingSuggestions } = useSWR(
@@ -252,16 +208,14 @@ export default function CheckoutPage() {
           })),
         });
 
-        // Agar user login nahi hai to uski order id localStorage mein save karo
-        if (!user) {
-          const guestOrders = JSON.parse(
-            localStorage.getItem("guestOrders") || "[]",
-          );
-          localStorage.setItem(
-            "guestOrders",
-            JSON.stringify([data.orderId, ...guestOrders]),
-          );
-        }
+        // Save order id to local storage for order tracking
+        const guestOrders = JSON.parse(
+          localStorage.getItem("guestOrders") || "[]",
+        );
+        localStorage.setItem(
+          "guestOrders",
+          JSON.stringify([data.orderId, ...guestOrders]),
+        );
 
         setOrderSuccess(true);
         clearCart();
@@ -300,21 +254,12 @@ export default function CheckoutPage() {
             >
               Continue Shopping
             </Link>
-            {user ? (
-              <Link
-                href="/profile"
-                className="w-full sm:w-auto bg-white border-2 border-zinc-200 text-black font-bold px-8 py-4 sm:py-3.5 rounded-full hover:border-black active:scale-[0.98] transition-all uppercase tracking-widest text-[13px] sm:text-sm flex items-center justify-center"
-              >
-                See Your Order
-              </Link>
-            ) : (
-              <Link
-                href="/guest-orders"
-                className="w-full sm:w-auto bg-white border-2 border-zinc-200 text-black font-bold px-8 py-4 sm:py-3.5 rounded-full hover:border-black active:scale-[0.98] transition-all uppercase tracking-widest text-[13px] sm:text-sm flex items-center justify-center"
-              >
-                See Your Order
-              </Link>
-            )}
+            <Link
+              href="/guest-orders"
+              className="w-full sm:w-auto bg-white border-2 border-zinc-200 text-black font-bold px-8 py-4 sm:py-3.5 rounded-full hover:border-black active:scale-[0.98] transition-all uppercase tracking-widest text-[13px] sm:text-sm flex items-center justify-center"
+            >
+              See Your Order
+            </Link>
           </div>
         </div>
       </div>
@@ -370,81 +315,9 @@ export default function CheckoutPage() {
     );
   }
 
-  if (checkingAuth) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <PiCircleNotch className="w-10 h-10 animate-spin text-[#C0E212]" />
-      </div>
-    );
-  }
-
-  // Auth Modal (Overlay)
-  let authModal = null;
-  if (!user && !isGuestMode) {
-    if (showLoginForm) {
-      authModal = (
-        <div className="fixed inset-0 z-[100] bg-zinc-950/40 backdrop-blur-sm flex flex-col items-center justify-center p-4 sm:p-6">
-          <div className="w-full max-w-md relative animate-in zoom-in-95 duration-300">
-            <button
-              onClick={() => setShowLoginForm(false)}
-              className="absolute -top-12 left-0 inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-bold uppercase tracking-widest text-white/80 hover:text-white transition-colors"
-            >
-              <PiArrowLeft className="w-4 h-4" /> Back
-            </button>
-            <AuthForm onGuestCheckout={() => setIsGuestMode(true)} />
-          </div>
-        </div>
-      );
-    } else {
-      authModal = (
-        <div className="fixed inset-0 z-[100] bg-zinc-950/40 backdrop-blur-sm flex flex-col items-center justify-center p-4 sm:p-6">
-          <div className="absolute top-6 left-4 sm:left-6">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-bold uppercase tracking-widest text-white hover:text-zinc-200 transition-colors drop-shadow-md"
-            >
-              <PiArrowLeft className="w-4 h-4" /> Back to Store
-            </Link>
-          </div>
-
-          <div className="w-full max-w-md bg-white rounded-3xl p-8 sm:p-10 shadow-2xl flex flex-col items-center text-center animate-in zoom-in-95 duration-300">
-            <div className="w-16 h-16 bg-zinc-100 rounded-full flex items-center justify-center mb-6">
-              <PiTote className="w-8 h-8 text-black" />
-            </div>
-
-            <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tighter text-black mb-3">
-              Almost There!
-            </h1>
-            <p className="text-[13px] sm:text-sm text-zinc-500 leading-relaxed mb-8 px-2">
-              Continue as a guest for a fast checkout, or log in to track your
-              orders easily.
-            </p>
-
-            <div className="w-full space-y-3">
-              <button
-                onClick={() => setIsGuestMode(true)}
-                className="w-full bg-[#C0E212] text-black font-black uppercase tracking-widest py-4 rounded-xl active:scale-[0.98] transition-transform hover:bg-[#a6c40e] shadow-lg shadow-[#C0E212]/20 text-[13px] sm:text-sm"
-              >
-                Checkout as Guest
-              </button>
-
-              <button
-                onClick={() => setShowLoginForm(true)}
-                className="w-full bg-zinc-950 text-white font-bold uppercase tracking-widest py-4 rounded-xl active:scale-[0.98] transition-transform hover:bg-black text-[13px] sm:text-sm shadow-md"
-              >
-                Log in / Sign Up
-              </button>
-            </div>
-          </div>
-        </div>
-      );
-    }
-  }
-
   return (
     <>
-      {authModal}
-      <div className={`min-h-screen overflow-x-hidden bg-white text-zinc-950 px-4 sm:px-6 lg:p-12 pb-48 lg:pb-12 pt-20 sm:pt-24 lg:pt-12 relative ${authModal ? 'h-screen overflow-hidden pointer-events-none blur-sm' : ''}`}>
+      <div className="min-h-screen overflow-x-hidden bg-white text-zinc-950 px-4 sm:px-6 lg:p-12 pb-48 lg:pb-12 pt-20 sm:pt-24 lg:pt-12 relative">
       {/* Mobile / Desktop Absolute Back Button */}
       <div className="w-full max-w-420 mx-auto absolute top-4 sm:top-6 left-0 right-0 px-4 sm:px-6 lg:top-8 lg:px-8 flex justify-start z-10">
         {checkoutStep === 2 ? (
@@ -528,12 +401,7 @@ export default function CheckoutPage() {
             <h1 className="text-xl sm:text-2xl font-bold uppercase tracking-tight text-black px-1 sm:px-0">
               {orderType === "Delivery" ? "Delivery Details" : "Pickup Details"}
             </h1>
-            {/* Auth Badge */}
-            <span
-              className={`px-3 py-1 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-widest ${user ? "bg-[#C0E212] text-black" : "bg-zinc-100 text-zinc-500"}`}
-            >
-              {user ? "Logged In" : "Guest Checkout"}
-            </span>
+
           </div>
 
           <form

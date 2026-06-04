@@ -7,35 +7,18 @@ import { useCartStore, useLocationStore } from "@/app/lib/store";
 import CartDrawer from "./ui/CartDrawer";
 import SearchBar from "./ui/SearchBar";
 import { usePathname } from "next/navigation";
-import { supabase } from "@/app/lib/supabase";
+
 import Tooltip from "./ui/Tooltip";
 
 export default function Navbar() {
   const { cart, isCartOpen, setCartOpen } = useCartStore();
   const { orderType, deliveryArea, exactLocation, setLocationModalOpen } = useLocationStore();
   const [hasMounted, setHasMounted] = useState(false);
-  const [user, setUser] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
     setHasMounted(true);
-
-    const checkSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      setUser(session?.user || null);
-    };
-    checkSession();
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user || null);
-    });
-
-    return () => subscription.unsubscribe();
   }, []);
 
   const totalItems = hasMounted
@@ -146,25 +129,6 @@ export default function Navbar() {
 
             {/* Action Icons */}
             <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
-              {user ? (
-                <Tooltip text="View Profile" position="bottom">
-                  <Link
-                    href="/profile"
-                    className="relative flex p-2 text-zinc-600 hover:text-black hover:bg-zinc-100 rounded-full transition-all active:scale-95"
-                  >
-                    <PiUser className="w-5 h-5 sm:w-6 sm:h-6" />
-                  </Link>
-                </Tooltip>
-              ) : (
-                <Tooltip text="Sign in" position="bottom">
-                  <Link
-                    href="/cart"
-                    className="relative flex p-2 text-zinc-600 hover:text-black hover:bg-zinc-100 rounded-full transition-all active:scale-95"
-                  >
-                    <PiSignIn className="w-5 h-5 sm:w-6 sm:h-6" />
-                  </Link>
-                </Tooltip>
-              )}
 
               <Tooltip text="View Cart" position="bottom">
                 <button
@@ -229,18 +193,7 @@ export default function Navbar() {
                 </Link>
               ))}
             </div>
-            
-            <div className="mt-auto p-5 border-t border-zinc-100 bg-zinc-50">
-              {user ? (
-                <Link href="/profile" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-zinc-900 bg-white p-4 rounded-xl shadow-sm border border-zinc-200">
-                  <PiUser className="w-5 h-5 text-[#C0E212]" /> My Account
-                </Link>
-              ) : (
-                <Link href="/cart" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-zinc-900 bg-white p-4 rounded-xl shadow-sm border border-zinc-200">
-                  <PiSignIn className="w-5 h-5 text-[#C0E212]" /> Sign In / Register
-                </Link>
-              )}
-            </div>
+
           </div>
         </div>
       )}

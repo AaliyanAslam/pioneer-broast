@@ -18,8 +18,7 @@ export async function POST(req) {
       delivery_city, 
       delivery_area, 
       total_amount, 
-      items, 
-      userId 
+      items
     } = body;
 
     if (!items || items.length === 0) {
@@ -62,8 +61,7 @@ export async function POST(req) {
           city: delivery_city || null,
           total_amount: finalTotal,
           items: items, // Save cart items with specialInstructions
-          status: "pending",
-          user_id: userId || null
+          status: "pending"
         }
       ])
       .select()
