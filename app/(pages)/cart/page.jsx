@@ -39,6 +39,15 @@ export default function CheckoutPage() {
   const step1Ref = useRef(null);
   const step2Ref = useRef(null);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('step') === '2') {
+        setCheckoutStep(2);
+      }
+    }
+  }, []);
+
   // GSAP Animation for Stepper
   useEffect(() => {
     if (stepContainerRef.current) {
@@ -78,6 +87,20 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     setHasMounted(true);
+    const savedInfo = localStorage.getItem("customerInfo");
+    if (savedInfo) {
+      try {
+        const parsed = JSON.parse(savedInfo);
+        setCustomerInfo({
+          name: parsed.name || "",
+          phone: parsed.phone || "",
+          address: parsed.address || "",
+          email: "" // Keep email empty if it's not saved
+        });
+      } catch (err) {
+        console.error("Error parsing saved customer info", err);
+      }
+    }
   }, []);
 
   const { data: suggestions = [], isLoading: isLoadingSuggestions } = useSWR(
@@ -215,6 +238,13 @@ export default function CheckoutPage() {
           "guestOrders",
           JSON.stringify([data.orderId, ...guestOrders]),
         );
+
+        // Save customer details for future orders
+        localStorage.setItem("customerInfo", JSON.stringify({
+          name: customerInfo.name,
+          phone: customerInfo.phone,
+          address: customerInfo.address
+        }));
 
         setOrderSuccess(true);
         clearCart();

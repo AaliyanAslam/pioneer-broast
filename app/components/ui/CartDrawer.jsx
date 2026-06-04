@@ -9,12 +9,14 @@ import useSWR from "swr";
 import { supabase } from "@/app/lib/supabase";
 import ProductCard from "@/app/components/ui/ProductCard";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 // Removed getColorCode helper as it is no longer needed
 
 export default function CartDrawer({ isOpen, onClose }) {
   const { cart, removeFromCart, updateQuantity, appliedCoupon, setAppliedCoupon, updateInstructions } = useCartStore();
-  const { exactLocation, deliveryArea, orderType } = useLocationStore();
+  const { exactLocation, deliveryArea, deliveryCity, orderType } = useLocationStore();
+  const router = useRouter();
   
   const defaultArea = exactLocation ? exactLocation.address : (deliveryArea || "Not selected");
   
@@ -39,6 +41,18 @@ export default function CartDrawer({ isOpen, onClose }) {
 
   useEffect(() => {
     setHasMounted(true);
+    // Load saved customer info if available
+    const savedInfo = localStorage.getItem("customerInfo");
+    if (savedInfo) {
+      try {
+        const parsed = JSON.parse(savedInfo);
+        if (parsed.name) setCustomerName(parsed.name);
+        if (parsed.phone) setCustomerPhone(parsed.phone);
+        if (parsed.address) setCustomerAddress(parsed.address);
+      } catch (err) {
+        console.error("Error parsing saved customer info", err);
+      }
+    }
   }, []);
 
   const { data: suggestions = [], isLoading: isLoadingSuggestions } = useSWR(
@@ -179,35 +193,18 @@ export default function CartDrawer({ isOpen, onClose }) {
     
     setIsSubmitting(true);
     try {
-      const orderData = {
-        customer_name: customerName,
-        customer_phone: customerPhone,
-        customer_address: customerAddress,
-        order_type: orderType || "Delivery",
-        delivery_city: exactLocation?.city || deliveryCity || "Karachi",
-        delivery_area: defaultArea,
-        total_amount: subtotal + deliveryCharges - discountAmount,
-        items: cart
-      };
-
-      const res = await fetch("/api/orders", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(orderData)
-      });
+      // Save customer details for checkout page
+      localStorage.setItem("customerInfo", JSON.stringify({
+        name: customerName,
+        phone: customerPhone,
+        address: customerAddress
+      }));
       
-      const data = await res.json();
-      
-      if (!data.success) {
-        throw new Error(data.message || "Failed to place order");
-      }
-      
-      toast.success("Order placed successfully!");
-      useCartStore.getState().clearCart();
       onClose();
+      router.push("/cart?step=2");
     } catch (err) {
       console.error(err);
-      toast.error(err.message || "Failed to place order. Please try again.");
+      toast.error("Failed to proceed to checkout. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
