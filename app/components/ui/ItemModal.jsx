@@ -12,7 +12,10 @@ export default function ItemModal({ isOpen, onClose, item }) {
   const { addToCart } = useCartStore();
 
   const imageUrl = item.image_url || "https://via.placeholder.com/600";
-  const activePrice = item.discount_price && item.discount_price < item.price ? item.discount_price : item.price;
+  const activePrice =
+    item.discount_price && item.discount_price < item.price
+      ? item.discount_price
+      : item.price;
   const originalPrice = item.price;
   const hasDiscount = item.discount_price && item.discount_price < item.price;
 
@@ -33,12 +36,12 @@ export default function ItemModal({ isOpen, onClose, item }) {
 
   const handleAddToCart = () => {
     setIsAdding(true);
-    
+
     // Add multiple items if quantity > 1
     const success = addToCart({
       ...item,
       quantity: quantity,
-      specialInstructions: specialInstructions.trim()
+      specialInstructions: specialInstructions.trim(),
     });
 
     if (success) {
@@ -55,16 +58,15 @@ export default function ItemModal({ isOpen, onClose, item }) {
   return (
     <>
       {/* Backdrop */}
-      <div 
+      <div
         className="fixed inset-0 bg-black/60 backdrop-blur-sm z-100 transition-opacity"
         onClick={onClose}
       />
 
       {/* Modal Content */}
       <div className="fixed inset-x-0 bottom-0 sm:inset-0 sm:m-auto sm:h-fit sm:max-h-[90vh] z-110 w-full max-w-md bg-white sm:rounded-3xl rounded-t-3xl overflow-hidden shadow-2xl flex flex-col transform transition-transform animate-slide-up sm:animate-fade-in">
-        
         {/* Close Button */}
-        <button 
+        <button
           onClick={onClose}
           className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center bg-white/50 backdrop-blur rounded-full text-zinc-900 hover:bg-white transition-colors"
         >
@@ -101,11 +103,17 @@ export default function ItemModal({ isOpen, onClose, item }) {
               <div className="text-right shrink-0">
                 {hasDiscount ? (
                   <div className="flex flex-col items-end">
-                    <span className="text-sm text-zinc-400 line-through font-medium">Rs. {originalPrice}</span>
-                    <span className="text-xl font-black text-[#e63946]">Rs. {activePrice}</span>
+                    <span className="text-sm text-zinc-400 line-through font-medium">
+                      Rs. {originalPrice}
+                    </span>
+                    <span className="text-xl font-black text-[#e63946]">
+                      Rs. {activePrice}
+                    </span>
                   </div>
                 ) : (
-                  <span className="text-xl font-black text-[#e63946]">Rs. {originalPrice}</span>
+                  <span className="text-xl font-black text-[#e63946]">
+                    Rs. {originalPrice}
+                  </span>
                 )}
               </div>
             </div>
@@ -121,8 +129,12 @@ export default function ItemModal({ isOpen, onClose, item }) {
             {/* Special Instructions */}
             <div className="mb-2">
               <label className="flex justify-between items-center mb-2">
-                <span className="text-sm font-bold text-black uppercase tracking-wider">Special Instructions</span>
-                <span className="text-[10px] text-zinc-400 font-medium bg-zinc-100 px-2 py-0.5 rounded uppercase">Optional</span>
+                <span className="text-sm font-bold text-black uppercase tracking-wider">
+                  Special Instructions
+                </span>
+                <span className="text-[10px] text-zinc-400 font-medium bg-zinc-100 px-2 py-0.5 rounded uppercase">
+                  Optional
+                </span>
               </label>
               <textarea
                 value={specialInstructions}
@@ -137,11 +149,10 @@ export default function ItemModal({ isOpen, onClose, item }) {
 
         {/* Bottom Action Bar */}
         <div className="absolute bottom-0 left-0 w-full bg-white/90 backdrop-blur-xl border-t border-zinc-200 p-4 sm:p-5 shadow-[0_-10px_30px_rgba(0,0,0,0.05)] flex items-center gap-4 z-20">
-          
           {/* Quantity Controls */}
           <div className="flex items-center bg-zinc-100 rounded-xl p-1 shrink-0 border border-zinc-200/50">
-            <button 
-              onClick={() => setQuantity(q => Math.max(1, q - 1))}
+            <button
+              onClick={() => setQuantity((q) => Math.max(1, q - 1))}
               className="w-10 h-10 flex items-center justify-center text-zinc-500 hover:text-black hover:bg-white rounded-lg transition-colors shadow-sm active:scale-95"
             >
               <PiMinus className="w-4 h-4" />
@@ -149,8 +160,8 @@ export default function ItemModal({ isOpen, onClose, item }) {
             <span className="w-8 text-center font-black text-black tabular-nums">
               {quantity}
             </span>
-            <button 
-              onClick={() => setQuantity(q => q + 1)}
+            <button
+              onClick={() => setQuantity((q) => q + 1)}
               className="w-10 h-10 flex items-center justify-center text-zinc-500 hover:text-black hover:bg-white rounded-lg transition-colors shadow-sm active:scale-95"
             >
               <PiPlus className="w-4 h-4" />
@@ -163,23 +174,36 @@ export default function ItemModal({ isOpen, onClose, item }) {
             disabled={isAdding}
             className="flex-1 bg-[#e63946] text-white font-bold text-[13px] sm:text-sm uppercase tracking-widest py-3.5 sm:py-4 rounded-xl transition-all duration-300 hover:bg-[#d62828] active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-70 shadow-lg shadow-[#e63946]/20"
           >
-            {isAdding ? "Adding..." : (
-              <span>Add to Cart • Rs. {(activePrice * quantity).toLocaleString()}</span>
+            {isAdding ? (
+              "Adding..."
+            ) : (
+              <span>
+                Add to Cart • Rs. {(activePrice * quantity).toLocaleString()}
+              </span>
             )}
           </button>
-
         </div>
       </div>
-      
+
       {/* Animations */}
       <style jsx>{`
         @keyframes slide-up {
-          from { transform: translateY(100%); }
-          to { transform: translateY(0); }
+          from {
+            transform: translateY(100%);
+          }
+          to {
+            transform: translateY(0);
+          }
         }
         @keyframes fade-in {
-          from { opacity: 0; transform: scale(0.95); }
-          to { opacity: 1; transform: scale(1); }
+          from {
+            opacity: 0;
+            transform: scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
         }
         .animate-slide-up {
           animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
