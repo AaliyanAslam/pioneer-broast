@@ -1,5 +1,5 @@
 /**
- * Global SWR fetcher utility for Kova Tech.
+ * Global SWR fetcher utility for Pioneer Broast.
  * Throws on non-OK responses so SWR's `error` state is populated correctly.
  *
  * Usage:

@@ -120,7 +120,7 @@ export const useCartStore = create(
       clearCart: () => set({ cart: [], appliedCoupon: null }),
     }),
     {
-      name: 'kova-cart-storage',
+      name: 'pioneer-cart-storage',
       partialize: (state) => ({ cart: state.cart, appliedCoupon: state.appliedCoupon }),
     }
   )

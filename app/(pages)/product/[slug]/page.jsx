@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import ProductDetailsClient from "@/app/components/ui/ProductDetailsClient";
 import Navbar from "@/app/components/Navbar";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://kovatechstore.vercel.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://pioneerbroaststore.vercel.app";
 
 // ─── Helper: safely parse images array ───────────────────────────────────────
 function parseImages(imgData) {
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }) {
   if (error || !product) {
     return {
       title: "Product Not Found",
-      description: "This product could not be found at Kova Tech.",
+      description: "This product could not be found at Pioneer Broast.",
     };
   }
 
@@ -43,12 +43,12 @@ export async function generateMetadata({ params }) {
   const pageTitle = product.name;
   const pageDesc  = product.short_des
     || product.description
-    || `Buy ${product.name} from Kova Tech. Premium quality tech accessories in Pakistan.`;
+    || `Buy ${product.name} from Pioneer Broast. Premium quality fast food in Karachi.`;
   const canonicalUrl = `${SITE_URL}/product/${slug}`;
 
   return {
     // ── Core ─────────────────────────────────────────────────────────────────
-    title: pageTitle,         // rendered as "Product Name | Kova Tech" via layout template
+    title: pageTitle,         // rendered as "Product Name | Pioneer Broast" via layout template
     description: pageDesc,
 
     keywords: [
@@ -57,7 +57,7 @@ export async function generateMetadata({ params }) {
       `${product.name} price in Pakistan`,
       `buy ${product.name} online`,
       `${product.category} Pakistan`,
-      "Kova Tech",
+      "Pioneer Broast",
     ].filter(Boolean),
 
     // ── Canonical ────────────────────────────────────────────────────────────
@@ -70,8 +70,8 @@ export async function generateMetadata({ params }) {
       type: "website",
       locale: "en_PK",
       url: canonicalUrl,
-      siteName: "Kova Tech",
-      title: `${pageTitle} | Kova Tech`,
+      siteName: "Pioneer Broast",
+      title: `${pageTitle} | Pioneer Broast`,
       description: pageDesc,
       images: [
         {
@@ -86,7 +86,7 @@ export async function generateMetadata({ params }) {
     // ── Twitter / X Card ─────────────────────────────────────────────────────
     twitter: {
       card: "summary_large_image",
-      title: `${pageTitle} | Kova Tech`,
+      title: `${pageTitle} | Pioneer Broast`,
       description: pageDesc,
       images: [ogImage],
     },
@@ -109,11 +109,11 @@ function buildProductJsonLd(product, slug) {
     description:
       product.short_des ||
       product.description ||
-      `${product.name} — available at Kova Tech.`,
+      `${product.name} — available at Pioneer Broast.`,
     image: images,
     brand: {
       "@type": "Brand",
-      name: "Kova Tech",
+      name: "Pioneer Broast",
     },
     category: product.category,
     url: `${SITE_URL}/product/${slug}`,
@@ -124,7 +124,7 @@ function buildProductJsonLd(product, slug) {
       availability,
       seller: {
         "@type": "Organization",
-        name: "Kova Tech",
+        name: "Pioneer Broast",
       },
       priceValidUntil: new Date(
         new Date().setFullYear(new Date().getFullYear() + 1)

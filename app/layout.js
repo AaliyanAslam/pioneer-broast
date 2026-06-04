@@ -14,35 +14,35 @@ const outfit = Outfit({
   display: "swap",
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://kovatechstore.vercel.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://pioneerbroaststore.vercel.app";
 
 // ─── Global / Fallback SEO ────────────────────────────────────────────────────
 export const metadata = {
-  // Resolved on every child page as: "Page Title | Kova Tech"
+  // Resolved on every child page as: "Page Title | Pioneer Broast"
   metadataBase: new URL(SITE_URL),
 
   title: {
-    default: "Kova Tech — Premium Tech Accessories in Pakistan",
-    template: "%s | Kova Tech",
+    default: "Pioneer Broast — Premium Fast Food & Broast in Karachi",
+    template: "%s | Pioneer Broast",
   },
 
   description:
-    "Shop the latest smartwatches, earbuds, and premium tech accessories at Kova Tech. Fast nationwide delivery across Pakistan. Quality guaranteed.",
+    "Order the best broast, burgers, and fast food at Pioneer Broast. Fast delivery across Karachi. Quality guaranteed.",
 
   keywords: [
-    "tech accessories Pakistan",
-    "smartwatch Pakistan",
-    "earbuds Pakistan",
-    "Kova Tech",
-    "buy earbuds online Pakistan",
-    "wireless earbuds Pakistan",
-    "smartwatch buy online",
-    "premium tech store Pakistan",
+    "fast food Karachi",
+    "broast Karachi",
+    "burgers Karachi",
+    "Pioneer Broast",
+    "order food online Karachi",
+    "wireless burgers Karachi",
+    "crispy broast online",
+    "premium fast food Karachi",
   ],
 
-  authors: [{ name: "Kova Tech", url: SITE_URL }],
-  creator: "Kova Tech",
-  publisher: "Kova Tech",
+  authors: [{ name: "Pioneer Broast", url: SITE_URL }],
+  creator: "Pioneer Broast",
+  publisher: "Pioneer Broast",
 
   // Tells Google to index all pages except /admin (also enforced in robots.js)
   robots: {
@@ -62,16 +62,16 @@ export const metadata = {
     type: "website",
     locale: "en_PK",
     url: SITE_URL,
-    siteName: "Kova Tech",
-    title: "Kova Tech — Premium Tech Accessories in Pakistan",
+    siteName: "Pioneer Broast",
+    title: "Pioneer Broast — Premium Fast Food & Broast in Karachi",
     description:
-      "Shop the latest smartwatches, earbuds, and premium tech accessories at Kova Tech. Fast nationwide delivery across Pakistan.",
+      "Order the best broast, burgers, and fast food at Pioneer Broast. Fast delivery across Karachi.",
     images: [
       {
         url: "/og-image.png",    // place a 1200×630 image in /public/og-image.jpg
         width: 1200,
         height: 630,
-        alt: "Kova Tech — Premium Tech Accessories",
+        alt: "Pioneer Broast — Premium Tech Accessories",
       },
     ],
   },
@@ -79,11 +79,11 @@ export const metadata = {
   // ── Twitter / X Card ────────────────────────────────────────────────────────
   twitter: {
     card: "summary_large_image",
-    title: "Kova Tech — Premium Tech Accessories in Pakistan",
+    title: "Pioneer Broast — Premium Fast Food & Broast in Karachi",
     description:
-      "Shop the latest smartwatches, earbuds, and premium tech accessories at Kova Tech.",
+      "Shop the latest smartwatches, earbuds, and premium tech accessories at Pioneer Broast.",
     images: ["/og-image.png"],
-    creator: "@kovatech",    // update to your Twitter handle if you have one
+    creator: "@pioneerbroast",    // update to your Twitter handle if you have one
   },
 
   // ── Canonical (prevents duplicate content) ───────────────────────────────────

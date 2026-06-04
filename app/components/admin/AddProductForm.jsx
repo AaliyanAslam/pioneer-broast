@@ -204,7 +204,7 @@ export default function AddProductForm({ initialData, onProductAdded }) {
               value={formData.name}
               onChange={handleChange}
               className="w-full bg-transparent border border-zinc-200 rounded-md px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 transition-all placeholder:text-zinc-400"
-              placeholder="e.g. Kova Pods Pro"
+              placeholder="e.g. Zinger Burger"
             />
           </div>
 

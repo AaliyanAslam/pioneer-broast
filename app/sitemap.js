@@ -1,6 +1,6 @@
 import { supabase } from "@/app/lib/supabase";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://kovatechstore.vercel.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://pioneerbroaststore.vercel.app";
 
 // Force dynamic generation — sitemap must reflect live product list
 export const dynamic = "force-dynamic";

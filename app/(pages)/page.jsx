@@ -4,7 +4,7 @@ import ProductCard from "@/app/components/ui/ProductCard";
 // Ye page har dafa fresh data fetch karega
 export const revalidate = 0; 
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://kovatechstore.vercel.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://pioneerbroaststore.vercel.app";
 
 export default async function HomePage() {
   // Database se sirf active products fetch karein
@@ -25,8 +25,8 @@ export default async function HomePage() {
         "@type": "WebSite",
         "@id": `${SITE_URL}/#website`,
         url: SITE_URL,
-        name: "Kova Tech",
-        description: "Premium Tech Accessories in Pakistan",
+        name: "Pioneer Broast",
+        description: "Premium Fast Food & Broast in Karachi",
         publisher: {
           "@id": `${SITE_URL}/#organization`
         },
@@ -42,15 +42,15 @@ export default async function HomePage() {
       {
         "@type": "Organization",
         "@id": `${SITE_URL}/#organization`,
-        name: "Kova Tech",
+        name: "Pioneer Broast",
         url: SITE_URL,
         logo: {
           "@type": "ImageObject",
           url: `${SITE_URL}/brandlogo.webp`
         },
         sameAs: [
-          "https://www.facebook.com/kovatech",
-          "https://www.instagram.com/kovatech"
+          "https://www.facebook.com/pioneerbroast",
+          "https://www.instagram.com/pioneerbroast"
         ]
       }
     ]

@@ -42,7 +42,7 @@ export default function CouponsManager() {
 
   const handleGenerate = () => {
     const randomCode = Math.random().toString(36).substring(2, 8).toUpperCase();
-    let prefix = "KOVA";
+    let prefix = "PION";
     if (formData.discount_type === "free_delivery") prefix = "FREEDEL";
     if (formData.discount_type === "percentage") prefix = "DISC";
     

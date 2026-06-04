@@ -85,8 +85,8 @@ export async function PATCH(req, { params }) {
         const mailOptions = {
           from: process.env.SMTP_USER,
           to: updatedOrder.customer_email,
-          subject: `Kova Tech: Order #${updatedOrder.id.slice(0, 8)} is ${status.toUpperCase()}`,
-          text: `Hello ${updatedOrder.customer_name},\n\nYour order #${updatedOrder.id} ${statusMessage}\n\nStatus: ${status.toUpperCase()}\nTotal Amount: Rs. ${updatedOrder.total_amount}\n\nThank you for shopping with Kova Tech!`,
+          subject: `Pioneer Broast: Order #${updatedOrder.id.slice(0, 8)} is ${status.toUpperCase()}`,
+          text: `Hello ${updatedOrder.customer_name},\n\nYour order #${updatedOrder.id} ${statusMessage}\n\nStatus: ${status.toUpperCase()}\nTotal Amount: Rs. ${updatedOrder.total_amount}\n\nThank you for shopping with Pioneer Broast!`,
         };
 
         await transporter.sendMail(mailOptions);

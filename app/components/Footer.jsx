@@ -101,7 +101,7 @@ export default function Footer() {
             <ul className="space-y-3 mb-6">
               <li className="flex items-center gap-3 text-sm text-gray-400">
                 <PiEnvelopeSimple className="w-4 h-4 shrink-0 text-[#C0E212]" />
-                <span>support@kovatech.store</span>
+                <span>support@pioneerbroast.store</span>
               </li>
               <li className="flex items-center gap-3 text-sm text-gray-400">
                 <PiPhone className="w-4 h-4 shrink-0 text-[#C0E212]" />
@@ -140,7 +140,7 @@ export default function Footer() {
       <div className="border-t border-gray-800">
         <div className="max-w-420 mx-auto px-5 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-sm text-gray-400 text-center sm:text-left">
-            © 2026 Kova Tech. All rights reserved.
+            © 2026 Pioneer Broast. All rights reserved.
           </p>
           <p className="text-sm text-gray-400 text-center sm:text-right flex items-center gap-1 justify-center">
             Made with 💚 in Pakistan

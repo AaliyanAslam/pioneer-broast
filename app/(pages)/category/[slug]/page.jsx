@@ -6,29 +6,29 @@ import Link from "next/link";
 
 export const revalidate = 0;
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://kovatechstore.vercel.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://pioneerbroaststore.vercel.app";
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const categoryName = slug.charAt(0).toUpperCase() + slug.slice(1).toLowerCase();
   
   return {
-    title: `${categoryName} | Kova Tech`,
-    description: `Shop the best and latest ${categoryName.toLowerCase()} in Pakistan at Kova Tech. Enjoy premium quality, fast shipping, and Cash on Delivery.`,
+    title: `${categoryName} | Pioneer Broast`,
+    description: `Order the best and latest ${categoryName.toLowerCase()} in Karachi at Pioneer Broast. Enjoy premium quality, fast shipping, and Cash on Delivery.`,
     alternates: {
       canonical: `${SITE_URL}/category/${slug}`,
     },
     openGraph: {
-      title: `${categoryName} | Kova Tech`,
-      description: `Shop the best and latest ${categoryName.toLowerCase()} in Pakistan at Kova Tech.`,
+      title: `${categoryName} | Pioneer Broast`,
+      description: `Order the best and latest ${categoryName.toLowerCase()} in Karachi at Pioneer Broast.`,
       url: `${SITE_URL}/category/${slug}`,
-      siteName: "Kova Tech",
+      siteName: "Pioneer Broast",
       type: "website",
     },
     twitter: {
       card: "summary_large_image",
-      title: `${categoryName} | Kova Tech`,
-      description: `Shop the best and latest ${categoryName.toLowerCase()} in Pakistan at Kova Tech.`,
+      title: `${categoryName} | Pioneer Broast`,
+      description: `Order the best and latest ${categoryName.toLowerCase()} in Karachi at Pioneer Broast.`,
     },
   };
 }

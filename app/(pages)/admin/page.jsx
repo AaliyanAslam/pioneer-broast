@@ -1,7 +1,7 @@
 import AdminDashboardClient from "@/app/components/admin/AdminDashboardClient";
 
 export const metadata = {
-  title: "Admin Dashboard | Kova Tech",
+  title: "Admin Dashboard | Pioneer Broast",
   description: "Manage products and orders.",
 };
 

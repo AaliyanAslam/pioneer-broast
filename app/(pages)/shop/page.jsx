@@ -5,7 +5,7 @@ import ShopClient from "@/app/components/ui/ShopClient";
 export const revalidate = 0;
 
 export const metadata = {
-  title: "Shop All Premium Gear | Kova Tech",
+  title: "Shop All Premium Gear | Pioneer Broast",
   description: "Browse our entire collection of premium smartwatches, earbuds, and accessories.",
 };
 
