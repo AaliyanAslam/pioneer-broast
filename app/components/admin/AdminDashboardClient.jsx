@@ -135,6 +135,7 @@ export default function AdminDashboardClient() {
             <PiPlusCircle className="w-5 h-5" /> 
             {editingItem ? "Edit Menu Item" : "Add Menu Item"}
           </button>
+
         </nav>
 
         <div className="p-4 border-t border-zinc-200 pb-8 md:pb-4">

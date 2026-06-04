@@ -41,7 +41,6 @@ export default function GuestOrdersPage() {
         setLoading(false);
         return;
       }
-
       try {
         const orderPromises = savedOrderIds.map((id) =>
           fetch(`/api/orders/${id}`).then((res) => res.json())
@@ -228,6 +227,12 @@ export default function GuestOrdersPage() {
                               Track order
                             </span>
                           </div>
+                          {order.estimated_time && (
+                            <div className="mt-1 flex items-center gap-2">
+                               <svg className="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                               <span className="text-[12px] font-bold text-amber-600">Estimated delivery time: {order.estimated_time}</span>
+                            </div>
+                          )}
                         </div>
 
                         <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-4 sm:gap-8 border-t border-zinc-100 pt-3 sm:border-0 sm:pt-0">

@@ -25,28 +25,37 @@ export async function PATCH(req, { params }) {
       );
     }
 
-    const { status } = body;
+    const { status, estimated_time } = body;
 
-    if (!status) {
-      return NextResponse.json(
-        { success: false, message: "Status field is required" },
-        { status: 400 }
-      );
+    const updates = {};
+    
+    if (status) {
+      if (!VALID_STATUSES.includes(status.toLowerCase())) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: `Invalid status. Must be one of: ${VALID_STATUSES.join(", ")}`,
+          },
+          { status: 400 }
+        );
+      }
+      updates.status = status.toLowerCase();
+    }
+    
+    if (estimated_time !== undefined) {
+      updates.estimated_time = estimated_time;
     }
 
-    if (!VALID_STATUSES.includes(status.toLowerCase())) {
+    if (Object.keys(updates).length === 0) {
       return NextResponse.json(
-        {
-          success: false,
-          message: `Invalid status. Must be one of: ${VALID_STATUSES.join(", ")}`,
-        },
+        { success: false, message: "No valid fields to update" },
         { status: 400 }
       );
     }
 
     const { data: updatedOrder, error } = await supabase
       .from("orders")
-      .update({ status: status.toLowerCase() })
+      .update(updates)
       .eq("id", id)
       .select()
       .single();
@@ -66,7 +75,7 @@ export async function PATCH(req, { params }) {
       );
     }
 
-    if (updatedOrder.customer_email) {
+    if (updatedOrder.customer_email && status) {
       try {
         const transporter = nodemailer.createTransport({
           host: process.env.SMTP_HOST,

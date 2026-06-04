@@ -13,6 +13,9 @@ import fetcher from "@/app/lib/fetcher";
 const ExpandedRow = ({ order }) => {
   const contentRef = React.useRef(null);
 
+  const [time, setTime] = useState(order.estimated_time || "");
+  const [savingTime, setSavingTime] = useState(false);
+
   React.useEffect(() => {
     gsap.fromTo(
       contentRef.current,
@@ -20,6 +23,28 @@ const ExpandedRow = ({ order }) => {
       { height: "auto", opacity: 1, duration: 0.35, ease: "power2.out" }
     );
   }, []);
+
+  const saveEstimatedTime = async () => {
+    setSavingTime(true);
+    try {
+      const res = await fetch(`/api/orders/${order.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ estimated_time: time }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success("Estimated time updated!");
+        order.estimated_time = time; // locally update for instant feedback
+      } else {
+        toast.error(data.message || "Failed to update time");
+      }
+    } catch (e) {
+      toast.error("Error saving time");
+    } finally {
+      setSavingTime(false);
+    }
+  };
 
   return (
     <tr className="bg-zinc-50 border-t-0">
@@ -46,6 +71,26 @@ const ExpandedRow = ({ order }) => {
                     <p className="text-sm text-zinc-600 leading-relaxed max-w-sm">
                       {order.customer_address || order.shipping_address}, {order.delivery_city || order.delivery_area || order.city}
                     </p>
+                  </div>
+                </div>
+                
+                <div className="pt-2">
+                  <p className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2">Estimated Preparation Time</p>
+                  <div className="flex items-center gap-2">
+                    <input 
+                      type="text" 
+                      value={time}
+                      onChange={(e) => setTime(e.target.value)}
+                      placeholder="e.g. 45-50 mins" 
+                      className="flex-1 bg-white border border-zinc-200 rounded-lg px-3 py-2 text-sm text-black focus:outline-none focus:border-zinc-400 transition-colors"
+                    />
+                    <button 
+                      onClick={saveEstimatedTime}
+                      disabled={savingTime}
+                      className="bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-zinc-800 disabled:opacity-50 transition-colors"
+                    >
+                      {savingTime ? <PiCircleNotch className="w-4 h-4 animate-spin" /> : "Save"}
+                    </button>
                   </div>
                 </div>
               </div>
