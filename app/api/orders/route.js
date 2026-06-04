@@ -86,12 +86,52 @@ export async function POST(req) {
         },
       });
 
+      // Build HTML for items
+      const itemsHtml = items.map(item => {
+        const price = item.discount_price || item.price;
+        return `
+          <li style="margin-bottom: 10px; font-family: sans-serif;">
+            <strong>${item.quantity}x ${item.name}</strong> - Rs. ${price * item.quantity}
+            ${item.specialInstructions ? `<br/><span style="color: #666; font-size: 12px;">Note: ${item.specialInstructions}</span>` : ''}
+          </li>
+        `;
+      }).join('');
+
       // 1. Admin Notification
       const adminMailOptions = {
         from: process.env.SMTP_USER,
         to: process.env.ADMIN_RECEIVER_EMAIL,
-        subject: `🚨 New Food Order! #${newOrder.id.slice(0, 8)}`,
-        text: `New order received for Pioneer Broast!\n\nOrder ID: ${newOrder.id}\nType: ${order_type}\nCustomer: ${customer_name}\nPhone: ${customer_phone}\nTotal: Rs. ${finalTotal}\n\nPlease check the Admin Panel to start preparing it.`,
+        subject: `🚨 New Order from ${customer_name}! - Pioneer Broast`,
+        html: `
+          <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eaeaea; border-radius: 10px; overflow: hidden;">
+            <div style="background-color: #e63946; padding: 20px; text-align: center;">
+              <h2 style="color: white; margin: 0;">New Order Received! 🍔</h2>
+            </div>
+            <div style="padding: 20px;">
+              <p><strong>Order ID:</strong> ${newOrder.id.slice(0, 8)}</p>
+              <p><strong>Order Type:</strong> ${order_type}</p>
+              
+              <h3 style="border-bottom: 1px solid #eaeaea; padding-bottom: 5px;">Customer Details</h3>
+              <p><strong>Name:</strong> ${customer_name}</p>
+              <p><strong>Phone:</strong> ${customer_phone}</p>
+              <p><strong>Address:</strong> ${customer_address || "N/A"}</p>
+              <p><strong>Area:</strong> ${delivery_area || "N/A"} (${delivery_city || "N/A"})</p>
+
+              <h3 style="border-bottom: 1px solid #eaeaea; padding-bottom: 5px;">Order Items</h3>
+              <ul style="padding-left: 20px;">
+                ${itemsHtml}
+              </ul>
+
+              <h2 style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; text-align: right;">
+                Total Amount: Rs. ${finalTotal}
+              </h2>
+              
+              <p style="text-align: center; color: #666; font-size: 14px; margin-top: 30px;">
+                Log into your Pioneer Broast admin panel to process this order.
+              </p>
+            </div>
+          </div>
+        `,
       };
       await transporter.sendMail(adminMailOptions);
 
