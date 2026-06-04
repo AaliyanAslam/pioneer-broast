@@ -49,7 +49,7 @@ export default function Navbar() {
             
             {/* LEFT SIDE: Logo & Info Boxes */}
             <div className="flex items-center gap-6 xl:gap-8">
-              <Link href="/" className="shrink-0 flex items-center transition-transform active:scale-95">
+              <Link href="/" className="shrink-0 flex items-center transition-all duration-200 active:scale-95">
                 <Image 
                   src="/brandlogo.webp" 
                   alt="Pioneer Broast" 
@@ -65,7 +65,7 @@ export default function Navbar() {
                 {/* Location Box */}
                 <button 
                   onClick={() => setLocationModalOpen(true)} 
-                  className="flex items-center gap-3 px-4 py-2 bg-white border border-zinc-200 rounded-md hover:bg-zinc-50 transition-colors text-left"
+                  className="flex items-center gap-3 px-4 py-2 bg-white border border-zinc-200 rounded-md hover:bg-zinc-50 transition-all duration-200 active:scale-95 text-left"
                 >
                   <PiMapPin className="text-[#D21716] w-7 h-7 shrink-0" weight="fill" />
                   <div className="flex flex-col">
@@ -79,7 +79,7 @@ export default function Navbar() {
                 {/* Contact Box */}
                 <a 
                   href="tel:021111666111" 
-                  className="flex items-center gap-3 px-4 py-2 bg-white border border-zinc-200 rounded-md hover:bg-zinc-50 transition-colors text-left"
+                  className="flex items-center gap-3 px-4 py-2 bg-white border border-zinc-200 rounded-md hover:bg-zinc-50 transition-all duration-200 active:scale-95 text-left"
                 >
                   <PiDeviceMobile className="text-[#D21716] w-7 h-7 shrink-0" weight="fill" />
                   <div className="flex flex-col">
@@ -96,7 +96,7 @@ export default function Navbar() {
               {/* Complaint Box (Hidden on mobile/tablet) */}
               <Link 
                 href="/contact" 
-                className="hidden lg:flex items-center gap-3 px-4 py-2 bg-white border border-zinc-200 rounded-md hover:bg-zinc-50 transition-colors text-right"
+                className="hidden lg:flex items-center gap-3 px-4 py-2 bg-white border border-zinc-200 rounded-md hover:bg-zinc-50 transition-all duration-200 active:scale-95 text-right"
               >
                 <div className="flex flex-col items-end">
                   <span className="text-[14px] font-black text-black leading-tight">Submit Your Complaint</span>
@@ -108,7 +108,7 @@ export default function Navbar() {
               {/* Cart Bucket */}
               <button 
                 onClick={() => setCartOpen(true)} 
-                className="relative flex items-center justify-center p-1 text-zinc-800 hover:text-[#D21716] transition-colors active:scale-95"
+                className="relative flex items-center justify-center p-1 text-zinc-800 hover:text-[#D21716] transition-all duration-200 active:scale-95"
               >
                 <PiTote className="w-9 h-9 sm:w-11 sm:h-11" weight="fill" />
                 <span className="absolute bottom-0 left-0 bg-[#FFD700] text-black border border-white shadow-sm text-[11px] sm:text-[12px] font-black w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center translate-y-1 -translate-x-1">
@@ -119,7 +119,7 @@ export default function Navbar() {
               {/* Hamburger Menu */}
               <button 
                 onClick={() => setIsMobileMenuOpen(true)}
-                className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-[#ff7a7a] text-white rounded-md hover:bg-[#ff6161] transition-colors active:scale-95"
+                className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-[#ff7a7a] text-white rounded-md hover:bg-[#ff6161] transition-all duration-200 active:scale-95"
               >
                 <PiList className="w-6 h-6 sm:w-7 sm:h-7" weight="bold" />
               </button>
@@ -147,7 +147,7 @@ export default function Navbar() {
               />
               <button
                 type="button"
-                className="inline-flex items-center justify-center rounded-full p-2 bg-zinc-100 text-zinc-500 hover:text-black hover:bg-zinc-200 transition-colors"
+                className="inline-flex items-center justify-center rounded-full p-2 bg-zinc-100 text-zinc-500 hover:text-black hover:bg-zinc-200 transition-all duration-200 active:scale-95"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 <span className="sr-only">Close menu</span>
