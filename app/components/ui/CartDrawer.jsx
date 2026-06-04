@@ -283,7 +283,11 @@ export default function CartDrawer({ isOpen, onClose }) {
               </div>
 
               {/* Quick Order Section */}
-              <div className="px-4 sm:px-6">
+              {
+                !customerName?(
+                 <div className=""><p></p></div>
+                ):(
+                 <div className="px-4 sm:px-6">
                 <div className="mt-6 bg-[#e63946] rounded-xl pt-4 pb-1.5 px-1.5 relative">
                   <h3 className="text-white text-center text-[13px] font-bold mb-4">Place a quick order using the Info Below</h3>
                   
@@ -338,7 +342,9 @@ export default function CartDrawer({ isOpen, onClose }) {
                      )}
                   </div>
                 </div>
-              </div>
+              </div> 
+                )
+              }
 
               {/* Suggestions / Carousel */}
               <div className="mt-8 border-t border-zinc-100 pt-6 px-4 sm:px-6">
