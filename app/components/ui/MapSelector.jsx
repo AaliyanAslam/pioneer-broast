@@ -79,12 +79,12 @@ export default function MapSelector({ initialPosition, onConfirm, onCancel }) {
         </MapContainer>
         
         {/* Center fixed pin */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-full z-[400] pointer-events-none drop-shadow-md">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-full z-400 pointer-events-none drop-shadow-md">
           <PiMapPinFill className="w-10 h-10 text-[#e63946] animate-bounce" />
         </div>
       </div>
       
-      <div className="flex flex-col p-6 bg-white z-[500] border-t border-gray-100 shadow-[0_-4px_10px_rgba(0,0,0,0.02)]">
+      <div className="flex flex-col p-6 bg-white z-500 border-t border-gray-100 shadow-[0_-4px_10px_rgba(0,0,0,0.02)]">
         <h3 className="font-semibold text-gray-800 mb-1 text-[15px]">Confirm Exact Location</h3>
         <p className="text-[12px] text-gray-400 mb-2">You can edit the address below if it's slightly off.</p>
         

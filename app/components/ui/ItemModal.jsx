@@ -56,12 +56,12 @@ export default function ItemModal({ isOpen, onClose, item }) {
     <>
       {/* Backdrop */}
       <div 
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] transition-opacity"
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-100 transition-opacity"
         onClick={onClose}
       />
 
       {/* Modal Content */}
-      <div className="fixed inset-x-0 bottom-0 sm:inset-0 sm:m-auto sm:h-fit sm:max-h-[90vh] z-[110] w-full max-w-md bg-white sm:rounded-3xl rounded-t-3xl overflow-hidden shadow-2xl flex flex-col transform transition-transform animate-slide-up sm:animate-fade-in">
+      <div className="fixed inset-x-0 bottom-0 sm:inset-0 sm:m-auto sm:h-fit sm:max-h-[90vh] z-110 w-full max-w-md bg-white sm:rounded-3xl rounded-t-3xl overflow-hidden shadow-2xl flex flex-col transform transition-transform animate-slide-up sm:animate-fade-in">
         
         {/* Close Button */}
         <button 
@@ -74,7 +74,7 @@ export default function ItemModal({ isOpen, onClose, item }) {
         {/* Scrollable Body */}
         <div className="flex-1 overflow-y-auto custom-scrollbar relative">
           {/* Header Image */}
-          <div className="relative w-full aspect-[4/3] bg-zinc-100">
+          <div className="relative w-full aspect-4/3 bg-zinc-100">
             <Image
               src={imageUrl}
               alt={item.name}

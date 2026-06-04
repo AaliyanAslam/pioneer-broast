@@ -270,7 +270,7 @@ export default function LocationModal() {
   return (
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+      className="fixed inset-0 z-9999 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
       style={{ opacity: 0 }}
     >
       <div
@@ -298,7 +298,7 @@ export default function LocationModal() {
               <div className="flex bg-[#e2e8f0] rounded-full p-1 w-[260px] mb-6 relative">
                 <div
                   className={`absolute top-1 bottom-1 w-[calc(50%-4px)] bg-[#ed1c24] rounded-full transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
-                    localType === "Pickup" ? "translate-x-[100%]" : "translate-x-0"
+                    localType === "Pickup" ? "translate-x-full" : "translate-x-0"
                   }`}
                 />
                 <button

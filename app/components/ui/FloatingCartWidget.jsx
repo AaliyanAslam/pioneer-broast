@@ -25,7 +25,7 @@ export default function FloatingCartWidget() {
   }, 0);
 
   return (
-    <div className="fixed bottom-4 sm:bottom-0 left-0 right-0 px-4 sm:px-0 flex justify-center z-[45] animate-slide-up-fade">
+    <div className="fixed bottom-4 sm:bottom-0 left-0 right-0 px-4 sm:px-0 flex justify-center z-45 animate-slide-up-fade">
       <button
         onClick={() => setCartOpen(true)}
         className="w-full sm:w-[360px] bg-[#D21716] text-white rounded-t-2xl p-4 shadow-[0_10px_40px_rgba(230,57,70,0.3)] flex items-center justify-between hover:bg-[#d62828] hover:-translate-y-1 hover:shadow-[0_15px_50px_rgba(230,57,70,0.4)] transition-all duration-300 active:scale-95 group"
