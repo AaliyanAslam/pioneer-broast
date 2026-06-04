@@ -25,7 +25,7 @@ export async function PATCH(req, { params }) {
       );
     }
 
-    const { status, estimated_time } = body;
+    const { status, estimated_time, cancel_reason } = body;
 
     const updates = {};
     
@@ -44,6 +44,10 @@ export async function PATCH(req, { params }) {
     
     if (estimated_time !== undefined) {
       updates.estimated_time = estimated_time;
+    }
+    
+    if (cancel_reason !== undefined) {
+      updates.cancel_reason = cancel_reason;
     }
 
     if (Object.keys(updates).length === 0) {
@@ -87,15 +91,27 @@ export async function PATCH(req, { params }) {
           },
         });
 
-        const statusMessage = status.toLowerCase() === "delivered" 
+        let statusMessage = status.toLowerCase() === "delivered" 
           ? "has been delivered to your address." 
           : `is now being processed.`;
+          
+        if (status.toLowerCase() === "cancelled") {
+           statusMessage = "has been cancelled.";
+        }
+
+        let emailText = `Hello ${updatedOrder.customer_name},\n\nYour order #${updatedOrder.id} ${statusMessage}\n\nStatus: ${status.toUpperCase()}\n`;
+        
+        if (status.toLowerCase() === "cancelled" && updatedOrder.cancel_reason) {
+            emailText += `Reason: ${updatedOrder.cancel_reason}\n`;
+        }
+        
+        emailText += `Total Amount: Rs. ${updatedOrder.total_amount}\n\nThank you for shopping with Pioneer Broast!`;
 
         const mailOptions = {
           from: process.env.SMTP_USER,
           to: updatedOrder.customer_email,
           subject: `Pioneer Broast: Order #${updatedOrder.id.slice(0, 8)} is ${status.toUpperCase()}`,
-          text: `Hello ${updatedOrder.customer_name},\n\nYour order #${updatedOrder.id} ${statusMessage}\n\nStatus: ${status.toUpperCase()}\nTotal Amount: Rs. ${updatedOrder.total_amount}\n\nThank you for shopping with Pioneer Broast!`,
+          text: emailText,
         };
 
         await transporter.sendMail(mailOptions);

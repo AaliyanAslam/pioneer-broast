@@ -27,6 +27,7 @@ export default function GuestOrdersPage() {
 
   // New States for Search, Sort, and Pagination
   const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
   const [sortOption, setSortOption] = useState("newest");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
@@ -77,6 +78,11 @@ export default function GuestOrdersPage() {
       });
     }
 
+    // Status filter
+    if (statusFilter !== "all") {
+      result = result.filter(order => order.status === statusFilter);
+    }
+
     // Sorting
     result.sort((a, b) => {
       switch (sortOption) {
@@ -94,7 +100,7 @@ export default function GuestOrdersPage() {
     });
 
     return result;
-  }, [orders, searchQuery, sortOption]);
+  }, [orders, searchQuery, sortOption, statusFilter]);
 
   // Pagination logic
   const totalPages = Math.ceil(processedOrders.length / itemsPerPage);
@@ -103,10 +109,10 @@ export default function GuestOrdersPage() {
     currentPage * itemsPerPage
   );
 
-  // Reset to page 1 when search or sort changes
+  // Reset to page 1 when search, sort, or filter changes
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery, sortOption]);
+  }, [searchQuery, sortOption, statusFilter]);
 
   if (loading) {
     return (
@@ -154,6 +160,21 @@ export default function GuestOrdersPage() {
                 />
               </div>
               
+              <div className="relative flex items-center bg-white border border-zinc-200 rounded-lg shadow-sm group">
+                <select 
+                  className="appearance-none bg-transparent w-full sm:w-36 text-sm font-medium text-zinc-700 py-2.5 sm:py-2 pl-3 pr-8 focus:outline-none cursor-pointer"
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                >
+                  <option value="all">All Statuses</option>
+                  <option value="pending">Pending</option>
+                  <option value="processing">Processing</option>
+                  <option value="delivered">Delivered</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+                <PiCaretDown className="w-4 h-4 text-zinc-400 absolute right-3 pointer-events-none" />
+              </div>
+
               <div className="relative flex items-center bg-white border border-zinc-200 rounded-lg shadow-sm group">
                 <select 
                   className="appearance-none bg-transparent w-full sm:w-40 text-sm font-medium text-zinc-700 py-2.5 sm:py-2 pl-3 pr-8 focus:outline-none cursor-pointer"
@@ -227,7 +248,13 @@ export default function GuestOrdersPage() {
                               Track order
                             </span>
                           </div>
-                          {order.estimated_time && (
+                          {order.status === 'cancelled' && order.cancel_reason && (
+                            <div className="mt-1 flex items-center gap-2">
+                               <svg className="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                               <span className="text-[12px] font-bold text-red-600">Reason: {order.cancel_reason}</span>
+                            </div>
+                          )}
+                          {order.status !== 'cancelled' && order.estimated_time && (
                             <div className="mt-1 flex items-center gap-2">
                                <svg className="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                <span className="text-[12px] font-bold text-amber-600">Estimated delivery time: {order.estimated_time}</span>

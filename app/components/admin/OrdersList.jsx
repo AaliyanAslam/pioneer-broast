@@ -53,14 +53,14 @@ const ExpandedRow = ({ order, onStatusChange }) => {
     <tr className="bg-zinc-50 border-t-0">
       <td colSpan="7" className="p-0 border-b border-zinc-200">
         <div ref={contentRef} className="overflow-hidden">
-          <div className="p-4 sm:p-6 lg:p-8">
-            <div className="flex flex-col lg:flex-row gap-6">
+          <div className="p-4 sm:p-5">
+            <div className="flex flex-col lg:flex-row gap-4">
               
               {/* LEFT COLUMN: Items (60%) */}
-              <div className="flex-1 lg:w-[60%] space-y-4">
-                <div className="bg-white border border-zinc-200 rounded-xl p-5 shadow-sm">
-                  <h4 className="text-xs font-black uppercase tracking-widest text-zinc-400 mb-4 flex items-center gap-2">
-                    <PiPackage className="w-4 h-4" /> Purchased Items
+              <div className="flex-1 lg:w-[60%] space-y-3">
+                <div className="bg-white border border-zinc-200 rounded-xl p-4 shadow-sm">
+                  <h4 className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 mb-3 flex items-center gap-1.5">
+                    <PiPackage className="w-3.5 h-3.5" /> Purchased Items
                   </h4>
                   <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2">
                     {realItems.length > 0 ? (
@@ -70,15 +70,15 @@ const ExpandedRow = ({ order, onStatusChange }) => {
                         const hasDiscount = item.discount_price && item.discount_price < item.price;
                         
                         return (
-                          <div key={i} className="flex flex-col border-b border-zinc-100 pb-4 last:border-0 last:pb-0">
+                          <div key={i} className="flex flex-col border-b border-zinc-100 pb-3 mb-3 last:border-0 last:pb-0 last:mb-0">
                             <div className="flex justify-between items-start">
                               <div>
-                                <p className="text-[15px] font-bold text-black">{item.name}</p>
-                                <p className="text-xs text-zinc-500 mt-0.5">
+                                <p className="text-sm font-semibold text-black">{item.name}</p>
+                                <p className="text-[11px] font-medium text-zinc-500 mt-0.5">
                                   {item.quantity} pc × Rs. {activePrice}
                                 </p>
                               </div>
-                              <p className="text-sm font-black text-black">
+                              <p className="text-sm font-bold text-black">
                                 Rs. {activePrice * item.quantity}
                               </p>
                             </div>
@@ -96,39 +96,76 @@ const ExpandedRow = ({ order, onStatusChange }) => {
                   </div>
                 </div>
 
-                <div className="bg-white border border-zinc-200 rounded-xl p-5 shadow-sm flex flex-wrap gap-3">
-                   <button 
-                     onClick={() => onStatusChange(order.id, 'processing')}
-                     className="flex-1 bg-black text-white py-3 rounded-lg font-bold hover:bg-zinc-800 transition-all flex items-center justify-center gap-2"
-                   >
-                     <PiCheckCircle className="w-5 h-5" /> Accept Order
-                   </button>
-                   <button 
-                     onClick={() => onStatusChange(order.id, 'cancelled')}
-                     className="flex-1 bg-red-50 text-red-600 border border-red-200 py-3 rounded-lg font-bold hover:bg-red-100 transition-all flex items-center justify-center gap-2"
-                   >
-                     <PiXCircle className="w-5 h-5" /> Reject Order
-                   </button>
+                <div className="bg-white border border-zinc-200 rounded-xl p-4 shadow-sm flex flex-col gap-3">
+                   {order.status !== 'cancelled' && (
+                     <div className="flex gap-2">
+                       <button 
+                         onClick={() => onStatusChange(order.id, 'processing')}
+                         className="flex-1 bg-black text-white py-2.5 rounded-lg text-sm font-bold hover:bg-zinc-800 transition-all flex items-center justify-center gap-1.5"
+                       >
+                         <PiCheckCircle className="w-4 h-4" /> Accept Order
+                       </button>
+                     </div>
+                   )}
+                   {order.status !== 'cancelled' ? (
+                     <div className="flex flex-col gap-2 p-3 bg-red-50 rounded-lg border border-red-100">
+                       <p className="text-[11px] font-bold text-red-600 uppercase tracking-widest">Cancel Order</p>
+                       <div className="flex flex-col sm:flex-row gap-2">
+                         <select 
+                           id={`cancel-reason-${order.id}`}
+                           className="flex-1 bg-white border border-red-200 text-sm text-red-900 rounded-md px-2.5 py-1.5 outline-none focus:ring-1 focus:ring-red-400"
+                           defaultValue=""
+                         >
+                           <option value="" disabled>Select Reason...</option>
+                           <option value="Out of delivery area">Out of delivery area</option>
+                           <option value="Items out of stock">Items out of stock</option>
+                           <option value="Store is closed">Store is closed</option>
+                           <option value="Fake / Invalid order">Fake / Invalid order</option>
+                           <option value="Customer requested cancellation">Customer requested cancellation</option>
+                         </select>
+                         <button 
+                           onClick={() => {
+                             const reason = document.getElementById(`cancel-reason-${order.id}`).value;
+                             if (!reason) {
+                               toast.error("Please select a cancellation reason");
+                               return;
+                             }
+                             onStatusChange(order.id, 'cancelled', reason);
+                           }}
+                           className="bg-red-600 text-white px-4 rounded-md font-bold hover:bg-red-700 transition-colors"
+                         >
+                           Confirm
+                         </button>
+                       </div>
+                     </div>
+                   ) : (
+                     <div className="p-3 bg-zinc-100 rounded-lg border border-zinc-200 text-center">
+                       <p className="text-sm font-bold text-zinc-600">Order is Cancelled</p>
+                       {order.cancel_reason && (
+                         <p className="text-xs text-zinc-500 mt-1">Reason: {order.cancel_reason}</p>
+                       )}
+                     </div>
+                   )}
                 </div>
               </div>
 
               {/* RIGHT COLUMN: Fulfillment & Bill (40%) */}
-              <div className="w-full lg:w-[40%] space-y-4">
+              <div className="w-full lg:w-[40%] space-y-3">
                 
                 {/* Customer Details */}
-                <div className="bg-white border border-zinc-200 rounded-xl p-5 shadow-sm space-y-5">
-                  <h4 className="text-xs font-black uppercase tracking-widest text-zinc-400 mb-2 flex items-center gap-2">
-                    <PiMapPin className="w-4 h-4" /> Fulfillment Details
+                <div className="bg-white border border-zinc-200 rounded-xl p-4 shadow-sm space-y-4">
+                  <h4 className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 mb-2 flex items-center gap-1.5">
+                    <PiMapPin className="w-3.5 h-3.5" /> Fulfillment Details
                   </h4>
                   
-                  <div className="bg-green-50 text-green-700 border border-green-200 font-black text-center py-2.5 rounded-lg text-sm tracking-wide uppercase">
+                  <div className="bg-green-50 text-green-700 border border-green-200 font-bold text-center py-2 rounded-lg text-xs tracking-wide uppercase">
                     Cash on Delivery
                   </div>
                   
-                  <div className="space-y-3 pt-2">
+                  <div className="space-y-2.5 pt-1">
                     <div>
-                      <p className="text-xs text-zinc-500 uppercase tracking-wider font-semibold mb-1">Customer</p>
-                      <p className="text-[15px] font-bold text-black">{order.customer_name}</p>
+                      <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold mb-0.5">Customer</p>
+                      <p className="text-sm font-semibold text-black">{order.customer_name}</p>
                       <p className="text-sm text-zinc-600 flex items-center gap-1.5 mt-1">
                         <PiPhone className="w-4 h-4 text-zinc-400" /> {order.customer_phone}
                       </p>
@@ -154,9 +191,9 @@ const ExpandedRow = ({ order, onStatusChange }) => {
                 </div>
 
                 {/* Estimated Time */}
-                <div className="bg-white border border-zinc-200 rounded-xl p-5 shadow-sm">
-                  <p className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-3 flex items-center gap-2">
-                    <PiClock className="w-4 h-4" /> Estimated Time
+                <div className="bg-white border border-zinc-200 rounded-xl p-4 shadow-sm">
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 mb-2 flex items-center gap-1.5">
+                    <PiClock className="w-3.5 h-3.5" /> Estimated Time
                   </p>
                   <div className="flex items-center gap-2">
                     <input 
@@ -164,7 +201,7 @@ const ExpandedRow = ({ order, onStatusChange }) => {
                       value={time}
                       onChange={(e) => setTime(e.target.value)}
                       placeholder="e.g. 45-50 mins" 
-                      className="flex-1 bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-sm text-black font-medium focus:outline-none focus:border-zinc-400 transition-colors"
+                      className="flex-1 bg-zinc-50 border border-zinc-200 rounded-lg px-2.5 py-1.5 text-sm text-black font-medium focus:outline-none focus:border-zinc-400 transition-colors"
                     />
                     <button 
                       onClick={saveEstimatedTime}
@@ -177,11 +214,11 @@ const ExpandedRow = ({ order, onStatusChange }) => {
                 </div>
 
                 {/* Bill Summary */}
-                <div className="bg-zinc-900 text-white rounded-xl p-5 shadow-md">
-                  <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-4 flex items-center gap-2">
+                <div className="bg-zinc-900 text-white rounded-xl p-4 shadow-md">
+                  <h4 className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 mb-3 flex items-center gap-1.5">
                     Order Summary
                   </h4>
-                  <div className="space-y-2 text-sm">
+                  <div className="space-y-1.5 text-sm">
                     <div className="flex justify-between items-center text-zinc-300">
                       <span>Subtotal</span>
                       <span>Rs. {subtotal}</span>
@@ -190,9 +227,9 @@ const ExpandedRow = ({ order, onStatusChange }) => {
                       <span>Delivery Fee</span>
                       <span>Rs. {isDelivery ? 150 : 0}</span>
                     </div>
-                    <div className="pt-3 mt-3 border-t border-zinc-700 flex justify-between items-center">
-                      <span className="font-bold">Total Amount</span>
-                      <span className="text-xl font-black text-[#C0E212]">Rs. {order.total_amount}</span>
+                    <div className="pt-2 mt-2 border-t border-zinc-700 flex justify-between items-center">
+                      <span className="font-semibold">Total Amount</span>
+                      <span className="text-lg font-bold text-[#C0E212]">Rs. {order.total_amount}</span>
                     </div>
                   </div>
                 </div>
@@ -248,20 +285,25 @@ export default function OrdersList() {
   useEffect(() => { setCurrentPage(1); }, [searchQuery]);
 
   // ── Status update with optimistic mutate ─────────────────────────────────
-  const handleStatusChange = async (orderId, newStatus) => {
+  const handleStatusChange = async (orderId, newStatus, cancelReason = null) => {
     setUpdatingId(orderId);
 
     // Optimistic update: immediately reflect the change in cache
     mutate(
-      orders.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o)),
+      orders.map((o) => (o.id === orderId ? { ...o, status: newStatus, cancel_reason: cancelReason || o.cancel_reason } : o)),
       false // don't revalidate yet — we'll do it after the PATCH
     );
 
     try {
+      const bodyPayload = { status: newStatus };
+      if (cancelReason) {
+        bodyPayload.cancel_reason = cancelReason;
+      }
+      
       const res = await fetch(`/api/orders/${orderId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: newStatus }),
+        body: JSON.stringify(bodyPayload),
       });
       const data = await res.json();
 
@@ -385,7 +427,7 @@ export default function OrdersList() {
                       }
                     >
                       <td className="p-3 sm:p-4 text-[13px] font-mono text-zinc-500 whitespace-nowrap">
-                        <span className="font-bold text-zinc-900 block">{order.id.slice(0, 8)}...</span>
+                        <span className="font-semibold text-zinc-900 block">{order.id}</span>
                         <span className="md:hidden flex items-center gap-1 mt-1 text-[11px]">
                           <PiCalendar className="w-3 h-3" /> {formatDateTime(order.created_at).split(',')[0]}
                         </span>
