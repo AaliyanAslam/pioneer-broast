@@ -2,14 +2,14 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { 
-  PiTote, 
-  PiList, 
-  PiX, 
-  PiMapPin, 
-  PiDeviceMobile, 
+import {
+  PiTote,
+  PiList,
+  PiX,
+  PiMapPin,
+  PiDeviceMobile,
   PiNewspaper,
-  PiCircleNotch
+  PiCircleNotch,
 } from "react-icons/pi";
 import { useCartStore, useLocationStore } from "@/app/lib/store";
 import CartDrawer from "./ui/CartDrawer";
@@ -17,7 +17,8 @@ import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const { cart, isCartOpen, setCartOpen } = useCartStore();
-  const { orderType, deliveryArea, exactLocation, setLocationModalOpen } = useLocationStore();
+  const { orderType, deliveryArea, exactLocation, setLocationModalOpen } =
+    useLocationStore();
   const [hasMounted, setHasMounted] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeOrder, setActiveOrder] = useState(null);
@@ -25,26 +26,30 @@ export default function Navbar() {
 
   useEffect(() => {
     setHasMounted(true);
-    
+
     const checkActiveOrder = async () => {
       try {
-        const savedOrderIds = JSON.parse(localStorage.getItem("guestOrders") || "[]");
-        const dismissedOrders = JSON.parse(localStorage.getItem("dismissedOrders") || "[]");
-        
+        const savedOrderIds = JSON.parse(
+          localStorage.getItem("guestOrders") || "[]",
+        );
+        const dismissedOrders = JSON.parse(
+          localStorage.getItem("dismissedOrders") || "[]",
+        );
+
         if (savedOrderIds.length > 0) {
           // Check the most recent order
           const latestOrderId = savedOrderIds[0];
-          
+
           if (dismissedOrders.includes(latestOrderId)) {
             setActiveOrder(null);
             return;
           }
-          
+
           const res = await fetch(`/api/orders/${latestOrderId}`);
           const result = await res.json();
           if (result.success && result.data) {
             const status = result.data.status?.toLowerCase();
-            if (status !== 'delivered' && status !== 'failed') {
+            if (status !== "delivered" && status !== "failed") {
               setActiveOrder(result.data);
             } else {
               setActiveOrder(null);
@@ -55,7 +60,7 @@ export default function Navbar() {
         console.error("Error checking active order:", err);
       }
     };
-    
+
     checkActiveOrder();
     const interval = setInterval(checkActiveOrder, 30000); // Check every 30s
     return () => clearInterval(interval);
@@ -68,7 +73,9 @@ export default function Navbar() {
   const handleDismissOrder = (e, orderId) => {
     e.preventDefault();
     e.stopPropagation();
-    const dismissed = JSON.parse(localStorage.getItem("dismissedOrders") || "[]");
+    const dismissed = JSON.parse(
+      localStorage.getItem("dismissedOrders") || "[]",
+    );
     dismissed.push(orderId);
     localStorage.setItem("dismissedOrders", JSON.stringify(dismissed));
     setActiveOrder(null);
@@ -79,49 +86,75 @@ export default function Navbar() {
     ? orderType === "Pickup"
       ? "Pickup"
       : exactLocation
-      ? `${exactLocation.address.split(',')[0]}` // Only show first part of full address
-      : orderType === "Delivery" && deliveryArea
-      ? `${deliveryArea}`
-      : null
+        ? `${exactLocation.address.split(",")[0]}` // Only show first part of full address
+        : orderType === "Delivery" && deliveryArea
+          ? `${deliveryArea}`
+          : null
     : null;
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full flex flex-col bg-white border-b border-zinc-100">
-        
+      <header className="relative z-40 w-full flex flex-col bg-white border-b border-zinc-100">
+        {/* Decorative Gold Dashed Top */}
+        <div className="w-full h-[4px] bg-white shrink-0 relative">
+          <div
+            className="w-full h-full"
+            style={{
+              backgroundImage:
+                "linear-gradient(to right, #D4AF37 65%, transparent 35%)",
+              backgroundSize: "20px 100%",
+              backgroundRepeat: "repeat-x",
+            }}
+          />
+        </div>
+
         {/* Active Order Banner */}
         {activeOrder && (
-          <div className={`py-2 sm:py-2.5 px-4 flex justify-between items-center text-[10px] sm:text-xs font-bold uppercase tracking-widest relative z-50 transition-colors ${
-            activeOrder.status?.toLowerCase() === 'cancelled' 
-              ? 'bg-zinc-900 text-white border-b border-zinc-800' 
-              : 'bg-[#e63946] text-white hover:bg-[#d62828]'
-          }`}>
-            <Link href="/guest-orders" className="flex items-center gap-2 flex-1 truncate">
-              {activeOrder.status?.toLowerCase() !== 'cancelled' ? (
+          <div
+            className={`py-2 sm:py-2.5 px-4 flex justify-between items-center text-[10px] sm:text-xs font-bold uppercase tracking-widest relative z-50 transition-colors ${
+              activeOrder.status?.toLowerCase() === "cancelled"
+                ? "bg-zinc-900 text-white border-b border-zinc-800"
+                : "bg-[#e63946] text-white hover:bg-[#d62828]"
+            }`}
+          >
+            <Link
+              href="/guest-orders"
+              className="flex items-center gap-2 flex-1 truncate"
+            >
+              {activeOrder.status?.toLowerCase() !== "cancelled" ? (
                 <PiCircleNotch className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-spin shrink-0" />
               ) : (
                 <PiX className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500 shrink-0" />
               )}
               <span className="truncate">
-                {activeOrder.status?.toLowerCase() === 'cancelled' ? (
+                {activeOrder.status?.toLowerCase() === "cancelled" ? (
                   <>
-                    <span className="text-red-400">Order #{activeOrder.id.slice(0, 8)} cancelled</span>
-                    {activeOrder.cancel_reason && <span className="hidden sm:inline text-zinc-400 normal-case tracking-normal ml-2 font-medium">• {activeOrder.cancel_reason}</span>}
+                    <span className="text-red-400">
+                      Order #{activeOrder.id.slice(0, 8)} cancelled
+                    </span>
+                    {activeOrder.cancel_reason && (
+                      <span className="hidden sm:inline text-zinc-400 normal-case tracking-normal ml-2 font-medium">
+                        • {activeOrder.cancel_reason}
+                      </span>
+                    )}
                   </>
                 ) : (
                   `Order #${activeOrder.id.slice(0, 8)} is ${activeOrder.status}`
                 )}
               </span>
             </Link>
-            
+
             <div className="flex items-center gap-3 shrink-0 ml-4">
-              <Link href="/guest-orders" className="hidden sm:inline-block underline decoration-white/50 underline-offset-4 hover:decoration-white transition-all">
+              <Link
+                href="/guest-orders"
+                className="hidden sm:inline-block underline decoration-white/50 underline-offset-4 hover:decoration-white transition-all"
+              >
                 Track Order &rarr;
               </Link>
-              {activeOrder.status?.toLowerCase() === 'cancelled' && (
-                <button 
-                  onClick={(e) => handleDismissOrder(e, activeOrder.id)} 
-                  className="p-1 hover:bg-white/10 rounded-full transition-colors ml-1" 
+              {activeOrder.status?.toLowerCase() === "cancelled" && (
+                <button
+                  onClick={(e) => handleDismissOrder(e, activeOrder.id)}
+                  className="p-1 hover:bg-white/10 rounded-full transition-colors ml-1"
                   title="Dismiss"
                 >
                   <PiX className="w-4 h-4 text-zinc-400 hover:text-white" />
@@ -133,15 +166,17 @@ export default function Navbar() {
 
         <nav className="w-full relative z-30">
           <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 h-20 lg:h-[100px] flex items-center justify-between gap-4">
-            
             {/* LEFT SIDE: Logo & Info Boxes */}
             <div className="flex items-center gap-6 xl:gap-8">
-              <Link href="/" className="shrink-0 flex items-center transition-all duration-200 active:scale-95">
-                <Image 
-                  src="/brandlogo.webp" 
-                  alt="Pioneer Broast" 
-                  width={200} 
-                  height={80} 
+              <Link
+                href="/"
+                className="shrink-0 flex items-center transition-all duration-200 active:scale-95"
+              >
+                <Image
+                  src="/brandlogo.webp"
+                  alt="Pioneer Broast"
+                  width={200}
+                  height={80}
                   className="w-auto h-12 sm:h-16 lg:h-[90px] object-contain"
                   priority
                 />
@@ -150,13 +185,18 @@ export default function Navbar() {
               {/* Info Boxes (Hidden on mobile/tablet) */}
               <div className="hidden xl:flex items-center gap-4">
                 {/* Location Box */}
-                <button 
-                  onClick={() => setLocationModalOpen(true)} 
+                <button
+                  onClick={() => setLocationModalOpen(true)}
                   className="flex items-center gap-3 px-4 py-2 bg-white border border-zinc-200 rounded-md hover:bg-zinc-50 transition-all duration-200 active:scale-95 text-left"
                 >
-                  <PiMapPin className="text-[#D21716] w-7 h-7 shrink-0" weight="fill" />
+                  <PiMapPin
+                    className="text-[#D21716] w-7 h-7 shrink-0"
+                    weight="fill"
+                  />
                   <div className="flex flex-col">
-                    <span className="text-[14px] font-black text-black leading-tight">Change Location</span>
+                    <span className="text-[14px] font-black text-black leading-tight">
+                      Change Location
+                    </span>
                     <span className="text-[11px] text-zinc-500 max-w-[160px] truncate leading-tight">
                       {locationLabel || "Select your location"}
                     </span>
@@ -164,14 +204,21 @@ export default function Navbar() {
                 </button>
 
                 {/* Contact Box */}
-                <a 
-                  href="tel:021111666111" 
+                <a
+                  href="tel:021111666111"
                   className="flex items-center gap-3 px-4 py-2 bg-white border border-zinc-200 rounded-md hover:bg-zinc-50 transition-all duration-200 active:scale-95 text-left"
                 >
-                  <PiDeviceMobile className="text-[#D21716] w-7 h-7 shrink-0" weight="fill" />
+                  <PiDeviceMobile
+                    className="text-[#D21716] w-7 h-7 shrink-0"
+                    weight="fill"
+                  />
                   <div className="flex flex-col">
-                    <span className="text-[14px] font-black text-black leading-tight">Contact us</span>
-                    <span className="text-[11px] text-zinc-500 leading-tight">021-111-666-111</span>
+                    <span className="text-[14px] font-black text-black leading-tight">
+                      Contact us
+                    </span>
+                    <span className="text-[11px] text-zinc-500 leading-tight">
+                      021-111-666-111
+                    </span>
                   </div>
                 </a>
               </div>
@@ -179,22 +226,28 @@ export default function Navbar() {
 
             {/* RIGHT SIDE: Complaint, Cart, Menu */}
             <div className="flex items-center gap-4 sm:gap-6 shrink-0">
-              
               {/* Complaint Box (Hidden on mobile/tablet) */}
-              <Link 
-                href="/contact" 
+              <Link
+                href="/contact"
                 className="hidden lg:flex items-center gap-3 px-4 py-2 bg-white border border-zinc-200 rounded-md hover:bg-zinc-50 transition-all duration-200 active:scale-95 text-right"
               >
                 <div className="flex flex-col items-end">
-                  <span className="text-[14px] font-black text-black leading-tight">Submit Your Complaint</span>
-                  <span className="text-[10px] text-zinc-500 leading-tight">From Complaint to Care - Share With Us</span>
+                  <span className="text-[14px] font-black text-black leading-tight">
+                    Submit Your Complaint
+                  </span>
+                  <span className="text-[10px] text-zinc-500 leading-tight">
+                    From Complaint to Care - Share With Us
+                  </span>
                 </div>
-                <PiNewspaper className="text-[#D21716] w-7 h-7 shrink-0" weight="fill" />
+                <PiNewspaper
+                  className="text-[#D21716] w-7 h-7 shrink-0"
+                  weight="fill"
+                />
               </Link>
 
               {/* Cart Bucket */}
-              <button 
-                onClick={() => setCartOpen(true)} 
+              <button
+                onClick={() => setCartOpen(true)}
                 className="relative flex items-center justify-center p-1 text-zinc-800 hover:text-[#D21716] transition-all duration-200 active:scale-95"
               >
                 <PiTote className="w-9 h-9 sm:w-11 sm:h-11" weight="fill" />
@@ -204,13 +257,12 @@ export default function Navbar() {
               </button>
 
               {/* Hamburger Menu */}
-              <button 
+              <button
                 onClick={() => setIsMobileMenuOpen(true)}
                 className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-[#ff7a7a] text-white rounded-md hover:bg-[#ff6161] transition-all duration-200 active:scale-95"
               >
                 <PiList className="w-6 h-6 sm:w-7 sm:h-7" weight="bold" />
               </button>
-              
             </div>
           </div>
         </nav>
@@ -219,17 +271,17 @@ export default function Navbar() {
       {/* Mobile Menu Drawer */}
       {isMobileMenuOpen && (
         <div className="fixed inset-0 z-50 flex">
-          <div 
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity" 
+          <div
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
             onClick={() => setIsMobileMenuOpen(false)}
           />
           <div className="relative flex w-[85%] max-w-[320px] flex-col overflow-y-auto bg-white shadow-2xl animate-in slide-in-from-right duration-300 ml-auto">
             <div className="flex items-center justify-between px-5 pt-6 pb-5 border-b border-zinc-100">
-              <Image 
-                src="/brandlogo.webp" 
-                alt="Pioneer Broast" 
-                width={140} 
-                height={35} 
+              <Image
+                src="/brandlogo.webp"
+                alt="Pioneer Broast"
+                width={140}
+                height={35}
                 className="w-auto h-8 object-contain"
               />
               <button
@@ -244,12 +296,35 @@ export default function Navbar() {
 
             {/* Mobile Links */}
             <div className="px-5 py-6 flex flex-col gap-4">
-              <Link href="/menu" onClick={() => setIsMobileMenuOpen(false)} className="text-[16px] font-bold uppercase tracking-wide border-b border-zinc-100 pb-4">Menu</Link>
-              <Link href="/deals" onClick={() => setIsMobileMenuOpen(false)} className="text-[16px] font-bold uppercase tracking-wide border-b border-zinc-100 pb-4">Deals</Link>
-              <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="text-[16px] font-bold uppercase tracking-wide border-b border-zinc-100 pb-4">About Us</Link>
-              <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="text-[16px] font-bold uppercase tracking-wide pb-4">Contact / Complaint</Link>
+              <Link
+                href="/menu"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-[16px] font-bold uppercase tracking-wide border-b border-zinc-100 pb-4"
+              >
+                Menu
+              </Link>
+              <Link
+                href="/deals"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-[16px] font-bold uppercase tracking-wide border-b border-zinc-100 pb-4"
+              >
+                Deals
+              </Link>
+              <Link
+                href="/about"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-[16px] font-bold uppercase tracking-wide border-b border-zinc-100 pb-4"
+              >
+                About Us
+              </Link>
+              <Link
+                href="/contact"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-[16px] font-bold uppercase tracking-wide pb-4"
+              >
+                Contact / Complaint
+              </Link>
             </div>
-
           </div>
         </div>
       )}
