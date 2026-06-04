@@ -29,13 +29,22 @@ export default function Navbar() {
     const checkActiveOrder = async () => {
       try {
         const savedOrderIds = JSON.parse(localStorage.getItem("guestOrders") || "[]");
+        const dismissedOrders = JSON.parse(localStorage.getItem("dismissedOrders") || "[]");
+        
         if (savedOrderIds.length > 0) {
+          // Check the most recent order
           const latestOrderId = savedOrderIds[0];
+          
+          if (dismissedOrders.includes(latestOrderId)) {
+            setActiveOrder(null);
+            return;
+          }
+          
           const res = await fetch(`/api/orders/${latestOrderId}`);
           const result = await res.json();
           if (result.success && result.data) {
             const status = result.data.status?.toLowerCase();
-            if (status !== 'delivered' && status !== 'cancelled' && status !== 'failed') {
+            if (status !== 'delivered' && status !== 'failed') {
               setActiveOrder(result.data);
             } else {
               setActiveOrder(null);
@@ -56,6 +65,15 @@ export default function Navbar() {
     ? cart.reduce((total, item) => total + item.quantity, 0)
     : 0;
 
+  const handleDismissOrder = (e, orderId) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const dismissed = JSON.parse(localStorage.getItem("dismissedOrders") || "[]");
+    dismissed.push(orderId);
+    localStorage.setItem("dismissedOrders", JSON.stringify(dismissed));
+    setActiveOrder(null);
+  };
+
   // Build location label
   const locationLabel = hasMounted
     ? orderType === "Pickup"
@@ -73,13 +91,44 @@ export default function Navbar() {
         
         {/* Active Order Banner */}
         {activeOrder && (
-          <Link href="/guest-orders" className="bg-[#e63946] text-white py-2 sm:py-2.5 px-4 flex justify-center sm:justify-between items-center text-[10px] sm:text-xs font-bold uppercase tracking-widest hover:bg-[#d62828] transition-colors relative z-50">
-            <span className="flex items-center gap-2">
-              <PiCircleNotch className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-spin" />
-              Order #{activeOrder.id.slice(0, 8)} is {activeOrder.status}
-            </span>
-            <span className="hidden sm:inline-block underline decoration-white/50 underline-offset-4">Track Order &rarr;</span>
-          </Link>
+          <div className={`py-2 sm:py-2.5 px-4 flex justify-between items-center text-[10px] sm:text-xs font-bold uppercase tracking-widest relative z-50 transition-colors ${
+            activeOrder.status?.toLowerCase() === 'cancelled' 
+              ? 'bg-zinc-900 text-white border-b border-zinc-800' 
+              : 'bg-[#e63946] text-white hover:bg-[#d62828]'
+          }`}>
+            <Link href="/guest-orders" className="flex items-center gap-2 flex-1 truncate">
+              {activeOrder.status?.toLowerCase() !== 'cancelled' ? (
+                <PiCircleNotch className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-spin shrink-0" />
+              ) : (
+                <PiX className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500 shrink-0" />
+              )}
+              <span className="truncate">
+                {activeOrder.status?.toLowerCase() === 'cancelled' ? (
+                  <>
+                    <span className="text-red-400">Order #{activeOrder.id.slice(0, 8)} cancelled</span>
+                    {activeOrder.cancel_reason && <span className="hidden sm:inline text-zinc-400 normal-case tracking-normal ml-2 font-medium">• {activeOrder.cancel_reason}</span>}
+                  </>
+                ) : (
+                  `Order #${activeOrder.id.slice(0, 8)} is ${activeOrder.status}`
+                )}
+              </span>
+            </Link>
+            
+            <div className="flex items-center gap-3 shrink-0 ml-4">
+              <Link href="/guest-orders" className="hidden sm:inline-block underline decoration-white/50 underline-offset-4 hover:decoration-white transition-all">
+                Track Order &rarr;
+              </Link>
+              {activeOrder.status?.toLowerCase() === 'cancelled' && (
+                <button 
+                  onClick={(e) => handleDismissOrder(e, activeOrder.id)} 
+                  className="p-1 hover:bg-white/10 rounded-full transition-colors ml-1" 
+                  title="Dismiss"
+                >
+                  <PiX className="w-4 h-4 text-zinc-400 hover:text-white" />
+                </button>
+              )}
+            </div>
+          </div>
         )}
 
         <nav className="w-full relative z-30">
