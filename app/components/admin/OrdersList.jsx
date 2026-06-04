@@ -36,7 +36,7 @@ const ExpandedRow = ({ order }) => {
                   <PiPhone className="w-4 h-4 text-zinc-400 mt-1 shrink-0" />
                   <div>
                     <p className="text-sm font-medium text-black">Contact Number</p>
-                    <p className="text-sm text-zinc-600">{order.phone}</p>
+                    <p className="text-sm text-zinc-600">{order.customer_phone || order.phone}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -44,7 +44,7 @@ const ExpandedRow = ({ order }) => {
                   <div>
                     <p className="text-sm font-medium text-black">Shipping Address</p>
                     <p className="text-sm text-zinc-600 leading-relaxed max-w-sm">
-                      {order.shipping_address}, {order.city}
+                      {order.customer_address || order.shipping_address}, {order.delivery_city || order.delivery_area || order.city}
                     </p>
                   </div>
                 </div>
@@ -172,8 +172,9 @@ export default function OrdersList() {
     return (
       (o.id && o.id.toLowerCase().includes(q)) ||
       (o.customer_name && o.customer_name.toLowerCase().includes(q)) ||
-      (o.phone && o.phone.includes(q)) ||
-      (o.city && o.city.toLowerCase().includes(q))
+      (o.customer_phone && o.customer_phone.includes(q)) ||
+      (o.delivery_city && o.delivery_city.toLowerCase().includes(q)) ||
+      (o.delivery_area && o.delivery_area.toLowerCase().includes(q))
     );
   });
 
@@ -280,7 +281,7 @@ export default function OrdersList() {
                       </td>
                       <td className="p-3 sm:p-4 whitespace-nowrap">
                         <p className="font-semibold text-[13px] text-black">{order.customer_name}</p>
-                        <p className="text-xs text-zinc-500 mt-0.5">{order.city}</p>
+                        <p className="text-xs text-zinc-500 mt-0.5">{order.delivery_city || order.delivery_area || order.city || "Karachi"}</p>
                       </td>
                       <td className="p-4 text-sm text-black font-bold whitespace-nowrap">
                         Rs. {order.total_amount}

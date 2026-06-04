@@ -8,7 +8,8 @@ import {
   PiX, 
   PiMapPin, 
   PiDeviceMobile, 
-  PiNewspaper 
+  PiNewspaper,
+  PiCircleNotch
 } from "react-icons/pi";
 import { useCartStore, useLocationStore } from "@/app/lib/store";
 import CartDrawer from "./ui/CartDrawer";
@@ -19,10 +20,36 @@ export default function Navbar() {
   const { orderType, deliveryArea, exactLocation, setLocationModalOpen } = useLocationStore();
   const [hasMounted, setHasMounted] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeOrder, setActiveOrder] = useState(null);
   const pathname = usePathname();
 
   useEffect(() => {
     setHasMounted(true);
+    
+    const checkActiveOrder = async () => {
+      try {
+        const savedOrderIds = JSON.parse(localStorage.getItem("guestOrders") || "[]");
+        if (savedOrderIds.length > 0) {
+          const latestOrderId = savedOrderIds[0];
+          const res = await fetch(`/api/orders/${latestOrderId}`);
+          const result = await res.json();
+          if (result.success && result.data) {
+            const status = result.data.status?.toLowerCase();
+            if (status !== 'delivered' && status !== 'cancelled' && status !== 'failed') {
+              setActiveOrder(result.data);
+            } else {
+              setActiveOrder(null);
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Error checking active order:", err);
+      }
+    };
+    
+    checkActiveOrder();
+    const interval = setInterval(checkActiveOrder, 30000); // Check every 30s
+    return () => clearInterval(interval);
   }, []);
 
   const totalItems = hasMounted
@@ -44,6 +71,17 @@ export default function Navbar() {
     <>
       <header className="sticky top-0 z-40 w-full flex flex-col bg-white border-b border-zinc-100">
         
+        {/* Active Order Banner */}
+        {activeOrder && (
+          <Link href="/guest-orders" className="bg-[#e63946] text-white py-2 sm:py-2.5 px-4 flex justify-center sm:justify-between items-center text-[10px] sm:text-xs font-bold uppercase tracking-widest hover:bg-[#d62828] transition-colors relative z-50">
+            <span className="flex items-center gap-2">
+              <PiCircleNotch className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-spin" />
+              Order #{activeOrder.id.slice(0, 8)} is {activeOrder.status}
+            </span>
+            <span className="hidden sm:inline-block underline decoration-white/50 underline-offset-4">Track Order &rarr;</span>
+          </Link>
+        )}
+
         <nav className="w-full relative z-30">
           <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 h-20 lg:h-[100px] flex items-center justify-between gap-4">
             

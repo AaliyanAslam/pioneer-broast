@@ -56,9 +56,11 @@ export async function POST(req) {
       .insert([
         {
           customer_name: customer_name,
-          phone: customer_phone,
-          shipping_address: customer_address || null,
-          city: delivery_city || null,
+          customer_phone: customer_phone,
+          customer_address: customer_address || null,
+          delivery_city: delivery_city || null,
+          delivery_area: delivery_area || null,
+          order_type: order_type || 'Delivery',
           total_amount: finalTotal,
           items: items, // Save cart items with specialInstructions
           status: "pending"
@@ -69,7 +71,7 @@ export async function POST(req) {
 
     if (orderError) {
       console.error("Supabase error (insert order):", orderError);
-      return NextResponse.json({ success: false, message: "Failed to place order" }, { status: 500 });
+      return NextResponse.json({ success: false, message: `Failed to place order: ${orderError.message || orderError.details || JSON.stringify(orderError)}` }, { status: 500 });
     }
 
     // Nodemailer se Admin aur Customer dono ko email bhejna

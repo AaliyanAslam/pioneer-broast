@@ -55,7 +55,7 @@ export default function GuestOrdersPage() {
 
         setOrders(validOrders);
       } catch (error) {
-        console.error("Error fetching guest orders:", error);
+        console.error("Error fetching your orders:", error);
       } finally {
         setLoading(false);
       }
@@ -109,8 +109,8 @@ export default function GuestOrdersPage() {
               >
                 <PiArrowLeft className="w-4 h-4" /> Back to Store
               </Link>
-              <h1 className="text-3xl font-bold uppercase tracking-tighter">Guest Orders</h1>
-              <p className="text-zinc-500 text-sm mt-1">Track and manage your recent guest purchases.</p>
+              <h1 className="text-3xl font-bold uppercase tracking-tighter">Your Orders</h1>
+              <p className="text-zinc-500 text-sm mt-1">Track and manage your recent orders.</p>
             </div>
             {orders.length > 0 && (
               <span className="inline-flex bg-white border border-zinc-200 text-zinc-600 text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full shadow-sm w-fit">
@@ -125,7 +125,7 @@ export default function GuestOrdersPage() {
                 <PiPackage className="w-16 h-16 text-zinc-200 mx-auto mb-4" />
                 <h2 className="text-xl font-bold mb-2">No active orders found</h2>
                 <p className="text-zinc-500 text-sm font-medium mb-6">
-                  It looks like you haven't placed any guest orders on this device recently.
+                  It looks like you haven't placed any orders on this device recently.
                 </p>
                 <Link
                   href="/"
@@ -181,24 +181,33 @@ export default function GuestOrdersPage() {
                                 <div className="flex-1">
                                   <h4 className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-3">Shipping Information</h4>
                                   <p className="text-sm font-bold text-black mb-1">{order.customer_name}</p>
-                                  <p className="text-sm text-zinc-600 font-medium">{order.shipping_address}</p>
-                                  <p className="text-sm text-zinc-600 font-medium">{order.city}, PK</p>
-                                  <p className="text-sm text-zinc-600 font-medium mt-1">{order.phone}</p>
+                                  <p className="text-sm text-zinc-600 font-medium">{order.customer_address || "No address provided"}</p>
+                                  <p className="text-sm text-zinc-600 font-medium">
+                                    {order.delivery_area ? `${order.delivery_area}, ` : ""}{order.delivery_city || "Karachi"}, PK
+                                  </p>
+                                  <p className="text-sm text-zinc-600 font-medium mt-1">{order.customer_phone}</p>
                                 </div>
                                 <div className="flex-1">
-                                  <h4 className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-3">Payment Details</h4>
-                                  <p className="text-sm font-bold text-black mb-1">
-                                    {metaItem?.paymentMethod || "Cash on Delivery (COD)"}
-                                  </p>
-                                  {metaItem?.couponCode && (
-                                    <div className="mt-3 bg-green-50 border border-green-200 rounded-xl p-3 inline-block">
-                                      <p className="text-[11px] font-bold text-green-700 uppercase tracking-widest mb-0.5">Coupon Applied: {metaItem.couponCode}</p>
-                                      <p className="text-[11px] text-green-600 font-bold uppercase tracking-widest">Discount: -Rs. {metaItem.discountAmount}</p>
+                                  <h4 className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-3">Order Summary</h4>
+                                  <div className="space-y-1.5 text-sm max-w-[200px]">
+                                    <div className="flex justify-between text-zinc-600">
+                                      <span>Subtotal</span>
+                                      <span>Rs. {order.total_amount - (order.order_type === 'Delivery' ? 150 : 0)}</span>
                                     </div>
-                                  )}
-                                  {!metaItem?.couponCode && (
-                                    <p className="text-sm text-zinc-500 font-medium mt-1">No coupon applied</p>
-                                  )}
+                                    <div className="flex justify-between text-zinc-600">
+                                      <span>Delivery Fee</span>
+                                      <span>Rs. {order.order_type === 'Delivery' ? 150 : 0}</span>
+                                    </div>
+                                    <div className="flex justify-between font-bold text-black border-t border-zinc-200 pt-1.5 mt-1.5">
+                                      <span>Total Amount</span>
+                                      <span className="text-[#e63946]">Rs. {order.total_amount}</span>
+                                    </div>
+                                    <div className="mt-3">
+                                      <span className="text-[10px] font-bold uppercase tracking-widest bg-[#e63946]/10 text-[#e63946] px-2 py-1 rounded-md">
+                                        CASH ON DELIVERY
+                                      </span>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -211,7 +220,7 @@ export default function GuestOrdersPage() {
                                 <div key={idx} className="flex gap-4 items-center bg-white border border-zinc-200 p-3 rounded-2xl shadow-sm">
                                   <div className="relative w-16 h-16 bg-zinc-50 rounded-xl overflow-hidden shrink-0 border border-zinc-100">
                                     <Image
-                                      src={item.images?.[0] || "https://via.placeholder.com/100"}
+                                      src={item.image_url || "https://via.placeholder.com/100"}
                                       alt={item.name || "Product image"}
                                       fill
                                       sizes="64px"
@@ -226,9 +235,9 @@ export default function GuestOrdersPage() {
                                     >
                                       {item.name}
                                     </Link>
-                                    {item.chosenColor && (
-                                      <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-0.5">
-                                        Color: {item.chosenColor}
+                                    {item.specialInstructions && (
+                                      <p className="text-[10px] text-[#e63946] font-bold uppercase tracking-widest mt-0.5 line-clamp-1">
+                                        Note: {item.specialInstructions}
                                       </p>
                                     )}
                                     <p className="text-xs font-medium text-zinc-500 mt-1">

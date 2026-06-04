@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { useCartStore } from "@/app/lib/store";
+import { useCartStore, useLocationStore } from "@/app/lib/store";
 import { PiX, PiPlus, PiMinus, PiTrash, PiTote, PiTruck, PiCircleNotch, PiTag, PiXCircle, PiArrowRight, PiArrowLeft, PiPencilSimple } from "react-icons/pi";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,6 +14,16 @@ import toast from "react-hot-toast";
 
 export default function CartDrawer({ isOpen, onClose }) {
   const { cart, removeFromCart, updateQuantity, appliedCoupon, setAppliedCoupon, updateInstructions } = useCartStore();
+  const { exactLocation, deliveryArea, orderType } = useLocationStore();
+  
+  const defaultArea = exactLocation ? exactLocation.address : (deliveryArea || "Not selected");
+  
+  const [isEditing, setIsEditing] = useState(false);
+  const [customerName, setCustomerName] = useState("");
+  const [customerPhone, setCustomerPhone] = useState("");
+  const [customerAddress, setCustomerAddress] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [hasMounted, setHasMounted] = useState(false);
   const [couponCode, setCouponCode] = useState("");
   const [couponLoading, setCouponLoading] = useState(false);
@@ -160,6 +170,49 @@ export default function CartDrawer({ isOpen, onClose }) {
     touchStartX.current[id] = null;
   };
 
+  const handlePlaceOrder = async () => {
+    if (!customerName || !customerPhone || !customerAddress) {
+      toast.error("Please fill in your Name, Phone, and Address first!");
+      setIsEditing(true);
+      return;
+    }
+    
+    setIsSubmitting(true);
+    try {
+      const orderData = {
+        customer_name: customerName,
+        customer_phone: customerPhone,
+        customer_address: customerAddress,
+        order_type: orderType || "Delivery",
+        delivery_city: exactLocation?.city || deliveryCity || "Karachi",
+        delivery_area: defaultArea,
+        total_amount: subtotal + deliveryCharges - discountAmount,
+        items: cart
+      };
+
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderData)
+      });
+      
+      const data = await res.json();
+      
+      if (!data.success) {
+        throw new Error(data.message || "Failed to place order");
+      }
+      
+      toast.success("Order placed successfully!");
+      useCartStore.getState().clearCart();
+      onClose();
+    } catch (err) {
+      console.error(err);
+      toast.error(err.message || "Failed to place order. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   if (!isOpen || !hasMounted) return null;
 
   return (
@@ -262,24 +315,52 @@ export default function CartDrawer({ isOpen, onClose }) {
                   <div className="bg-white rounded-lg p-3 sm:p-4 relative pt-5">
                      <div className="absolute -top-4 left-1/2 -translate-x-1/2 flex bg-white rounded-full shadow-sm p-1 border border-zinc-100 whitespace-nowrap">
                        <button className="bg-[#e63946] text-white px-4 py-1.5 rounded-full text-[10px] font-bold tracking-wide">CASH</button>
-                       <button className="text-zinc-600 px-4 py-1.5 rounded-full text-[10px] font-bold tracking-wide">ONLINE PAYMENT</button>
+                       <button className="text-zinc-400 px-4 py-1.5 rounded-full text-[10px] font-bold tracking-wide cursor-not-allowed" title="Online Payment Currently Disabled">ONLINE PAYMENT</button>
                      </div>
                      
-                     <div className="flex justify-between items-start mt-2">
-                       <div className="text-[12px] space-y-1 w-[60%]">
-                         <p className="truncate"><span className="font-bold text-black">Name:</span> <span className="text-zinc-500">Acton Riggs</span></p>
-                         <p className="truncate"><span className="font-bold text-black">Phone#:</span> <span className="text-zinc-500">0365-6464566</span></p>
-                         <p className="truncate"><span className="font-bold text-black">Address:</span> <span className="text-zinc-500">Ullamco Nam sunt ut</span></p>
+                     {isEditing ? (
+                       <div className="mt-2 space-y-2">
+                         <div>
+                           <label className="text-[10px] font-bold text-zinc-500 uppercase">Name</label>
+                           <input type="text" value={customerName} onChange={(e) => setCustomerName(e.target.value)} className="w-full border border-zinc-200 rounded px-2 py-1.5 text-[12px] focus:outline-none focus:border-[#e63946]" placeholder="Your Full Name" />
+                         </div>
+                         <div>
+                           <label className="text-[10px] font-bold text-zinc-500 uppercase">Phone</label>
+                           <input type="tel" value={customerPhone} onChange={(e) => setCustomerPhone(e.target.value)} className="w-full border border-zinc-200 rounded px-2 py-1.5 text-[12px] focus:outline-none focus:border-[#e63946]" placeholder="03XX-XXXXXXX" />
+                         </div>
+                         <div>
+                           <label className="text-[10px] font-bold text-zinc-500 uppercase">House/Street Address</label>
+                           <input type="text" value={customerAddress} onChange={(e) => setCustomerAddress(e.target.value)} className="w-full border border-zinc-200 rounded px-2 py-1.5 text-[12px] focus:outline-none focus:border-[#e63946]" placeholder="House 123, Street 4" />
+                         </div>
+                         <div>
+                           <label className="text-[10px] font-bold text-zinc-500 uppercase">Area (From Location)</label>
+                           <input type="text" value={defaultArea} disabled className="w-full border border-zinc-200 rounded px-2 py-1.5 text-[12px] bg-zinc-50 text-zinc-500 cursor-not-allowed" />
+                         </div>
+                         <div className="flex justify-end pt-2">
+                           <button onClick={() => setIsEditing(false)} className="bg-black text-white px-4 py-1.5 rounded-lg text-[12px] font-bold">Save Details</button>
+                         </div>
                        </div>
-                       <div className="w-[40%] flex flex-col items-end justify-between h-[60px]">
-                         <button className="text-[#0ea5e9] flex items-center gap-1 text-[12px] font-medium">
-                           Edit <PiPencilSimple className="w-4 h-4" />
-                         </button>
-                         <button className="bg-[#ffc107] text-black font-medium px-4 py-1.5 rounded-lg text-[12px] mt-2 w-full text-center hover:bg-[#e0a800] transition-colors whitespace-nowrap shadow-sm">
-                           Place Order
-                         </button>
+                     ) : (
+                       <div className="flex justify-between items-start mt-2">
+                         <div className="text-[12px] space-y-1 w-[60%]">
+                           <p className="truncate"><span className="font-bold text-black">Name:</span> <span className="text-zinc-500">{customerName || "Not set"}</span></p>
+                           <p className="truncate"><span className="font-bold text-black">Phone#:</span> <span className="text-zinc-500">{customerPhone || "Not set"}</span></p>
+                           <p className="truncate"><span className="font-bold text-black">Address:</span> <span className="text-zinc-500">{customerAddress ? `${customerAddress}, ${defaultArea}` : "Not set"}</span></p>
+                         </div>
+                         <div className="w-[40%] flex flex-col items-end justify-between h-[60px]">
+                           <button onClick={() => setIsEditing(true)} className="text-[#0ea5e9] flex items-center gap-1 text-[12px] font-medium">
+                             Edit <PiPencilSimple className="w-4 h-4" />
+                           </button>
+                           <button 
+                             onClick={handlePlaceOrder}
+                             disabled={isSubmitting}
+                             className="bg-[#ffc107] text-black font-medium px-4 py-1.5 rounded-lg text-[12px] mt-2 w-full text-center hover:bg-[#e0a800] transition-colors whitespace-nowrap shadow-sm disabled:opacity-50"
+                           >
+                             {isSubmitting ? "Placing..." : "Place Order"}
+                           </button>
+                         </div>
                        </div>
-                     </div>
+                     )}
                   </div>
                 </div>
               </div>

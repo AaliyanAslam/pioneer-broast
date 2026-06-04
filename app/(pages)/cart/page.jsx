@@ -185,7 +185,6 @@ export default function CheckoutPage() {
           delivery_area: deliveryArea,
           total_amount: total,
           items: cart,
-          userId: user?.id || null,
         }),
       });
 
