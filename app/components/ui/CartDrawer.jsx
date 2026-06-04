@@ -171,7 +171,7 @@ export default function CartDrawer({ isOpen, onClose }) {
       />
 
       {/* Drawer Panel */}
-      <div className="fixed top-0 right-0 h-full w-full sm:w-[420px] bg-white z-50 shadow-[0_0_40px_rgba(0,0,0,0.1)] flex flex-col transform transition-transform duration-300 border-l border-zinc-200 overscroll-none">
+      <div className="fixed top-0 right-0 h-full w-full sm:w-[360px] bg-white z-50 shadow-[0_0_40px_rgba(0,0,0,0.1)] flex flex-col transform transition-transform duration-300 border-l border-zinc-200 overscroll-none">
         
         {/* Header */}
         <div className="flex items-center justify-between p-4 sm:p-6 border-b border-zinc-100 relative z-10 bg-white">

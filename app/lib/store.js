@@ -46,7 +46,7 @@ export const useCartStore = create(
       setAppliedCoupon: (coupon) => set({ appliedCoupon: coupon }),
       
       // Product Cart mein dalna
-      addToCart: (product) => {
+      addToCart: (product, openCart = false) => {
         const cart = get().cart;
         const cartItemId = product.id;
         
@@ -58,22 +58,22 @@ export const useCartStore = create(
             toast.error(`Cannot add more. Only ${product.stock} in stock!`);
             return false;
           }
-          set({
+          set((state) => ({
             cart: cart.map((item) =>
               (item.cartItemId || item.id) === cartItemId ? { ...item, quantity: item.quantity + quantityToAdd } : item
             ),
-            isCartOpen: true
-          });
+            isCartOpen: openCart ? true : state.isCartOpen
+          }));
           return true;
         } else {
           if (quantityToAdd > product.stock) {
             toast.error(`Only ${product.stock} in stock!`);
             return false;
           }
-          set({ 
+          set((state) => ({ 
             cart: [...cart, { ...product, cartItemId, quantity: quantityToAdd }],
-            isCartOpen: true 
-          });
+            isCartOpen: openCart ? true : state.isCartOpen 
+          }));
           return true;
         }
       },

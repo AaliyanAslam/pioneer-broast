@@ -2,13 +2,17 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { PiShoppingCart, PiUser, PiSignIn, PiList, PiX, PiMapPin, PiMotorcycle, PiBag } from "react-icons/pi";
+import { 
+  PiTote, 
+  PiList, 
+  PiX, 
+  PiMapPin, 
+  PiDeviceMobile, 
+  PiNewspaper 
+} from "react-icons/pi";
 import { useCartStore, useLocationStore } from "@/app/lib/store";
 import CartDrawer from "./ui/CartDrawer";
-import SearchBar from "./ui/SearchBar";
 import { usePathname } from "next/navigation";
-
-import Tooltip from "./ui/Tooltip";
 
 export default function Navbar() {
   const { cart, isCartOpen, setCartOpen } = useCartStore();
@@ -25,144 +29,114 @@ export default function Navbar() {
     ? cart.reduce((total, item) => total + item.quantity, 0)
     : 0;
 
-  const NAV_LINKS = [
-    { name: "Menu", href: "/menu" },
-    { name: "Deals", href: "/deals" },
-    { name: "About", href: "/about" },
-  ];
-
-  // Build location label for the pill
+  // Build location label
   const locationLabel = hasMounted
     ? orderType === "Pickup"
       ? "Pickup"
       : exactLocation
-      ? `Delivery · ${exactLocation.address.split(',')[0]}` // Only show first part of full address
+      ? `${exactLocation.address.split(',')[0]}` // Only show first part of full address
       : orderType === "Delivery" && deliveryArea
-      ? `Delivery · ${deliveryArea}`
+      ? `${deliveryArea}`
       : null
     : null;
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full flex flex-col">
-        {/* Announcement Bar */}
-        <div className="w-full bg-[#D21716] text-white px-4 py-2.5 text-center text-[10px] sm:text-[12px] font-bold tracking-widest uppercase flex items-center justify-center gap-2">
-          <span>
-            🔥 Free Delivery on orders above Rs. 1,500 — Use Code: <strong className="font-black bg-white text-[#ed1c24] px-2 py-0.5 rounded-md ml-1 tracking-widest">BROAST50</strong>
-          </span>
-        </div>
-
-        <nav className="w-full bg-white/90 backdrop-blur-xl border-b border-zinc-100 shadow-sm relative z-30">
-          <div className="max-w-420 mx-auto px-4 sm:px-6 h-16 sm:h-20 lg:h-24 flex items-center justify-between">
-          {/* Left: Mobile Menu Toggle & Brand Logo */}
-          <div className="flex-1 flex items-center justify-start gap-3">
-            <button 
-              className="lg:hidden p-1.5 -ml-1.5 text-zinc-600 hover:text-black active:scale-95 transition-all"
-              onClick={() => setIsMobileMenuOpen(true)}
-            >
-              <PiList className="w-6 h-6" />
-            </button>
-            <Link
-              href="/"
-              title="Go to Home"
-              className="shrink-0 transition-transform active:scale-95 flex items-center"
-            >
-              <Image 
-                src="/brandlogo.webp" 
-                alt="Pioneer Broast" 
-                width={200} 
-                height={72} 
-                className="w-auto h-10 sm:h-12 lg:h-[122px] object-contain"
-                priority
-              />
-            </Link>
-          </div>
-
-          {/* Center: Desktop Navigation Links */}
-          <div className="hidden lg:flex items-center justify-center gap-6 xl:gap-8 shrink-0">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                title={`Go to ${link.name}`}
-                className={`text-[13px] font-bold uppercase tracking-widest transition-all duration-300 hover:text-black ${
-                  pathname === link.href
-                    ? "text-black border-b-2 border-[#C0E212] pb-1"
-                    : "text-zinc-500 hover:border-b-2 hover:border-zinc-300 pb-1"
-                }`}
-              >
-                {link.name}
+      <header className="sticky top-0 z-40 w-full flex flex-col bg-white border-b border-zinc-100">
+        
+        <nav className="w-full relative z-30">
+          <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 h-20 lg:h-[100px] flex items-center justify-between gap-4">
+            
+            {/* LEFT SIDE: Logo & Info Boxes */}
+            <div className="flex items-center gap-6 xl:gap-8">
+              <Link href="/" className="shrink-0 flex items-center transition-transform active:scale-95">
+                <Image 
+                  src="/brandlogo.webp" 
+                  alt="Pioneer Broast" 
+                  width={200} 
+                  height={80} 
+                  className="w-auto h-12 sm:h-16 lg:h-[90px] object-contain"
+                  priority
+                />
               </Link>
-            ))}
-          </div>
 
-          {/* Right: Search & Action Icons */}
-          <div className="flex-1 flex items-center justify-end gap-2 sm:gap-4">
-            {/* Desktop Search Bar */}
-            <div className="hidden lg:block w-[240px] xl:w-[280px] relative z-20">
-              <SearchBar />
-            </div>
-
-            {/* Location Pill */}
-            {hasMounted && (
-              <Tooltip text={locationLabel ? "Change location" : "Set your location"} position="bottom">
-                <button
-                  id="navbar-location-pill"
-                  onClick={() => setLocationModalOpen(true)}
-                  className={`hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-200 shrink-0 ${
-                    locationLabel
-                      ? "bg-[#e63946]/10 text-[#e63946] border border-[#e63946]/30 hover:bg-[#e63946]/20"
-                      : "bg-zinc-100 text-zinc-500 border border-zinc-200 hover:bg-zinc-200 hover:text-zinc-800"
-                  }`}
+              {/* Info Boxes (Hidden on mobile/tablet) */}
+              <div className="hidden xl:flex items-center gap-4">
+                {/* Location Box */}
+                <button 
+                  onClick={() => setLocationModalOpen(true)} 
+                  className="flex items-center gap-3 px-4 py-2 bg-white border border-zinc-200 rounded-md hover:bg-zinc-50 transition-colors text-left"
                 >
-                  {orderType === "Pickup" ? (
-                    <PiBag className="w-3.5 h-3.5 shrink-0" />
-                  ) : (
-                    <PiMotorcycle className="w-3.5 h-3.5 shrink-0" />
-                  )}
-                  <span className="max-w-[130px] truncate">
-                    {locationLabel ?? "Set Location"}
-                  </span>
-                </button>
-              </Tooltip>
-            )}
-
-            {/* Action Icons */}
-            <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
-
-              <Tooltip text="View Cart" position="bottom">
-                <button
-                  onClick={() => setCartOpen(true)}
-                  className="relative flex p-2 text-zinc-600 hover:text-black hover:bg-zinc-100 rounded-full transition-all active:scale-95"
-                >
-                  <PiShoppingCart className="w-5 h-5 sm:w-6 sm:h-6" />
-                  {totalItems > 0 && (
-                    <span className="absolute top-0 right-0 bg-[#C0E212] text-black shadow-sm text-[10px] font-black w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full flex items-center justify-center translate-x-1 sm:-translate-y-1">
-                      {totalItems}
+                  <PiMapPin className="text-[#D21716] w-7 h-7 shrink-0" weight="fill" />
+                  <div className="flex flex-col">
+                    <span className="text-[14px] font-black text-black leading-tight">Change Location</span>
+                    <span className="text-[11px] text-zinc-500 max-w-[160px] truncate leading-tight">
+                      {locationLabel || "Select your location"}
                     </span>
-                  )}
+                  </div>
                 </button>
-              </Tooltip>
+
+                {/* Contact Box */}
+                <a 
+                  href="tel:021111666111" 
+                  className="flex items-center gap-3 px-4 py-2 bg-white border border-zinc-200 rounded-md hover:bg-zinc-50 transition-colors text-left"
+                >
+                  <PiDeviceMobile className="text-[#D21716] w-7 h-7 shrink-0" weight="fill" />
+                  <div className="flex flex-col">
+                    <span className="text-[14px] font-black text-black leading-tight">Contact us</span>
+                    <span className="text-[11px] text-zinc-500 leading-tight">021-111-666-111</span>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+            {/* RIGHT SIDE: Complaint, Cart, Menu */}
+            <div className="flex items-center gap-4 sm:gap-6 shrink-0">
+              
+              {/* Complaint Box (Hidden on mobile/tablet) */}
+              <Link 
+                href="/contact" 
+                className="hidden lg:flex items-center gap-3 px-4 py-2 bg-white border border-zinc-200 rounded-md hover:bg-zinc-50 transition-colors text-right"
+              >
+                <div className="flex flex-col items-end">
+                  <span className="text-[14px] font-black text-black leading-tight">Submit Your Complaint</span>
+                  <span className="text-[10px] text-zinc-500 leading-tight">From Complaint to Care - Share With Us</span>
+                </div>
+                <PiNewspaper className="text-[#D21716] w-7 h-7 shrink-0" weight="fill" />
+              </Link>
+
+              {/* Cart Bucket */}
+              <button 
+                onClick={() => setCartOpen(true)} 
+                className="relative flex items-center justify-center p-1 text-zinc-800 hover:text-[#D21716] transition-colors active:scale-95"
+              >
+                <PiTote className="w-9 h-9 sm:w-11 sm:h-11" weight="fill" />
+                <span className="absolute bottom-0 left-0 bg-[#FFD700] text-black border border-white shadow-sm text-[11px] sm:text-[12px] font-black w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center translate-y-1 -translate-x-1">
+                  {totalItems}
+                </span>
+              </button>
+
+              {/* Hamburger Menu */}
+              <button 
+                onClick={() => setIsMobileMenuOpen(true)}
+                className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-[#ff7a7a] text-white rounded-md hover:bg-[#ff6161] transition-colors active:scale-95"
+              >
+                <PiList className="w-6 h-6 sm:w-7 sm:h-7" weight="bold" />
+              </button>
+              
             </div>
           </div>
-        </div>
-
-        {/* Mobile Search Bar Only */}
-        <div className="block lg:hidden px-4 py-3 bg-white/90 backdrop-blur-xl relative z-20 border-t border-zinc-100/50">
-          <SearchBar />
-        </div>
-
-      </nav>
+        </nav>
       </header>
 
       {/* Mobile Menu Drawer */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-50 flex lg:hidden">
+        <div className="fixed inset-0 z-50 flex">
           <div 
             className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity" 
             onClick={() => setIsMobileMenuOpen(false)}
           />
-          <div className="relative flex w-[85%] max-w-[320px] flex-col overflow-y-auto bg-white shadow-2xl animate-in slide-in-from-left duration-300">
+          <div className="relative flex w-[85%] max-w-[320px] flex-col overflow-y-auto bg-white shadow-2xl animate-in slide-in-from-right duration-300 ml-auto">
             <div className="flex items-center justify-between px-5 pt-6 pb-5 border-b border-zinc-100">
               <Image 
                 src="/brandlogo.webp" 
@@ -181,17 +155,12 @@ export default function Navbar() {
               </button>
             </div>
 
-            <div className="px-5 py-8 space-y-6">
-              {NAV_LINKS.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className="block text-[15px] font-bold uppercase tracking-widest text-zinc-800 hover:text-[#C0E212] transition-colors"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {link.name}
-                </Link>
-              ))}
+            {/* Mobile Links */}
+            <div className="px-5 py-6 flex flex-col gap-4">
+              <Link href="/menu" onClick={() => setIsMobileMenuOpen(false)} className="text-[16px] font-bold uppercase tracking-wide border-b border-zinc-100 pb-4">Menu</Link>
+              <Link href="/deals" onClick={() => setIsMobileMenuOpen(false)} className="text-[16px] font-bold uppercase tracking-wide border-b border-zinc-100 pb-4">Deals</Link>
+              <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="text-[16px] font-bold uppercase tracking-wide border-b border-zinc-100 pb-4">About Us</Link>
+              <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="text-[16px] font-bold uppercase tracking-wide pb-4">Contact / Complaint</Link>
             </div>
 
           </div>

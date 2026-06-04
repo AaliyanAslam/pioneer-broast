@@ -97,7 +97,16 @@ export default function ProductsList({ onEditItem }) {
                       </div>
                     </td>
                     <td className="hidden md:table-cell p-3 sm:p-4 text-[13px] text-zinc-600 whitespace-nowrap">{item.category}</td>
-                    <td className="p-3 sm:p-4 text-[13px] text-black font-bold whitespace-nowrap">Rs. {item.price}</td>
+                    <td className="p-3 sm:p-4 text-[13px] text-black font-bold whitespace-nowrap">
+                      {item.discount_price && item.discount_price < item.price ? (
+                        <div className="flex flex-col">
+                          <span className="text-[10px] text-zinc-400 line-through font-normal">Rs. {item.price}</span>
+                          <span className="text-[#e63946]">Rs. {item.discount_price}</span>
+                        </div>
+                      ) : (
+                        <span>Rs. {item.price}</span>
+                      )}
+                    </td>
                     <td className="p-3 sm:p-4 text-right">
                       <div className="flex justify-end gap-1 sm:gap-2">
                         <button onClick={() => onEditItem && onEditItem(item)} className="p-1.5 sm:p-2 text-zinc-400 hover:text-black transition-colors rounded hover:bg-zinc-100">

@@ -12,8 +12,11 @@ export default function ProductCard({ product }) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isAdding, setIsAdding] = useState(false);
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0] || null);
-  const { addToCart } = useCartStore();
+  const { cart, addToCart, updateQuantity, removeFromCart } = useCartStore();
   const segments = Array.from({ length: 9 });
+
+  const cartItem = cart.find(item => (item.cartItemId || item.id) === product.id);
+  const quantityInCart = cartItem ? cartItem.quantity : 0;
 
   const handleQuickAdd = (e) => {
     e.preventDefault();
@@ -86,45 +89,56 @@ export default function ProductCard({ product }) {
           ))}
         </div>
 
-        {/* Premium Floating Glassmorphism Quick Add Pill Button */}
+        {/* Premium Floating Glassmorphism Quick Add / Quantity Pill */}
         {product.stock > 0 && (
-          <button
-            onClick={handleQuickAdd}
-            disabled={isAdding}
-            className="absolute bottom-3 left-3 right-3 bg-white/90 backdrop-blur-md text-zinc-950 text-[11px] font-semibold uppercase tracking-widest py-2.5 rounded-md active:rounded-3xl z-30 shadow-sm border border-zinc-200/50 transition-all duration-300 ease-out opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 flex items-center justify-center gap-2 hover:bg-zinc-950 hover:text-white hover:border-zinc-950 active:scale-95 select-none"
-          >
-            {isAdding ? (
-              <span className="flex items-center gap-1.5 font-medium tracking-normal text-zinc-500 lowercase group-hover:text-zinc-300">
-                <svg
-                  className="animate-spin h-3.5 w-3.5 text-current"
-                  viewBox="0 0 24 24"
-                  fill="none"
+          <div className="absolute bottom-3 left-3 right-3 z-30 transition-all duration-300 ease-out opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0">
+            {quantityInCart > 0 ? (
+              <div className="bg-white/90 backdrop-blur-md text-zinc-950 text-[13px] font-semibold tracking-widest py-1 px-1.5 rounded-md shadow-sm border border-zinc-200/50 flex items-center justify-between select-none">
+                <button 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (quantityInCart === 1) {
+                      removeFromCart(product.id);
+                    } else {
+                      updateQuantity(product.id, 'decrease');
+                    }
+                  }}
+                  className="w-8 h-8 flex items-center justify-center bg-zinc-100 hover:bg-zinc-200 rounded text-lg transition-colors active:scale-95"
                 >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                  />
-                </svg>
-                adding...
-              </span>
-            ) : (
-              <span className="flex items-center gap-1">
-                Quick Add{" "}
-                <span className="text-xs font-normal text-zinc-400 group-hover:text-zinc-300 transition-colors">
+                  -
+                </button>
+                <span className="tabular-nums font-black w-8 text-center">{quantityInCart}</span>
+                <button 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    updateQuantity(product.id, 'increase');
+                  }}
+                  className="w-8 h-8 flex items-center justify-center bg-[#C0E212] hover:bg-[#a6c40e] rounded text-lg transition-colors active:scale-95 text-black"
+                >
                   +
-                </span>
-              </span>
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={handleQuickAdd}
+                disabled={isAdding}
+                className="w-full bg-white/90 backdrop-blur-md text-zinc-950 text-[11px] font-semibold uppercase tracking-widest py-2.5 rounded-md active:rounded-3xl shadow-sm border border-zinc-200/50 flex items-center justify-center gap-2 hover:bg-zinc-950 hover:text-white hover:border-zinc-950 active:scale-95 select-none transition-all duration-300"
+              >
+                {isAdding ? (
+                  <span className="flex items-center gap-1.5 font-medium tracking-normal text-zinc-500 lowercase group-hover:text-zinc-300">
+                    <svg className="animate-spin h-3.5 w-3.5 text-current" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                    adding...
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-1">
+                    Quick Add <span className="text-xs font-normal text-zinc-400 group-hover:text-zinc-300 transition-colors">+</span>
+                  </span>
+                )}
+              </button>
             )}
-          </button>
+          </div>
         )}
 
         {/* Badges */}

@@ -1,79 +1,63 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useCartStore } from "@/app/lib/store";
-import Link from "next/link";
-import Image from "next/image";
+import { PiTote } from "react-icons/pi";
 import { usePathname } from "next/navigation";
 
 export default function FloatingCartWidget() {
-  const { cart, isCartOpen, setCartOpen } = useCartStore();
-  const [mounted, setMounted] = useState(false);
+  const { cart, setCartOpen, isCartOpen } = useCartStore();
+  const [hasMounted, setHasMounted] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
-    setMounted(true);
+    setHasMounted(true);
   }, []);
 
-  if (!mounted) return null;
+  // Do not show on the checkout/cart page itself, admin, or if drawer is open
+  if (!hasMounted || cart.length === 0 || isCartOpen || pathname === '/cart' || pathname.startsWith('/admin')) {
+    return null;
+  }
 
-  // Do not show on cart page, admin pages, or if cart drawer is open
-  if (cart.length === 0 || isCartOpen || pathname === "/cart" || pathname.startsWith("/admin")) return null;
-
-  const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
-  const subtotal = cart.reduce(
-    (total, item) => total + (item.discount_price || item.price) * item.quantity,
-    0
-  );
-  
-  // Just show the first item image for preview
-  const firstItem = cart[0];
+  const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+  const totalPrice = cart.reduce((acc, item) => {
+    const price = item.discount_price && item.discount_price < item.price ? item.discount_price : item.price;
+    return acc + (price * item.quantity);
+  }, 0);
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 sm:bottom-6 sm:left-auto sm:right-6 sm:w-[380px] z-45 animate-in slide-in-from-bottom-10 fade-in duration-300 lg:hidden">
-      <div 
+    <div className="fixed bottom-4 sm:bottom-0 left-0 right-0 px-4 sm:px-0 flex justify-center z-[45] animate-slide-up-fade">
+      <button
         onClick={() => setCartOpen(true)}
-        className="bg-black/85 backdrop-blur-xl text-white p-2 pr-3 sm:p-2 sm:pr-4 rounded-full shadow-[0_10px_40px_rgba(0,0,0,0.3)] flex items-center justify-between cursor-pointer border border-white/10 transition-transform active:scale-[0.98]"
+        className="w-full sm:w-[360px] bg-[#D21716] text-white rounded-t-2xl p-4 shadow-[0_10px_40px_rgba(230,57,70,0.3)] flex items-center justify-between hover:bg-[#d62828] hover:-translate-y-1 hover:shadow-[0_15px_50px_rgba(230,57,70,0.4)] transition-all duration-300 active:scale-95 group"
       >
         <div className="flex items-center gap-3">
-          <div className="relative w-10 h-10 sm:w-11 sm:h-11 bg-white rounded-full overflow-hidden shrink-0 border border-zinc-200 shadow-inner">
-            {firstItem?.images?.[0] ? (
-              <Image 
-                src={firstItem.images[0]} 
-                alt="Cart Item" 
-                fill 
-                className="object-contain p-1.5"
-              />
-            ) : (
-              <div className="w-full h-full bg-zinc-800" />
-            )}
-            {totalQuantity > 1 && (
-              <div className="absolute -top-1 -right-1 bg-[#C0E212] text-black text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full border border-black z-10 shadow-sm">
-                +{totalQuantity - 1}
-              </div>
-            )}
+          <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center font-bold text-sm relative">
+            {totalItems}
+            <div className="absolute inset-0 bg-white rounded-full animate-ping opacity-20 group-hover:opacity-0 transition-opacity"></div>
           </div>
-          <div className="flex flex-col justify-center">
-            <span className="text-[10px] sm:text-[11px] font-medium text-zinc-400">
-              {totalQuantity} {totalQuantity === 1 ? "Item" : "Items"}
-            </span>
-            <span className="text-[13px] sm:text-[14px] font-bold text-white tracking-wide">
-              Rs. {subtotal.toLocaleString()}
-            </span>
+          <div className="text-left">
+            <p className="text-[10px] uppercase tracking-widest font-semibold text-white/80 mb-0.5">Your Bucket</p>
+            <p className="text-sm font-bold tracking-tight">View Order</p>
           </div>
         </div>
 
-        {/* Shake animation button */}
-        <Link 
-          href="/cart"
-          onClick={(e) => {
-            e.stopPropagation();
-            setCartOpen(false);
-          }}
-          className="bg-[#C0E212] text-black px-5 py-2.5 sm:px-6 sm:py-2.5 rounded-full text-[11px] sm:text-[12px] font-bold uppercase tracking-wider animate-shake hover:bg-[#a6c40e] transition-colors shadow-lg shadow-[#C0E212]/20 shrink-0 ml-2"
-        >
-          Checkout
-        </Link>
-      </div>
+        <div className="flex items-center gap-3">
+          <span className="text-lg font-bold tracking-tight">Rs. {totalPrice.toLocaleString()}</span>
+          <div className="w-8 h-8 bg-white text-[#D21716] rounded-full flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+            <PiTote className="w-4 h-4 font-bold" />
+          </div>
+        </div>
+      </button>
+
+      <style jsx>{`
+        @keyframes slide-up-fade {
+          0% { transform: translateY(40px) scale(0.9); opacity: 0; }
+          100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        .animate-slide-up-fade {
+          animation: slide-up-fade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+      `}</style>
     </div>
   );
 }

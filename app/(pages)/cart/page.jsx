@@ -13,7 +13,7 @@ import {
   PiListChecks,
   PiTruck,
   PiClock,
-  PiShoppingCart,
+  PiTote as PiShoppingCart,
   PiArrowLeft,
   PiTote,
   PiLockKey,
@@ -574,9 +574,20 @@ export default function CheckoutPage() {
                   </p>
                 </div>
                 <div className="text-right shrink-0 ml-2">
-                  <p className="font-semibold text-[13px] sm:text-base text-black">
-                    Rs. {(item.discount_price || item.price) * item.quantity}
-                  </p>
+                  {item.discount_price && item.discount_price < item.price ? (
+                    <div className="flex flex-col items-end">
+                      <p className="text-[10px] sm:text-xs text-zinc-400 line-through font-medium">
+                        Rs. {item.price * item.quantity}
+                      </p>
+                      <p className="font-semibold text-[13px] sm:text-base text-[#e63946]">
+                        Rs. {item.discount_price * item.quantity}
+                      </p>
+                    </div>
+                  ) : (
+                    <p className="font-semibold text-[13px] sm:text-base text-black">
+                      Rs. {item.price * item.quantity}
+                    </p>
+                  )}
                 </div>
               </div>
             ))}
