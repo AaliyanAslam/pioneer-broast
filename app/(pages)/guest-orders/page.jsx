@@ -177,7 +177,9 @@ export default function GuestOrdersPage() {
                         <div className="overflow-hidden">
                           <div className="px-6 pb-6">
                             <div className="bg-zinc-50 border border-zinc-100 rounded-2xl p-5 mb-5 mt-2">
-                              <div className="flex flex-col sm:flex-row gap-6">
+                              
+                              {/* ROW 1: Customer Info & Payment Method */}
+                              <div className="flex flex-col sm:flex-row gap-6 mb-6">
                                 <div className="flex-1">
                                   <h4 className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-3">Shipping Information</h4>
                                   <p className="text-sm font-bold text-black mb-1">{order.customer_name}</p>
@@ -188,64 +190,83 @@ export default function GuestOrdersPage() {
                                   <p className="text-sm text-zinc-600 font-medium mt-1">{order.customer_phone}</p>
                                 </div>
                                 <div className="flex-1">
-                                  <h4 className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-3">Order Summary</h4>
-                                  <div className="space-y-1.5 text-sm max-w-[200px]">
+                                  <h4 className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-3">Payment Method</h4>
+                                  <span className="text-xs font-bold uppercase tracking-widest bg-zinc-200/50 text-black px-3 py-1.5 rounded-md inline-block">
+                                    {order.payment_method || "CASH ON DELIVERY"}
+                                  </span>
+                                </div>
+                              </div>
+
+                              <hr className="border-zinc-200 mb-6" />
+
+                              {/* ROW 2: Purchased Items */}
+                              <h4 className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-3">
+                                Purchased Items
+                              </h4>
+                              <div className="flex flex-col gap-3 mb-6">
+                                {realItems.map((item, idx) => (
+                                  <div key={idx} className="flex items-center justify-between bg-white border border-zinc-200 p-3 sm:p-4 rounded-2xl shadow-sm w-full">
+                                    <div className="flex items-center gap-4 flex-1 min-w-0">
+                                      <div className="relative w-16 h-16 bg-zinc-50 rounded-xl overflow-hidden shrink-0 border border-zinc-100">
+                                        <Image
+                                          src={item.image_url || "https://via.placeholder.com/100"}
+                                          alt={item.name || "Product image"}
+                                          fill
+                                          sizes="64px"
+                                          quality={90}
+                                          className="object-cover"
+                                        />
+                                      </div>
+                                      <div className="flex flex-col justify-center min-w-0 pr-4">
+                                        <Link
+                                          href={`/product/${item.slug}`}
+                                          className="text-sm font-bold text-black hover:underline truncate"
+                                        >
+                                          {item.name}
+                                        </Link>
+                                        {item.specialInstructions && (
+                                          <p className="text-[10px] text-[#e63946] font-bold uppercase tracking-widest mt-0.5 truncate">
+                                            Note: {item.specialInstructions}
+                                          </p>
+                                        )}
+                                      </div>
+                                    </div>
+                                    
+                                    <div className="text-center px-2 sm:px-6 w-20 sm:w-24 shrink-0">
+                                      <p className="text-xs font-medium text-zinc-500">
+                                        Qty: <span className="font-bold text-black">{item.quantity}</span>
+                                      </p>
+                                    </div>
+                                    
+                                    <div className="text-right w-24 sm:w-32 shrink-0">
+                                      <span className="font-bold text-black text-sm">Rs. {(item.discount_price || item.price) * item.quantity}</span>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+
+                              <hr className="border-zinc-200 mb-6" />
+
+                              {/* ROW 3: Order Summary */}
+                              <div className="flex justify-end">
+                                <div className="w-full max-w-[280px]">
+                                  <h4 className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-4 text-right">Order Summary</h4>
+                                  <div className="space-y-2.5 text-sm">
                                     <div className="flex justify-between text-zinc-600">
                                       <span>Subtotal</span>
-                                      <span>Rs. {order.total_amount - (order.order_type === 'Delivery' ? 150 : 0)}</span>
+                                      <span className="font-medium text-black">Rs. {order.total_amount - (order.order_type === 'Delivery' ? 150 : 0)}</span>
                                     </div>
                                     <div className="flex justify-between text-zinc-600">
                                       <span>Delivery Fee</span>
-                                      <span>Rs. {order.order_type === 'Delivery' ? 150 : 0}</span>
+                                      <span className="font-medium text-black">Rs. {order.order_type === 'Delivery' ? 150 : 0}</span>
                                     </div>
-                                    <div className="flex justify-between font-bold text-black border-t border-zinc-200 pt-1.5 mt-1.5">
+                                    <div className="flex justify-between font-bold text-black border-t border-zinc-200 pt-3 mt-3 text-base">
                                       <span>Total Amount</span>
                                       <span className="text-[#e63946]">Rs. {order.total_amount}</span>
-                                    </div>
-                                    <div className="mt-3">
-                                      <span className="text-[10px] font-bold uppercase tracking-widest bg-[#e63946]/10 text-[#e63946] px-2 py-1 rounded-md">
-                                        CASH ON DELIVERY
-                                      </span>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-
-                            <h4 className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-3">
-                              Purchased Items
-                            </h4>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                              {realItems.map((item, idx) => (
-                                <div key={idx} className="flex gap-4 items-center bg-white border border-zinc-200 p-3 rounded-2xl shadow-sm">
-                                  <div className="relative w-16 h-16 bg-zinc-50 rounded-xl overflow-hidden shrink-0 border border-zinc-100">
-                                    <Image
-                                      src={item.image_url || "https://via.placeholder.com/100"}
-                                      alt={item.name || "Product image"}
-                                      fill
-                                      sizes="64px"
-                                      quality={90}
-                                      className="object-cover"
-                                    />
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <Link
-                                      href={`/product/${item.slug}`}
-                                      className="text-sm font-bold truncate text-black hover:underline block"
-                                    >
-                                      {item.name}
-                                    </Link>
-                                    {item.specialInstructions && (
-                                      <p className="text-[10px] text-[#e63946] font-bold uppercase tracking-widest mt-0.5 line-clamp-1">
-                                        Note: {item.specialInstructions}
-                                      </p>
-                                    )}
-                                    <p className="text-xs font-medium text-zinc-500 mt-1">
-                                      Qty: {item.quantity} × <span className="font-bold text-black">Rs. {item.discount_price || item.price}</span>
-                                    </p>
-                                  </div>
-                                </div>
-                              ))}
                             </div>
                           </div>
                         </div>
