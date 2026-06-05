@@ -81,7 +81,7 @@ export default function HeroCarousel() {
   };
 
   return (
-    <div className="select-none relative max-w-400 mx-auto px-4 sm:px-6 mt-6 rounded-2xl overflow-hidden group">
+    <div className="select-none relative max-w-[1400px] sm:max-w-400 mx-auto sm:px-6 mt-4 sm:mt-6 sm:rounded-2xl overflow-hidden group">
       
       {/* Carousel Container */}
       <div 
@@ -91,13 +91,13 @@ export default function HeroCarousel() {
         onMouseLeave={handleMouseLeave}
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
-        className={`flex overflow-x-auto hide-scrollbar rounded-2xl relative touch-pan-y ${isDragging ? '' : 'snap-x snap-mandatory scroll-smooth'}`}
+        className={`flex overflow-x-auto hide-scrollbar sm:rounded-2xl relative gap-3 sm:gap-0 px-4 sm:px-0 ${isDragging ? '' : 'snap-x snap-mandatory scroll-smooth'}`}
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {BANNERS.map((banner, index) => (
           <div 
             key={banner.id} 
-            className="w-full shrink-0 snap-center relative aspect-4/3 sm:aspect-video lg:aspect-21/9 xl:aspect-2.5/1"
+            className="w-[95%] sm:w-full shrink-0 snap-center relative aspect-video sm:aspect-video lg:aspect-21/9 xl:aspect-2.5/1 rounded-2xl sm:rounded-none overflow-hidden"
           >
             {/* Background Image */}
             <div className="absolute inset-0">
@@ -118,28 +118,28 @@ export default function HeroCarousel() {
       {/* Navigation Buttons (Desktop only) */}
       <button 
         onClick={() => scrollToIndex(Math.max(currentIndex - 1, 0))}
-        className={`absolute left-8 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 backdrop-blur-md p-3 rounded-full text-white transition-all opacity-0 group-hover:opacity-100 hidden sm:block disabled:opacity-0 ${currentIndex === 0 ? "pointer-events-none" : ""}`}
+        className={`absolute left-16 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 backdrop-blur-md p-3 rounded-full text-white transition-all opacity-0 group-hover:opacity-100 hidden sm:block disabled:opacity-0 ${currentIndex === 0 ? "pointer-events-none" : ""}`}
       >
         <PiCaretLeft className="w-6 h-6" />
       </button>
 
       <button 
         onClick={() => scrollToIndex(Math.min(currentIndex + 1, BANNERS.length - 1))}
-        className={`absolute right-8 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 backdrop-blur-md p-3 rounded-full text-white transition-all opacity-0 group-hover:opacity-100 hidden sm:block disabled:opacity-0 ${currentIndex === BANNERS.length - 1 ? "pointer-events-none" : ""}`}
+        className={`absolute right-16 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 backdrop-blur-md p-3 rounded-full text-white transition-all opacity-0 group-hover:opacity-100 hidden sm:block disabled:opacity-0 ${currentIndex === BANNERS.length - 1 ? "pointer-events-none" : ""}`}
       >
         <PiCaretRight className="w-6 h-6" />
       </button>
 
       {/* Indicator Dots */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+      <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 flex gap-1.5 sm:gap-2">
         {BANNERS.map((_, idx) => (
           <button
             key={idx}
             onClick={() => scrollToIndex(idx)}
             className={`transition-all duration-300 rounded-full ${
               currentIndex === idx 
-                ? "w-8 h-2 bg-[#C0E212]" 
-                : "w-2 h-2 bg-white/50 hover:bg-white/80"
+                ? "w-6 sm:w-8 h-1.5 sm:h-2 bg-[#C0E212]" 
+                : "w-1.5 sm:w-2 h-1.5 sm:h-2 bg-white/50 hover:bg-white/80"
             }`}
             aria-label={`Go to slide ${idx + 1}`}
           />
