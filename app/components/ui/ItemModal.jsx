@@ -95,44 +95,44 @@ export default function ItemModal({ isOpen, onClose, item }) {
             </div>
           </div>
 
-          <div className="p-5 sm:p-6 pb-24 sm:pb-32">
-            <div className="flex justify-between items-start gap-4 mb-2">
-              <h2 className="text-xl sm:text-2xl font-black text-black leading-tight">
+          <div className="p-4 sm:p-6 pb-28 sm:pb-32">
+            <div className="flex justify-between items-start gap-3 sm:gap-4 mb-1.5 sm:mb-2">
+              <h2 className="text-[18px] sm:text-2xl font-bold text-black leading-tight">
                 {item.name}
               </h2>
               <div className="text-right shrink-0">
                 {hasDiscount ? (
                   <div className="flex flex-col items-end">
-                    <span className="text-sm text-zinc-400 line-through font-medium">
+                    <span className="text-[12px] sm:text-sm text-zinc-400 line-through font-medium">
                       Rs. {originalPrice}
                     </span>
-                    <span className="text-xl font-black text-[#e63946]">
+                    <span className="text-[18px] sm:text-xl font-bold text-[#e63946]">
                       Rs. {activePrice}
                     </span>
                   </div>
                 ) : (
-                  <span className="text-xl font-black text-[#e63946]">
+                  <span className="text-[18px] sm:text-xl font-bold text-[#e63946]">
                     Rs. {originalPrice}
                   </span>
                 )}
               </div>
             </div>
 
-            <p className="text-xs text-zinc-500 font-bold uppercase tracking-widest mb-4">
+            <p className="text-[11px] sm:text-xs text-zinc-500 font-semibold uppercase tracking-wide mb-3 sm:mb-4">
               {item.category}
             </p>
 
-            <p className="text-[13px] sm:text-sm text-zinc-600 leading-relaxed mb-6">
+            <p className="text-[12px] sm:text-sm text-zinc-600 leading-relaxed mb-5 sm:mb-6">
               {item.description}
             </p>
 
             {/* Special Instructions */}
-            <div className="mb-2">
-              <label className="flex justify-between items-center mb-2">
-                <span className="text-sm font-bold text-black uppercase tracking-wider">
+            <div className="mb-2 hidden">
+              <label className="flex justify-between items-center mb-1.5 sm:mb-2">
+                <span className="text-[12px] sm:text-sm font-semibold text-black uppercase tracking-wide">
                   Special Instructions
                 </span>
-                <span className="text-[10px] text-zinc-400 font-medium bg-zinc-100 px-2 py-0.5 rounded uppercase">
+                <span className="text-[9px] sm:text-[10px] text-zinc-400 font-medium bg-zinc-100 px-1.5 py-0.5 rounded uppercase">
                   Optional
                 </span>
               </label>
@@ -140,7 +140,7 @@ export default function ItemModal({ isOpen, onClose, item }) {
                 value={specialInstructions}
                 onChange={(e) => setSpecialInstructions(e.target.value)}
                 placeholder="E.g. Extra mayo, no pickles..."
-                className="w-full bg-zinc-50 border border-zinc-200 rounded-xl p-3 text-sm text-black focus:outline-none focus:border-[#e63946] focus:ring-1 focus:ring-[#e63946] transition-colors resize-none placeholder:text-zinc-400"
+                className="w-full bg-zinc-50 border border-zinc-200 rounded-xl p-2.5 sm:p-3 text-[13px] sm:text-sm text-black focus:outline-none focus:border-[#e63946] focus:ring-1 focus:ring-[#e63946] transition-colors resize-none placeholder:text-zinc-400"
                 rows="2"
               />
             </div>
@@ -148,21 +148,21 @@ export default function ItemModal({ isOpen, onClose, item }) {
         </div>
 
         {/* Bottom Action Bar */}
-        <div className="absolute bottom-0 left-0 w-full bg-white/90 backdrop-blur-xl border-t border-zinc-200 p-4 sm:p-5 shadow-[0_-10px_30px_rgba(0,0,0,0.05)] flex items-center gap-4 z-20">
+        <div className="absolute bottom-0 left-0 w-full bg-white/90 backdrop-blur-xl border-t border-zinc-200 p-3 sm:p-5 shadow-[0_-10px_30px_rgba(0,0,0,0.05)] flex items-center gap-3 sm:gap-4 z-20">
           {/* Quantity Controls */}
           <div className="flex items-center bg-zinc-100 rounded-xl p-1 shrink-0 border border-zinc-200/50">
             <button
               onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-              className="w-10 h-10 flex items-center justify-center text-zinc-500 hover:text-black hover:bg-white rounded-lg transition-colors shadow-sm active:scale-95"
+              className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-zinc-500 hover:text-black hover:bg-white rounded-lg transition-colors shadow-sm active:scale-95"
             >
               <PiMinus className="w-4 h-4" />
             </button>
-            <span className="w-8 text-center font-black text-black tabular-nums">
+            <span className="w-6 sm:w-8 text-center font-bold text-black tabular-nums text-[14px] sm:text-base">
               {quantity}
             </span>
             <button
               onClick={() => setQuantity((q) => q + 1)}
-              className="w-10 h-10 flex items-center justify-center text-zinc-500 hover:text-black hover:bg-white rounded-lg transition-colors shadow-sm active:scale-95"
+              className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-zinc-500 hover:text-black hover:bg-white rounded-lg transition-colors shadow-sm active:scale-95"
             >
               <PiPlus className="w-4 h-4" />
             </button>
@@ -172,7 +172,7 @@ export default function ItemModal({ isOpen, onClose, item }) {
           <button
             onClick={handleAddToCart}
             disabled={isAdding}
-            className="flex-1 bg-[#e63946] text-white font-bold text-[13px] sm:text-sm uppercase tracking-widest py-3.5 sm:py-4 rounded-xl transition-all duration-300 hover:bg-[#d62828] active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-70 shadow-lg shadow-[#e63946]/20"
+            className="flex-1 bg-[#e63946] text-white font-bold text-[12px] sm:text-sm uppercase tracking-wide py-3 sm:py-4 rounded-xl transition-all duration-300 hover:bg-[#d62828] active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-70 shadow-lg shadow-[#e63946]/20"
           >
             {isAdding ? (
               "Adding..."
