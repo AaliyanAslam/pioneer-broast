@@ -91,7 +91,7 @@ export default function HeroCarousel() {
         onMouseLeave={handleMouseLeave}
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
-        className={`flex overflow-x-auto hide-scrollbar rounded-2xl relative  touch-pan-y ${isDragging ? '' : 'snap-x snap-mandatory scroll-smooth'}`}
+        className={`flex overflow-x-auto hide-scrollbar rounded-2xl relative touch-pan-y ${isDragging ? '' : 'snap-x snap-mandatory scroll-smooth'}`}
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {BANNERS.map((banner, index) => (
