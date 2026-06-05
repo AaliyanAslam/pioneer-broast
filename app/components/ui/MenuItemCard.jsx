@@ -63,7 +63,7 @@ export default function MenuItemCard({ item }) {
         </div>
 
         {/* Content layout below image */}
-        <div className="p-2.5 sm:p-4 flex flex-col flex-1 bg-[#edd6ac]">
+        <div className="p-2.5 sm:p-4 flex flex-col flex-1 bg-white">
           <div className="mb-0.5 sm:mb-1">
             <h3 className="text-[13px] sm:text-[16px] font-bold text-zinc-900 leading-tight capitalize line-clamp-1 group-hover:text-[#e63946] transition-colors">
               {item.name}
@@ -127,9 +127,18 @@ export default function MenuItemCard({ item }) {
               >
                 {isAdding ? (
                   <span className="flex items-center gap-0.5 sm:gap-1">
-                    <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-white rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-white rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-white rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                    <span
+                      className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-white rounded-full animate-bounce"
+                      style={{ animationDelay: "0ms" }}
+                    />
+                    <span
+                      className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-white rounded-full animate-bounce"
+                      style={{ animationDelay: "150ms" }}
+                    />
+                    <span
+                      className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-white rounded-full animate-bounce"
+                      style={{ animationDelay: "300ms" }}
+                    />
                   </span>
                 ) : (
                   "ADD"
