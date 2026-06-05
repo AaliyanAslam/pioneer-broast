@@ -286,7 +286,7 @@ export default function GuestOrdersPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           status: "cancelled",
-          cancel_reason: "Customer requested cancellation",
+          cancel_reason: `Customer cancelled order at ${new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true })}`,
         }),
       });
       const result = await res.json();
@@ -298,7 +298,7 @@ export default function GuestOrdersPage() {
               ? {
                   ...o,
                   status: "cancelled",
-                  cancel_reason: "Customer requested cancellation",
+                  cancel_reason: `Customer cancelled order at ${new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true })}`,
                 }
               : o,
           ),
@@ -606,7 +606,9 @@ export default function GuestOrdersPage() {
                               {order.status === "cancelled" &&
                                 order.cancel_reason && (
                                   <div className="text-[13px] text-red-500/80 font-normal bg-red-50/50 p-3 rounded-lg border border-red-100/50">
-                                    Reason: {order.cancel_reason}
+                                    {order.cancel_reason.startsWith("Customer cancelled order at")
+                                      ? "You cancelled this order"
+                                      : `Reason: ${order.cancel_reason}`}
                                   </div>
                                 )}
                               {order.status !== "cancelled" &&
