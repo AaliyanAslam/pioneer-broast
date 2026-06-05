@@ -54,7 +54,7 @@ export default function MenuItemCard({ item }) {
         <div 
           className={`relative w-full overflow-hidden bg-zinc-50 shrink-0 border-b border-zinc-100 ${
             item.category?.toLowerCase().includes('drink') 
-              ? 'aspect-[3/4]' 
+              ? 'aspect-3/4' 
               : 'aspect-4/3'
           }`}
         >

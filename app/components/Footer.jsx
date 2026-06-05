@@ -13,9 +13,9 @@ import {
 
 const LINKS = {
   menu: [
-    { label: "Broast",       href: "/category/broast" },
-    { label: "Burgers",      href: "/category/burgers" },
-    { label: "Deals",        href: "/category/deals" },
+    { label: "Broast",       href: "/#broast" },
+    { label: "Burgers",      href: "/#burgers" },
+    { label: "Deals",        href: "/#deals" },
   ],
   support: [
     { label: "Track Order",    href: "/my-orders" },

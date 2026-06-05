@@ -103,7 +103,7 @@ export default function RootLayout({ children }) {
     <html
       suppressHydrationWarning={true}
       lang="en"
-      className={`${outfit.variable} h-full antialiased`}
+      className={`${outfit.variable} h-full antialiased scroll-smooth`}
     >
       <body
         className="min-h-full flex flex-col font-sans bg-white text-zinc-950"
