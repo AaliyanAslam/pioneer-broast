@@ -8,21 +8,27 @@ export async function POST(req) {
     try {
       body = await req.json();
     } catch (err) {
-      return NextResponse.json({ success: false, message: "Invalid JSON payload" }, { status: 400 });
+      return NextResponse.json(
+        { success: false, message: "Invalid JSON payload" },
+        { status: 400 },
+      );
     }
-    const { 
-      customer_name, 
-      customer_phone, 
-      customer_address, 
-      order_type, 
-      delivery_city, 
-      delivery_area, 
-      total_amount, 
-      items
+    const {
+      customer_name,
+      customer_phone,
+      customer_address,
+      order_type,
+      delivery_city,
+      delivery_area,
+      total_amount,
+      items,
     } = body;
 
     if (!items || items.length === 0) {
-      return NextResponse.json({ success: false, message: "Cart is empty" }, { status: 400 });
+      return NextResponse.json(
+        { success: false, message: "Cart is empty" },
+        { status: 400 },
+      );
     }
 
     let calculatedTotal = 0;
@@ -37,17 +43,23 @@ export async function POST(req) {
 
       if (error) {
         console.error("Supabase error (fetch menu item):", error);
-        return NextResponse.json({ success: false, message: "Error fetching item details" }, { status: 500 });
+        return NextResponse.json(
+          { success: false, message: "Error fetching item details" },
+          { status: 500 },
+        );
       }
       if (!product) {
-        return NextResponse.json({ success: false, message: `${item.name} not found!` }, { status: 404 });
+        return NextResponse.json(
+          { success: false, message: `${item.name} not found!` },
+          { status: 404 },
+        );
       }
-      
+
       const activePrice = product.discount_price || product.price;
       calculatedTotal += activePrice * item.quantity;
     }
 
-    let deliveryCharges = order_type === 'Delivery' ? 150 : 0;
+    let deliveryCharges = order_type === "Delivery" ? 150 : 0;
     const finalTotal = calculatedTotal + deliveryCharges;
 
     // Supabase ki orders table mein data insert karein
@@ -60,18 +72,24 @@ export async function POST(req) {
           customer_address: customer_address || null,
           delivery_city: delivery_city || null,
           delivery_area: delivery_area || null,
-          order_type: order_type || 'Delivery',
+          order_type: order_type || "Delivery",
           total_amount: finalTotal,
           items: items, // Save cart items with specialInstructions
-          status: "pending"
-        }
+          status: "pending",
+        },
       ])
       .select()
       .single();
 
     if (orderError) {
       console.error("Supabase error (insert order):", orderError);
-      return NextResponse.json({ success: false, message: `Failed to place order: ${orderError.message || orderError.details || JSON.stringify(orderError)}` }, { status: 500 });
+      return NextResponse.json(
+        {
+          success: false,
+          message: `Failed to place order: ${orderError.message || orderError.details || JSON.stringify(orderError)}`,
+        },
+        { status: 500 },
+      );
     }
 
     // Nodemailer se Admin aur Customer dono ko email bhejna
@@ -87,15 +105,17 @@ export async function POST(req) {
       });
 
       // Build HTML for items
-      const itemsHtml = items.map(item => {
-        const price = item.discount_price || item.price;
-        return `
+      const itemsHtml = items
+        .map((item) => {
+          const price = item.discount_price || item.price;
+          return `
           <li style="margin-bottom: 10px; font-family: sans-serif;">
             <strong>${item.quantity}x ${item.name}</strong> - Rs. ${price * item.quantity}
-            ${item.specialInstructions ? `<br/><span style="color: #666; font-size: 12px;">Note: ${item.specialInstructions}</span>` : ''}
+            ${item.specialInstructions ? `<br/><span style="color: #666; font-size: 12px;">Note: ${item.specialInstructions}</span>` : ""}
           </li>
         `;
-      }).join('');
+        })
+        .join("");
 
       // 1. Admin Notification
       const adminMailOptions = {
@@ -137,17 +157,21 @@ export async function POST(req) {
 
       // 2. Customer Notification (if email was collected, we don't collect email anymore though, so this is optional)
       // Skipped sending to customer since we no longer collect email in fast food ordering system.
-
     } catch (emailError) {
       console.error("Nodemailer error:", emailError);
       // Email fail bhi ho jaye toh order place ho jana chahiye
     }
 
-    return NextResponse.json({ success: true, message: "Order Placed!", orderId: newOrder.id }, { status: 201 });
-
+    return NextResponse.json(
+      { success: true, message: "Order Placed!", orderId: newOrder.id },
+      { status: 201 },
+    );
   } catch (error) {
     console.error("Order API Error:", error);
-    return NextResponse.json({ success: false, message: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, message: "Internal Server Error" },
+      { status: 500 },
+    );
   }
 }
 
@@ -160,12 +184,18 @@ export async function GET() {
 
     if (error) {
       console.error("Supabase Database Error (Orders GET):", error);
-      return NextResponse.json({ success: false, message: error.message }, { status: 400 });
+      return NextResponse.json(
+        { success: false, message: error.message },
+        { status: 400 },
+      );
     }
-    
+
     return NextResponse.json({ success: true, data }, { status: 200 });
   } catch (error) {
     console.error("Critical API Error:", error);
-    return NextResponse.json({ success: false, message: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, message: "Internal Server Error" },
+      { status: 500 },
+    );
   }
 }

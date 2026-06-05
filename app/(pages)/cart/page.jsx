@@ -478,100 +478,100 @@ export default function CheckoutPage() {
               className="space-y-4 sm:space-y-5 bg-transparent sm:bg-zinc-50 p-0 sm:p-6 sm:pb-6 rounded-none sm:rounded-xl border-none sm:border border-zinc-200 sm:shadow-sm"
             >
               <div className={`${checkoutStep === 2 && "hidden"}`}>
-                  <div className="space-y-2.5 sm:space-y-4">
-                    <div>
-                      <label className="block text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-0.5 ml-1">
-                        Full Name
-                      </label>
-                      <input
-                        required
-                        type="text"
-                        name="name"
-                        value={customerInfo.name}
-                        onChange={handleChange}
-                        className="w-full bg-slate-100 border-none rounded-xl px-3 py-2.5 sm:px-3.5 sm:py-3 text-[13px] sm:text-sm text-black focus:outline-none focus:ring-1 focus:ring-black transition-colors shadow-sm"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-0.5 ml-1">
-                        Phone Number or Whatsapp
-                      </label>
-                      <input
-                        required
-                        type="tel"
-                        name="phone"
-                        value={customerInfo.phone}
-                        onChange={handleChange}
-                        className="w-full bg-slate-100 border-none rounded-xl px-3 py-2.5 sm:px-3.5 sm:py-3 text-[13px] sm:text-sm text-black focus:outline-none focus:ring-1 focus:ring-black transition-colors shadow-sm"
-                        placeholder="03XX-XXXXXXX"
-                      />
-                    </div>
-
-                    {orderType === "Delivery" && (
-                      <>
-                        <div>
-                          <label className="block text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-0.5 ml-1">
-                            Complete Delivery Address
-                          </label>
-                          <textarea
-                            required
-                            rows="4"
-                            name="address"
-                            value={customerInfo.address}
-                            onChange={handleChange}
-                            className="w-full bg-slate-100 border-none rounded-xl px-3 py-2.5 sm:px-3.5 sm:py-3 text-[13px] sm:text-sm text-black focus:outline-none focus:ring-1 focus:ring-black transition-colors resize-none shadow-sm leading-relaxed"
-                            placeholder="House no, Street, Area..."
-                          />
-                        </div>
-
-                        <div className="flex gap-3">
-                          <div className="flex-1">
-                            <label className="block text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-0.5 ml-1">
-                              City
-                            </label>
-                            <input
-                              readOnly
-                              value={deliveryCity || "Karachi"}
-                              className="w-full bg-slate-200 border-none rounded-xl px-3 py-2.5 sm:px-3.5 sm:py-3 text-[13px] sm:text-sm text-zinc-600 focus:outline-none cursor-not-allowed shadow-sm"
-                            />
-                          </div>
-                          <div className="flex-1">
-                            <label className="block text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-0.5 ml-1">
-                              Area
-                            </label>
-                            <input
-                              readOnly
-                              value={deliveryArea || ""}
-                              className="w-full bg-slate-200 border-none rounded-xl px-3 py-2.5 sm:px-3.5 sm:py-3 text-[13px] sm:text-sm text-zinc-600 focus:outline-none cursor-not-allowed shadow-sm"
-                            />
-                          </div>
-                        </div>
-                      </>
-                    )}
+                <div className="space-y-2.5 sm:space-y-4">
+                  <div>
+                    <label className="block text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-0.5 ml-1">
+                      Full Name
+                    </label>
+                    <input
+                      required
+                      type="text"
+                      name="name"
+                      value={customerInfo.name}
+                      onChange={handleChange}
+                      className="w-full bg-slate-100 border-none rounded-xl px-3 py-2.5 sm:px-3.5 sm:py-3 text-[13px] sm:text-sm text-black focus:outline-none focus:ring-1 focus:ring-black transition-colors shadow-sm"
+                    />
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={handleNextStep}
-                    className="hidden lg:flex w-full bg-black text-white font-semibold uppercase tracking-widest py-3.5 sm:py-4 rounded-xl sm:rounded-full active:scale-[0.98] transition-all hover:bg-zinc-800 text-[12px] sm:text-sm mt-5 sm:mt-6 shadow-md shadow-black/10 hover:shadow-lg items-center justify-center gap-2"
+                  <div>
+                    <label className="block text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-0.5 ml-1">
+                      Phone Number or Whatsapp
+                    </label>
+                    <input
+                      required
+                      type="tel"
+                      name="phone"
+                      value={customerInfo.phone}
+                      onChange={handleChange}
+                      className="w-full bg-slate-100 border-none rounded-xl px-3 py-2.5 sm:px-3.5 sm:py-3 text-[13px] sm:text-sm text-black focus:outline-none focus:ring-1 focus:ring-black transition-colors shadow-sm"
+                      placeholder="03XX-XXXXXXX"
+                    />
+                  </div>
+
+                  {orderType === "Delivery" && (
+                    <>
+                      <div>
+                        <label className="block text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-0.5 ml-1">
+                          Complete Delivery Address
+                        </label>
+                        <textarea
+                          required
+                          rows="4"
+                          name="address"
+                          value={customerInfo.address}
+                          onChange={handleChange}
+                          className="w-full bg-slate-100 border-none rounded-xl px-3 py-2.5 sm:px-3.5 sm:py-3 text-[13px] sm:text-sm text-black focus:outline-none focus:ring-1 focus:ring-black transition-colors resize-none shadow-sm leading-relaxed"
+                          placeholder="House no, Street, Area..."
+                        />
+                      </div>
+
+                      <div className="flex gap-3">
+                        <div className="flex-1">
+                          <label className="block text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-0.5 ml-1">
+                            City
+                          </label>
+                          <input
+                            readOnly
+                            value={deliveryCity || "Karachi"}
+                            className="w-full bg-slate-200 border-none rounded-xl px-3 py-2.5 sm:px-3.5 sm:py-3 text-[13px] sm:text-sm text-zinc-600 focus:outline-none cursor-not-allowed shadow-sm"
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <label className="block text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-0.5 ml-1">
+                            Area
+                          </label>
+                          <input
+                            readOnly
+                            value={deliveryArea || ""}
+                            className="w-full bg-slate-200 border-none rounded-xl px-3 py-2.5 sm:px-3.5 sm:py-3 text-[13px] sm:text-sm text-zinc-600 focus:outline-none cursor-not-allowed shadow-sm"
+                          />
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleNextStep}
+                  className="hidden lg:flex w-full bg-black text-white font-semibold uppercase tracking-widest py-3.5 sm:py-4 rounded-xl sm:rounded-full active:scale-[0.98] transition-all hover:bg-zinc-800 text-[12px] sm:text-sm mt-5 sm:mt-6 shadow-md shadow-black/10 hover:shadow-lg items-center justify-center gap-2"
+                >
+                  Next: Review Order{" "}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   >
-                    Next: Review Order{" "}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M5 12h14" />
-                      <path d="m12 5 7 7-7 7" />
-                    </svg>
-                  </button>
+                    <path d="M5 12h14" />
+                    <path d="m12 5 7 7-7 7" />
+                  </svg>
+                </button>
               </div>
 
               {/* Step 2 Form view (Readonly summary of details) */}

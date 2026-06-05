@@ -68,14 +68,19 @@ export default function AddMenuItemForm({ initialData, onItemAdded }) {
     try {
       const isEditing = !!initialData;
       const method = isEditing ? "PUT" : "POST";
-      
+
       // Auto-generate slug from name
-      const slug = formData.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+      const slug = formData.name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)+/g, "");
 
       const bodyPayload = {
         ...formData,
         price: parseFloat(formData.price),
-        discount_price: formData.discount_price ? parseFloat(formData.discount_price) : null,
+        discount_price: formData.discount_price
+          ? parseFloat(formData.discount_price)
+          : null,
         slug,
       };
 
@@ -211,7 +216,7 @@ export default function AddMenuItemForm({ initialData, onItemAdded }) {
               Is Available
             </label>
           </div>
-          
+
           <div className="flex items-center gap-2 p-2.5 border border-zinc-200 rounded-md bg-zinc-50 flex-1 sm:flex-none">
             <input
               type="checkbox"
@@ -269,7 +274,9 @@ export default function AddMenuItemForm({ initialData, onItemAdded }) {
         )}
 
         <div className="pt-2">
-          {!formData.image_url && <ImageUploader onImageUploaded={handleImageUploaded} />}
+          {!formData.image_url && (
+            <ImageUploader onImageUploaded={handleImageUploaded} />
+          )}
         </div>
 
         <button

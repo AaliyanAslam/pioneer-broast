@@ -7,9 +7,10 @@ import HeroCarousel from "./components/ui/HeroCarousel";
 import QuickFilters from "./components/ui/QuickFilters";
 
 // Ye page har dafa fresh data fetch karega
-export const revalidate = 0; 
+export const revalidate = 0;
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://pioneerbroaststore.vercel.app";
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://pioneerbroaststore.vercel.app";
 
 export default async function HomePage() {
   const { data: menuItems, error } = await supabase
@@ -61,7 +62,8 @@ export default async function HomePage() {
           "@type": "ImageObject",
           url: `${SITE_URL}/brandlogo.webp`,
         },
-        description: "Leading tech store in Pakistan for smartwatches, earbuds, and premium accessories.",
+        description:
+          "Leading tech store in Pakistan for smartwatches, earbuds, and premium accessories.",
       },
     ],
   };
@@ -72,8 +74,8 @@ export default async function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Navbar/>
-      
+      <Navbar />
+
       {/* Premium Hero Carousel */}
       <HeroCarousel />
 
@@ -82,13 +84,18 @@ export default async function HomePage() {
 
       {/* Menu Sections */}
       <div className="py-10 sm:py-24 px-4 sm:px-12 max-w-420 mx-auto space-y-16">
-        {(!menuItems || menuItems.length === 0) ? (
+        {!menuItems || menuItems.length === 0 ? (
           <div className="text-center py-20 text-zinc-500 border border-dashed border-zinc-300 rounded-2xl bg-zinc-50">
-            <p className="text-lg font-medium">No menu items found. Please add them from the admin panel.</p>
+            <p className="text-lg font-medium">
+              No menu items found. Please add them from the admin panel.
+            </p>
           </div>
         ) : (
           categories.map((category) => (
-            <section key={category} id={category.toLowerCase().replace(/\s+/g, '-')}>
+            <section
+              key={category}
+              id={category.toLowerCase().replace(/\s+/g, "-")}
+            >
               <div className="flex items-center justify-between mb-6 sm:mb-10">
                 <h2 className="text-2xl sm:text-3xl font-black text-black tracking-tight uppercase">
                   {category}
@@ -105,7 +112,6 @@ export default async function HomePage() {
           ))
         )}
       </div>
-
     </main>
   );
 }
