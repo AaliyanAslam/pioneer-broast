@@ -4,6 +4,7 @@ import Link from "next/link";
 import { PiCircleNotch, PiPackage, PiCaretDown, PiCaretUp, PiMagnifyingGlass, PiCaretLeft, PiCaretRight } from "react-icons/pi";
 import Image from "next/image";
 import Navbar from "@/app/components/Navbar";
+import toast from "react-hot-toast";
 
 const StatusBadge = ({ status }) => {
   const s = status?.toLowerCase() || "pending";
@@ -24,6 +25,7 @@ export default function GuestOrdersPage() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expandedOrder, setExpandedOrder] = useState(null);
+  const [cancellingOrder, setCancellingOrder] = useState(null);
 
   // New States for Search, Sort, and Pagination
   const [searchQuery, setSearchQuery] = useState("");
@@ -138,6 +140,29 @@ export default function GuestOrdersPage() {
     setExpandedOrder(expandedOrder === orderId ? null : orderId);
   };
 
+  const handleCancelOrder = async (orderId) => {
+    if (!window.confirm("Are you sure you want to cancel this order?")) return;
+    setCancellingOrder(orderId);
+    try {
+      const res = await fetch(`/api/orders/${orderId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "cancelled", cancel_reason: "Customer requested cancellation" })
+      });
+      const result = await res.json();
+      if (result.success) {
+        toast.success("Order cancelled successfully");
+        setOrders(orders.map(o => o.id === orderId ? { ...o, status: "cancelled", cancel_reason: "Customer requested cancellation" } : o));
+      } else {
+        toast.error(result.message || "Failed to cancel order");
+      }
+    } catch (error) {
+      toast.error("Error cancelling order");
+    } finally {
+      setCancellingOrder(null);
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -247,6 +272,15 @@ export default function GuestOrdersPage() {
                             <span className="text-[#38b000] text-[13px] font-semibold underline decoration-[#38b000]/30 underline-offset-4 hover:decoration-[#38b000] transition-all">
                               Track order
                             </span>
+                            {(order.status === 'pending' || order.status === 'processing') && (
+                              <button
+                                onClick={(e) => { e.stopPropagation(); handleCancelOrder(order.id); }}
+                                disabled={cancellingOrder === order.id}
+                                className="ml-2 text-red-600 text-[13px] font-semibold underline decoration-red-600/30 underline-offset-4 hover:decoration-red-600 transition-all disabled:opacity-50"
+                              >
+                                {cancellingOrder === order.id ? 'Cancelling...' : 'Cancel Order'}
+                              </button>
+                            )}
                           </div>
                           {order.status === 'cancelled' && order.cancel_reason && (
                             <div className="mt-1 flex items-center gap-2">

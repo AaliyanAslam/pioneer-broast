@@ -268,6 +268,7 @@ export default function OrdersList() {
   const [expandedOrderId, setExpandedOrderId] = useState(null);
   const [updatingId, setUpdatingId]           = useState(null);
   const [searchQuery, setSearchQuery]         = useState("");
+  const [adminStatusFilter, setAdminStatusFilter] = useState("All");
   const [currentPage, setCurrentPage]         = useState(1);
   const itemsPerPage = 10;
 
@@ -281,8 +282,8 @@ export default function OrdersList() {
     }
   );
 
-  // Reset to page 1 on search
-  useEffect(() => { setCurrentPage(1); }, [searchQuery]);
+  // Reset to page 1 on search or filter
+  useEffect(() => { setCurrentPage(1); }, [searchQuery, adminStatusFilter]);
 
   // ── Status update with optimistic mutate ─────────────────────────────────
   const handleStatusChange = async (orderId, newStatus, cancelReason = null) => {
@@ -327,6 +328,7 @@ export default function OrdersList() {
 
   // ── Filter & Paginate ────────────────────────────────────────────────────
   const filteredOrders = orders.filter((o) => {
+    if (adminStatusFilter !== "All" && o.status?.toLowerCase() !== adminStatusFilter.toLowerCase()) return false;
     const q = searchQuery.toLowerCase();
     return (
       (o.id && o.id.toLowerCase().includes(q)) ||
@@ -371,8 +373,25 @@ export default function OrdersList() {
   // ── Render ────────────────────────────────────────────────────────────────
   return (
     <div>
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
         <h2 className="text-2xl font-bold text-black">Recent Orders</h2>
+
+        {/* Status Filters */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 w-full sm:w-auto no-scrollbar">
+          {["All", "Pending", "Processing", "Delivered", "Failed", "Cancelled"].map((status) => (
+            <button
+              key={status}
+              onClick={() => setAdminStatusFilter(status)}
+              className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors ${
+                adminStatusFilter === status 
+                  ? "bg-black text-white" 
+                  : "bg-white border border-zinc-200 text-zinc-600 hover:bg-zinc-50"
+              }`}
+            >
+              {status}
+            </button>
+          ))}
+        </div>
 
         {/* Search Bar & Refresh */}
         <div className="flex items-center gap-3 w-full sm:w-auto">

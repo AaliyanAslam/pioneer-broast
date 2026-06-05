@@ -289,7 +289,7 @@ export default function CheckoutPage() {
                 Continue Ordering
               </Link>
               <Link
-                href="/guest-orders"
+                href="/my-orders"
                 className="w-full sm:w-auto bg-white border-2 border-zinc-200 text-black font-bold px-8 py-4 sm:py-3.5 rounded-full hover:border-black active:scale-[0.98] transition-all uppercase tracking-widest text-[13px] sm:text-sm flex items-center justify-center"
               >
                 See Your Order

@@ -121,7 +121,7 @@ export default function Navbar() {
             }`}
           >
             <Link
-              href="/guest-orders"
+              href="/my-orders"
               className="flex items-center gap-2 flex-1 truncate"
             >
               {activeOrder.status?.toLowerCase() !== "cancelled" ? (
@@ -149,7 +149,7 @@ export default function Navbar() {
 
             <div className="flex items-center gap-3 shrink-0 ml-4">
               <Link
-                href="/guest-orders"
+                href="/my-orders"
                 className="hidden sm:inline-block underline decoration-white/50 underline-offset-4 hover:decoration-white transition-all"
               >
                 Track Order &rarr;
@@ -319,6 +319,13 @@ export default function Navbar() {
                 className="text-[16px] font-bold uppercase tracking-wide border-b border-zinc-100 pb-4"
               >
                 About Us
+              </Link>
+              <Link
+                href="/my-orders"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-[16px] font-bold uppercase tracking-wide border-b border-zinc-100 pb-4"
+              >
+                My Orders
               </Link>
               <Link
                 href="/contact"
