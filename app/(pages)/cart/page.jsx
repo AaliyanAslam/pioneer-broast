@@ -32,7 +32,6 @@ export default function CheckoutPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
-  const [useQuickOrder, setUseQuickOrder] = useState(false);
 
   // Auth & Mode States
   const [checkoutStep, setCheckoutStep] = useState(1);
@@ -99,10 +98,6 @@ export default function CheckoutPage() {
           address: parsed.address || "",
           email: "", // Keep email empty if it's not saved
         });
-        // Enable Quick Order if they have all necessary info
-        if (parsed.name && parsed.phone) {
-          setUseQuickOrder(true);
-        }
       } catch (err) {
         console.error("Error parsing saved customer info", err);
       }
@@ -194,11 +189,11 @@ export default function CheckoutPage() {
     }
   };
 
-  const handleCheckout = async (e, isQuickOrder = false) => {
+  const handleCheckout = async (e) => {
     if (e) e.preventDefault();
 
-    // Only proceed to checkout if we are on step 2 OR it's a quick order
-    if (checkoutStep !== 2 && !isQuickOrder) return;
+    // Only proceed to checkout if we are on step 2
+    if (checkoutStep !== 2) return;
     setLoading(true);
 
     try {
@@ -483,79 +478,6 @@ export default function CheckoutPage() {
               className="space-y-4 sm:space-y-5 bg-transparent sm:bg-zinc-50 p-0 sm:p-6 sm:pb-6 rounded-none sm:rounded-xl border-none sm:border border-zinc-200 sm:shadow-sm"
             >
               <div className={`${checkoutStep === 2 && "hidden"}`}>
-                {useQuickOrder ? (
-                  <div className="bg-white border border-zinc-200 rounded-xl p-5 sm:p-6 shadow-sm space-y-4">
-                    <div className="flex items-center justify-between border-b border-zinc-100 pb-3">
-                      <h3 className="font-bold text-sm sm:text-base uppercase tracking-wider text-black flex items-center gap-2">
-                        <PiCheckCircle className="w-5 h-5 text-green-500" />{" "}
-                        Quick Order
-                      </h3>
-                      <button
-                        type="button"
-                        onClick={() => setUseQuickOrder(false)}
-                        className="text-xs font-semibold text-blue-600 underline uppercase tracking-wider hover:text-blue-800"
-                      >
-                        Edit
-                      </button>
-                    </div>
-
-                    <div className="space-y-3">
-                      <div>
-                        <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold mb-0.5">
-                          Payment Method
-                        </p>
-                        <p className="text-[13px] sm:text-sm font-bold text-black">
-                          Cash on Delivery
-                        </p>
-                      </div>
-
-                      <div className="pt-2 border-t border-zinc-100">
-                        <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold mb-0.5">
-                          Name
-                        </p>
-                        <p className="text-[13px] sm:text-sm font-bold text-black">
-                          {customerInfo.name}
-                        </p>
-                      </div>
-
-                      <div className="pt-2 border-t border-zinc-100">
-                        <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold mb-0.5">
-                          Phone #
-                        </p>
-                        <p className="text-[13px] sm:text-sm font-bold text-black">
-                          {customerInfo.phone}
-                        </p>
-                      </div>
-
-                      {orderType === "Delivery" && customerInfo.address && (
-                        <div className="pt-2 border-t border-zinc-100">
-                          <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold mb-0.5">
-                            Address
-                          </p>
-                          <p className="text-[13px] sm:text-sm font-bold text-black line-clamp-2">
-                            {customerInfo.address}
-                          </p>
-                          <p className="text-[11px] sm:text-xs text-zinc-500 mt-0.5">
-                            {deliveryCity}, {deliveryArea}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={(e) => handleCheckout(e, true)}
-                      disabled={loading}
-                      className="w-full bg-[#C0E212] text-black font-black uppercase tracking-widest py-3.5 sm:py-4 rounded-xl sm:rounded-full active:scale-[0.98] transition-all hover:bg-[#a6c40e] text-[12px] sm:text-sm mt-5 sm:mt-6 shadow-md shadow-black/10 hover:shadow-lg items-center justify-center gap-2 flex"
-                    >
-                      {loading ? (
-                        <PiCircleNotch className="w-5 h-5 animate-spin" />
-                      ) : (
-                        "Place Quick Order"
-                      )}
-                    </button>
-                  </div>
-                ) : (
                   <div className="space-y-2.5 sm:space-y-4">
                     <div>
                       <label className="block text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-0.5 ml-1">
@@ -628,9 +550,7 @@ export default function CheckoutPage() {
                       </>
                     )}
                   </div>
-                )}
 
-                {!useQuickOrder && (
                   <button
                     type="button"
                     onClick={handleNextStep}
@@ -652,7 +572,6 @@ export default function CheckoutPage() {
                       <path d="m12 5 7 7-7 7" />
                     </svg>
                   </button>
-                )}
               </div>
 
               {/* Step 2 Form view (Readonly summary of details) */}
