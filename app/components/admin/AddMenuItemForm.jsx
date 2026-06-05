@@ -161,6 +161,7 @@ export default function AddMenuItemForm({ initialData, onItemAdded }) {
               onChange={handleChange}
               className="w-full bg-transparent border border-zinc-200 rounded-md px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 transition-all"
             >
+              <option value="Most Popular">Most Popular</option>
               <option value="Broast">Broast</option>
               <option value="Burgers">Burgers</option>
               <option value="Deals">Deals</option>
