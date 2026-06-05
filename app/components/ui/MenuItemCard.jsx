@@ -51,7 +51,13 @@ export default function MenuItemCard({ item }) {
         </div>
 
         {/* Image Block */}
-        <div className="relative aspect-4/3 w-full overflow-hidden bg-zinc-50 shrink-0 border-b border-zinc-100">
+        <div 
+          className={`relative w-full overflow-hidden bg-zinc-50 shrink-0 border-b border-zinc-100 ${
+            item.category?.toLowerCase().includes('drink') 
+              ? 'aspect-[3/4]' 
+              : 'aspect-4/3'
+          }`}
+        >
           <Image
             src={imageUrl}
             alt={item.name}
