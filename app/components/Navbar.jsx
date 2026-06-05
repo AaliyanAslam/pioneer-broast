@@ -170,7 +170,7 @@ export default function Navbar() {
         <nav className="w-full relative z-30">
           <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 h-20 lg:h-[100px] flex items-center justify-between gap-4">
             {/* LEFT SIDE: Logo & Info Boxes */}
-            <div className="flex items-center gap-6 xl:gap-8">
+            <div className="flex items-center gap-2 sm:gap-6 xl:gap-8 flex-1 overflow-hidden">
               <Link
                 href="/"
                 className="shrink-0 flex items-center transition-all duration-200 active:scale-95"
@@ -180,10 +180,26 @@ export default function Navbar() {
                   alt="Pioneer Broast"
                   width={240}
                   height={100}
-                  className="w-auto h-16 sm:h-20 lg:h-[90px] object-contain"
+                  className="w-auto h-12 sm:h-16 lg:h-[90px] object-contain"
                   priority
                 />
               </Link>
+
+              {/* Mobile/Tablet Location Box (Hidden on desktop) */}
+              <button
+                onClick={() => setLocationModalOpen(true)}
+                className="flex xl:hidden items-center gap-1 active:scale-95 transition-transform overflow-hidden min-w-0"
+              >
+                <PiMapPin className="text-[#D21716] w-5 h-5 sm:w-6 sm:h-6 shrink-0" weight="fill" />
+                <div className="flex flex-col text-left overflow-hidden min-w-0">
+                  <span className="text-[11px] sm:text-[13px] font-bold text-black leading-tight truncate">
+                    {orderType === "Delivery" ? "Delivery" : orderType === "Pickup" ? "Pickup" : "Location"}
+                  </span>
+                  <span className="text-[9px] sm:text-[11px] text-zinc-500 max-w-[80px] sm:max-w-[140px] truncate leading-tight">
+                    {locationLabel || "Select location"}
+                  </span>
+                </div>
+              </button>
 
               {/* Info Boxes (Hidden on mobile/tablet) */}
               <div className="hidden xl:flex items-center gap-4">

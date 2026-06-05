@@ -295,7 +295,7 @@ export default function LocationModal() {
               </h2>
           
               {/* Toggle Switch */}
-              <div className="flex bg-[#e2e8f0] rounded-full p-1 w-[260px] mb-6 relative">
+              <div className="flex bg-[#e2e8f0] rounded-full p-1 w-full max-w-[280px] mb-6 relative">
                 <div
                   className={`absolute top-1 bottom-1 w-[calc(50%-4px)] bg-[#ed1c24] rounded-full transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
                     localType === "Pickup" ? "translate-x-full" : "translate-x-0"
@@ -320,7 +320,7 @@ export default function LocationModal() {
                 </button>
               </div>
 
-              <h3 className="text-[#334155] font-medium text-[15px] mb-3">
+              <h3 className="text-[#334155] font-medium text-[15px] mb-3 text-center">
                 Please select your location
               </h3>
               
@@ -328,7 +328,7 @@ export default function LocationModal() {
               <button
                 onClick={handleUseCurrentLocation}
                 disabled={isLocating}
-                className="flex items-center justify-center gap-2 bg-[#ed1c24] hover:bg-[#dc2626] text-white px-5 py-2 rounded-full text-[13px] font-medium transition-all mb-8 disabled:opacity-80 disabled:cursor-wait"
+                className="flex w-full sm:w-auto items-center justify-center gap-2 bg-[#ed1c24] hover:bg-[#dc2626] text-white px-5 py-2.5 rounded-full text-[13px] font-medium transition-all mb-6 sm:mb-8 shadow-sm disabled:opacity-80 disabled:cursor-wait active:scale-95"
               >
                 {isLocating ? (
                   <PiSpinner className="w-4 h-4 text-white animate-spin" />
@@ -338,7 +338,7 @@ export default function LocationModal() {
                 {isLocating ? "Detecting location..." : "Use Current Location"}
               </button>
               
-              <div className="grid grid-cols-4 md:grid-cols-5 gap-3 md:gap-4 w-full mb-8 justify-center">
+              <div className="flex sm:grid overflow-x-auto sm:overflow-visible sm:grid-cols-5 gap-3 md:gap-4 w-full mb-6 sm:mb-8 px-1 pb-4 sm:pb-0 snap-x snap-mandatory touch-pan-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none">
             {CITIES.map((city) => (
               <button
                 key={city}
@@ -346,15 +346,15 @@ export default function LocationModal() {
                   setLocalCity(city);
                   setLocalArea("");
                 }}
-                className={`flex flex-col items-center justify-center p-2 pt-3 rounded-xl border transition-all duration-200 active:scale-95 ${
+                className={`flex flex-col items-center justify-center p-2 pt-3 rounded-xl border transition-all duration-200 active:scale-95 shrink-0 snap-center w-[85px] sm:w-auto ${
                   localCity === city
-                    ? "border-[#ed1c24] bg-white"
+                    ? "border-[#ed1c24] bg-red-50 shadow-sm"
                     : "border-gray-200 bg-white hover:border-gray-300"
                 }`}
               >
                 <CityIcon city={city} active={localCity === city} />
                 <span
-                  className={`text-[12px] mt-1 font-normal text-center leading-tight transition-colors ${
+                  className={`text-[11px] sm:text-[12px] mt-1 font-medium text-center leading-tight transition-colors ${
                     localCity === city ? "text-[#ed1c24]" : "text-[#1e293b]"
                   }`}
                 >
