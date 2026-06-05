@@ -45,7 +45,7 @@ export default function ItemModal({ isOpen, onClose, item }) {
     });
 
     if (success) {
-      toast.success(`${quantity}x ${item.name} added to cart!`);
+      toast.success(`${quantity}x ${item.name} added to bucket!`);
       setTimeout(() => {
         setIsAdding(false);
         onClose();
@@ -178,7 +178,7 @@ export default function ItemModal({ isOpen, onClose, item }) {
               "Adding..."
             ) : (
               <span>
-                Add to Cart • Rs. {(activePrice * quantity).toLocaleString()}
+                Add to Bucket • Rs. {(activePrice * quantity).toLocaleString()}
               </span>
             )}
           </button>

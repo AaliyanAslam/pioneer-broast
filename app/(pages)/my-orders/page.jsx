@@ -316,53 +316,55 @@ export default function GuestOrdersPage() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-[#fafafa] text-black pt-24 sm:pt-32 pb-12 px-4 sm:px-8">
+      <div className="min-h-screen bg-[#fafafa] text-black pt-20 sm:pt-32 pb-12 px-2.5 sm:px-8">
         <div className="max-w-[900px] mx-auto">
-          <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <h1 className="text-2xl sm:text-3xl font-semibold text-black">
+          <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+            <h1 className="text-xl sm:text-3xl font-bold text-black px-1 sm:px-0">
               My Orders
             </h1>
 
             {/* Active Search & Sort UI */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-              <div className="flex items-center bg-white border border-zinc-200 rounded-lg px-3 py-2.5 sm:py-2 shadow-sm sm:w-56 focus-within:border-zinc-400 focus-within:ring-1 focus-within:ring-zinc-400 transition-all">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
+              <div className="flex items-center bg-white border border-zinc-200 rounded-lg px-2.5 py-2 sm:py-2 shadow-sm sm:w-56 focus-within:border-zinc-400 focus-within:ring-1 focus-within:ring-zinc-400 transition-all w-full">
                 <PiMagnifyingGlass className="w-4 h-4 text-zinc-400 mr-2 shrink-0" />
                 <input
                   type="text"
                   placeholder="Search orders..."
-                  className="bg-transparent text-sm w-full focus:outline-none font-medium"
+                  className="bg-transparent text-[13px] sm:text-sm w-full focus:outline-none font-medium"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
 
-              <div className="relative flex items-center bg-white border border-zinc-200 rounded-lg shadow-sm group">
-                <select
-                  className="appearance-none bg-transparent w-full sm:w-36 text-sm font-medium text-zinc-700 py-2.5 sm:py-2 pl-3 pr-8 focus:outline-none cursor-pointer"
-                  value={statusFilter}
-                  onChange={(e) => setStatusFilter(e.target.value)}
-                >
-                  <option value="all">All Statuses</option>
-                  <option value="pending">Pending</option>
-                  <option value="processing">Processing</option>
-                  <option value="delivered">Delivered</option>
-                  <option value="cancelled">Cancelled</option>
-                </select>
-                <PiCaretDown className="w-4 h-4 text-zinc-400 absolute right-3 pointer-events-none" />
-              </div>
+              <div className="grid grid-cols-2 gap-2 sm:flex sm:gap-3 w-full sm:w-auto">
+                <div className="relative flex items-center bg-white border border-zinc-200 rounded-lg shadow-sm group w-full">
+                  <select
+                    className="appearance-none bg-transparent w-full sm:w-36 text-[12px] sm:text-sm font-medium text-zinc-700 py-2 pl-2 pr-6 sm:pl-3 sm:pr-8 focus:outline-none cursor-pointer"
+                    value={statusFilter}
+                    onChange={(e) => setStatusFilter(e.target.value)}
+                  >
+                    <option value="all">All Statuses</option>
+                    <option value="pending">Pending</option>
+                    <option value="processing">Processing</option>
+                    <option value="delivered">Delivered</option>
+                    <option value="cancelled">Cancelled</option>
+                  </select>
+                  <PiCaretDown className="w-3 h-3 sm:w-4 sm:h-4 text-zinc-400 absolute right-2 sm:right-3 pointer-events-none" />
+                </div>
 
-              <div className="relative flex items-center bg-white border border-zinc-200 rounded-lg shadow-sm group">
-                <select
-                  className="appearance-none bg-transparent w-full sm:w-40 text-sm font-medium text-zinc-700 py-2.5 sm:py-2 pl-3 pr-8 focus:outline-none cursor-pointer"
-                  value={sortOption}
-                  onChange={(e) => setSortOption(e.target.value)}
-                >
-                  <option value="newest">Newest first</option>
-                  <option value="oldest">Oldest first</option>
-                  <option value="price_high">Price: High to Low</option>
-                  <option value="price_low">Price: Low to High</option>
-                </select>
-                <PiCaretDown className="w-4 h-4 text-zinc-400 absolute right-3 pointer-events-none" />
+                <div className="relative flex items-center bg-white border border-zinc-200 rounded-lg shadow-sm group w-full">
+                  <select
+                    className="appearance-none bg-transparent w-full sm:w-40 text-[12px] sm:text-sm font-medium text-zinc-700 py-2 pl-2 pr-6 sm:pl-3 sm:pr-8 focus:outline-none cursor-pointer"
+                    value={sortOption}
+                    onChange={(e) => setSortOption(e.target.value)}
+                  >
+                    <option value="newest">Newest first</option>
+                    <option value="oldest">Oldest first</option>
+                    <option value="price_high">Price: High to Low</option>
+                    <option value="price_low">Price: Low to High</option>
+                  </select>
+                  <PiCaretDown className="w-3 h-3 sm:w-4 sm:h-4 text-zinc-400 absolute right-2 sm:right-3 pointer-events-none" />
+                </div>
               </div>
             </div>
           </div>
@@ -422,30 +424,30 @@ export default function GuestOrdersPage() {
                   return (
                     <div
                       key={order.id}
-                      className="bg-white rounded-[1.25rem] shadow-sm border border-zinc-200 overflow-hidden transition-all duration-300"
+                      className="bg-white rounded-xl sm:rounded-[1.25rem] shadow-sm border border-zinc-200 overflow-hidden transition-all duration-300"
                     >
                       {/* Card Header */}
                       <div
-                        className="p-4 sm:p-5 cursor-pointer flex flex-col sm:flex-row justify-between sm:items-center gap-4 hover:bg-zinc-50/50 transition-colors"
+                        className="p-2.5 sm:p-5 cursor-pointer flex flex-col sm:flex-row justify-between sm:items-center gap-2 sm:gap-4 hover:bg-zinc-50/50 transition-colors"
                         onClick={() => toggleOrder(order.id)}
                       >
-                        <div className="flex flex-col gap-1.5">
-                          <div className="flex items-center flex-wrap gap-2 sm:gap-3">
-                            <span className="font-medium text-black text-[15px]">
-                              Order #{order.id.slice(0, 12)}
+                        <div className="flex flex-col gap-1">
+                          <div className="flex items-center flex-wrap gap-2">
+                            <span className="font-bold text-black text-[13px] sm:text-[15px]">
+                              Order #{order.id.slice(0, 8)}
                             </span>
-                            <span className="text-zinc-500 text-[13px] font-normal">
+                            <span className="text-zinc-500 text-[10px] sm:text-[13px] font-medium">
                               {formatOrderDate(order.created_at)}
                             </span>
                           </div>
                         </div>
 
-                        <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-4 sm:gap-6 border-t border-zinc-100 pt-3 sm:border-0 sm:pt-0">
-                          <div className="flex items-center -space-x-2">
+                        <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-2 sm:gap-6 border-t border-zinc-100 pt-2 sm:border-0 sm:pt-0">
+                          <div className="flex items-center -space-x-1.5 sm:-space-x-2">
                             {realItems.slice(0, 3).map((item, idx) => (
                               <div
                                 key={idx}
-                                className="w-10 h-10 rounded-lg border border-zinc-200 bg-white overflow-hidden shadow-sm z-10 relative"
+                                className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg border border-zinc-200 bg-white overflow-hidden shadow-sm z-10 relative"
                               >
                                 <Image
                                   src={
@@ -459,26 +461,26 @@ export default function GuestOrdersPage() {
                               </div>
                             ))}
                             {realItems.length > 3 && (
-                              <div className="w-10 h-10 rounded-lg border border-zinc-200 bg-zinc-50 flex items-center justify-center text-[10px] font-semibold text-zinc-500 shadow-sm z-0 relative">
+                              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg border border-zinc-200 bg-zinc-50 flex items-center justify-center text-[9px] sm:text-[10px] font-bold text-zinc-500 shadow-sm z-0 relative">
                                 +{realItems.length - 3}
                               </div>
                             )}
                           </div>
 
-                          <div className="text-right flex items-center gap-4">
+                          <div className="text-right flex items-center gap-3">
                             <div>
-                              <p className="text-[11px] text-zinc-400 font-medium mb-0.5">
+                              <p className="text-[10px] sm:text-[11px] text-zinc-400 font-medium mb-0.5">
                                 Total
                               </p>
-                              <p className="text-[15px] font-semibold text-black">
+                              <p className="text-[14px] sm:text-[15px] font-bold text-black">
                                 Rs. {order.total_amount}
                               </p>
                             </div>
-                            <div className="w-8 h-8 rounded-full flex items-center justify-center bg-zinc-50 border border-zinc-200 hover:bg-zinc-100 transition-colors text-zinc-600">
+                            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center bg-zinc-50 border border-zinc-200 hover:bg-zinc-100 transition-colors text-zinc-600">
                               {isExpanded ? (
-                                <PiCaretUp className="w-4 h-4" />
+                                <PiCaretUp className="w-3 h-3 sm:w-4 sm:h-4" />
                               ) : (
-                                <PiCaretDown className="w-4 h-4" />
+                                <PiCaretDown className="w-3 h-3 sm:w-4 sm:h-4" />
                               )}
                             </div>
                           </div>
@@ -489,14 +491,14 @@ export default function GuestOrdersPage() {
                       <div
                         className={`transition-all duration-300 ease-in-out ${isExpanded ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"} overflow-hidden`}
                       >
-                        <div className="px-4 sm:px-6 pb-6 pt-2 border-t border-zinc-100 mt-2">
+                        <div className="px-2.5 sm:px-6 pb-4 sm:pb-6 pt-2 border-t border-zinc-100 mt-2">
                           {/* Tracking History / Status Details */}
-                          <div className="mb-6 bg-zinc-50/50 rounded-2xl p-5 border border-zinc-100">
+                          <div className="mb-4 sm:mb-6 bg-zinc-50/50 rounded-xl sm:rounded-2xl p-3 sm:p-5 border border-zinc-100">
                             <div className="flex items-center justify-between mb-4">
-                              <h4 className="text-[14px] font-medium text-black">
+                              <h4 className="text-[12px] sm:text-[14px] font-bold text-black">
                                 Order Status
                               </h4>
-                              <div className="flex items-center gap-3">
+                              <div className="flex items-center gap-2 sm:gap-3">
                                 <StatusBadge status={order.status} />
                                 {order.status === "pending" && (
                                   <button
@@ -588,10 +590,10 @@ export default function GuestOrdersPage() {
                                     className="relative z-10 flex flex-col items-center gap-2 bg-zinc-50/50 px-1"
                                   >
                                     <div
-                                      className={`w-3.5 h-3.5 rounded-full border-2 ${isCompleted || isCurrent ? (isError ? "bg-red-500 border-red-500" : "bg-blue-500 border-blue-500") : "bg-white border-zinc-300"}`}
+                                      className={`w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full border-2 ${isCompleted || isCurrent ? (isError ? "bg-red-500 border-red-500" : "bg-blue-500 border-blue-500") : "bg-white border-zinc-300"}`}
                                     ></div>
                                     <span
-                                      className={`text-[11px] font-medium absolute top-6 whitespace-nowrap ${isCurrent ? (isError ? "text-red-500" : "text-blue-600") : isCompleted ? "text-zinc-600" : "text-zinc-400"}`}
+                                      className={`text-[9px] sm:text-[11px] font-bold sm:font-medium absolute top-5 sm:top-6 whitespace-nowrap ${isCurrent ? (isError ? "text-red-500" : "text-blue-600") : isCompleted ? "text-zinc-600" : "text-zinc-400"}`}
                                     >
                                       {step}
                                     </span>
@@ -629,10 +631,10 @@ export default function GuestOrdersPage() {
                               return (
                                 <div
                                   key={idx}
-                                  className="bg-white border border-zinc-200 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm"
+                                  className="bg-white border border-zinc-200 rounded-xl sm:rounded-2xl p-2.5 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4 shadow-[0_2px_8px_rgba(0,0,0,0.02)]"
                                 >
-                                  <div className="flex items-start gap-4 flex-1">
-                                    <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl border border-zinc-100 bg-zinc-50 overflow-hidden shrink-0">
+                                  <div className="flex items-start gap-2.5 sm:gap-4 flex-1">
+                                    <div className="relative w-10 h-10 sm:w-16 sm:h-16 rounded-xl border border-zinc-100 bg-zinc-50 overflow-hidden shrink-0">
                                       <Image
                                         src={
                                           item.image_url ||
@@ -644,36 +646,36 @@ export default function GuestOrdersPage() {
                                       />
                                     </div>
                                     <div className="flex flex-col">
-                                      <h3 className="font-medium text-black text-[14px]">
+                                      <h3 className="font-bold text-black text-[13px] sm:text-[14px]">
                                         {item.name}
                                       </h3>
-                                      <p className="text-[13px] text-zinc-500 mt-0.5">
+                                      <p className="text-[11px] sm:text-[13px] text-zinc-500 font-medium">
                                         {item.category}
                                       </p>
                                       {item.specialInstructions && (
-                                        <p className="text-[12px] text-zinc-400 mt-0.5 font-normal">
+                                        <p className="text-[11px] text-zinc-400 mt-0.5 font-medium">
                                           Note: {item.specialInstructions}
                                         </p>
                                       )}
                                     </div>
                                   </div>
 
-                                  <div className="flex items-center justify-between w-full sm:w-auto sm:gap-12 mt-2 sm:mt-0 pt-3 sm:pt-0 border-t border-zinc-100 sm:border-0">
+                                  <div className="flex items-center justify-between w-full sm:w-auto sm:gap-12 mt-1 sm:mt-0 pt-2 sm:pt-0 border-t border-zinc-100 sm:border-0">
                                     <div className="text-left sm:text-right flex items-center sm:block gap-2">
                                       {hasDiscount && (
                                         <span className="text-[11px] line-through text-zinc-400 sm:block hidden">
                                         </span>
                                       )}
-                                      <p className="text-[13px] font-medium text-zinc-600">
+                                      <p className="text-[12px] sm:text-[13px] font-bold text-zinc-600">
                                         Rs. {activePrice}{" "}
-                                        <span className="text-zinc-400 mx-1">
+                                        <span className="text-zinc-400 mx-0.5 font-normal">
                                           x
                                         </span>{" "}
-                                        {item.quantity} pc
+                                        {item.quantity}
                                       </p>
                                     </div>
-                                    <div className="text-right sm:w-24 shrink-0">
-                                      <p className="text-[15px] font-semibold text-black">
+                                    <div className="text-right shrink-0">
+                                      <p className="text-[14px] sm:text-[15px] font-bold text-black">
                                         Rs. {activePrice * item.quantity}
                                       </p>
                                     </div>
@@ -683,37 +685,44 @@ export default function GuestOrdersPage() {
                             })}
                           </div>
 
-                          <div className="mt-4 bg-zinc-50 border border-zinc-100 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row justify-between gap-4">
+                          <div className="mt-3 sm:mt-4 bg-[#f9fafb] border border-zinc-100 rounded-xl sm:rounded-2xl p-3 sm:p-5 flex flex-col sm:flex-row justify-between gap-3 sm:gap-4 shadow-sm">
                             <div>
-                              <p className="text-[11px] font-medium text-zinc-400 uppercase tracking-widest mb-2">
+                              <p className="text-[10px] sm:text-[11px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5 sm:mb-2">
                                 Delivery Details
                               </p>
-                              <p className="text-[14px] font-medium text-black">
+                              <p className="text-[13px] sm:text-[14px] font-bold text-black">
                                 {order.customer_name}{" "}
-                                <span className="text-zinc-400 font-normal">
+                                <span className="text-zinc-400 font-medium">
                                   | {order.customer_phone}
                                 </span>
                               </p>
-                              <p className="text-[13px] text-zinc-600 mt-0.5 font-normal">
+                              <p className="text-[12px] sm:text-[13px] text-zinc-600 mt-0.5 font-medium leading-snug">
                                 {order.customer_address},{" "}
                                 {order.delivery_area || order.delivery_city}
                               </p>
+                              <div className="mt-2.5 inline-flex items-center gap-1.5 bg-[#e63946]/10 border border-[#e63946]/20 px-2 py-1 rounded-md">
+                                <span className="text-[#e63946] text-[10px] font-black uppercase tracking-widest">COD</span>
+                                <span className="text-zinc-700 text-[11px] font-bold">Cash on Delivery</span>
+                              </div>
                             </div>
-                            <div className="sm:text-right">
-                              <p className="text-[11px] font-medium text-zinc-400 uppercase tracking-widest mb-2">
+                            <div className="sm:text-right border-t border-zinc-200 sm:border-0 pt-3 sm:pt-0 mt-1 sm:mt-0">
+                              <p className="text-[10px] sm:text-[11px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5 sm:mb-2">
                                 Summary
                               </p>
-                              <p className="text-[13px] text-zinc-600 font-normal">
-                                Subtotal: Rs.{" "}
+                              <p className="text-[12px] sm:text-[13px] text-zinc-600 font-medium flex justify-between sm:block">
+                                <span>Subtotal:</span>
+                                <span>Rs. {" "}
                                 {order.total_amount -
-                                  (order.order_type === "Delivery" ? 150 : 0)}
+                                  (order.order_type === "Delivery" ? 150 : 0)}</span>
                               </p>
-                              <p className="text-[13px] text-zinc-600 mb-1 font-normal">
-                                Delivery Fee: Rs.{" "}
-                                {order.order_type === "Delivery" ? 150 : 0}
+                              <p className="text-[12px] sm:text-[13px] text-zinc-600 mb-1.5 font-medium flex justify-between sm:block">
+                                <span>Delivery Fee:</span>
+                                <span>Rs. {" "}
+                                {order.order_type === "Delivery" ? 150 : 0}</span>
                               </p>
-                              <p className="text-[15px] font-semibold text-black mt-1">
-                                Total: Rs. {order.total_amount}
+                              <p className="text-[14px] sm:text-[15px] font-black text-black mt-1 flex justify-between sm:block border-t border-zinc-200 sm:border-0 pt-2 sm:pt-0">
+                                <span className="sm:hidden">Total:</span>
+                                <span>Rs. {order.total_amount}</span>
                               </p>
                             </div>
                           </div>

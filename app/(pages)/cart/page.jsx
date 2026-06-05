@@ -311,10 +311,10 @@ export default function CheckoutPage() {
               <PiShoppingCart className="w-10 h-10 text-zinc-300" />
             </div>
             <h1 className="text-2xl sm:text-4xl font-black uppercase tracking-tighter mb-3 sm:mb-4 text-black">
-              Your cart is empty
+              Your bucket is empty
             </h1>
             <p className="text-zinc-500 mb-6 sm:mb-8 max-w-md text-[13px] sm:text-base font-medium px-2 sm:px-4">
-              Looks like you haven&apos;t added anything to your cart yet.
+              Looks like you haven&apos;t added anything to your bucket yet.
               Discover our latest collection of premium tech gear.
             </p>
             <Link

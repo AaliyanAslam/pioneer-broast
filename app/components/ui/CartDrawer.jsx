@@ -232,7 +232,7 @@ export default function CartDrawer({ isOpen, onClose }) {
         {/* Header */}
         <div className="flex items-center justify-between p-4 sm:p-6 pb-4 relative z-10 bg-white shadow-sm">
           <h2 className="text-[20px] sm:text-[22px] font-medium text-zinc-900 tracking-tight">
-            Your Cart
+            Your Bucket
           </h2>
           <button
             onClick={onClose}
@@ -247,21 +247,25 @@ export default function CartDrawer({ isOpen, onClose }) {
           {cart.length === 0 ? (
             <div className="flex flex-col h-full overflow-y-auto pb-6 custom-scrollbar">
               <div className="flex flex-col items-center justify-center py-16 text-center px-4">
-                <div className="w-20 h-20 bg-zinc-50 rounded-full flex items-center justify-center mb-4">
-                  <PiTote className="w-10 h-10 text-zinc-300" />
+                <div className="w-24 h-24 bg-red-50 rounded-full flex items-center justify-center mb-6 border border-red-100">
+                  <PiTote className="w-10 h-10 text-[#e63946]" weight="bold" />
                 </div>
-                <h3 className="text-xl font-bold text-black mb-2 tracking-tight">
-                  Your cart is empty
+                <h3 className="text-[20px] font-black text-black mb-2 tracking-tight uppercase">
+                  Your bucket is empty
                 </h3>
-                <p className="text-sm text-zinc-500 mb-6 max-w-[250px] leading-relaxed">
-                  Looks like you haven't added anything to your cart yet.
+                <p className="text-[14px] text-zinc-500 mb-8 max-w-[240px] leading-relaxed font-medium">
+                  Looks like you haven't added anything to your bucket yet.
                 </p>
                 <Link
-                  href="/"
+                  href="/#broast"
                   onClick={onClose}
-                  className="bg-[#C0E212] text-black font-bold px-8 py-3.5 rounded-xl hover:bg-[#a6c40e] transition-all active:scale-95 text-[13px] shadow-sm uppercase tracking-widest"
+                  className="group flex items-center justify-center gap-2 bg-[#e63946] text-white font-black px-8 py-4 rounded-xl hover:bg-red-600 transition-colors active:scale-95 text-[14px] uppercase tracking-widest w-full max-w-[240px]"
                 >
                   Order Now
+                  <PiArrowRight
+                    className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+                    weight="bold"
+                  />
                 </Link>
               </div>
             </div>

@@ -27,7 +27,7 @@ export default function MenuItemCard({ item }) {
 
     const success = addToCart(item);
     if (success) {
-      toast.success(`${item.name} added to cart!`);
+      toast.success(`${item.name} added to bucket!`);
     }
 
     setTimeout(() => {

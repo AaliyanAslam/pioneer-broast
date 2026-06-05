@@ -9,14 +9,17 @@ const BANNERS = [
   {
     id: 1,
     image: "/b1.webp",
+    href: "/#burgers",
   },
   {
     id: 2,
     image: "/b2.webp",
+    href: "/#broast",
   },
   {
     id: 3,
     image: "/b3.webp",
+    href: "/#burgers",
   },
 ];
 
@@ -24,6 +27,7 @@ export default function HeroCarousel() {
   const scrollRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [hasDragged, setHasDragged] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
 
@@ -60,6 +64,7 @@ export default function HeroCarousel() {
 
   const handleMouseDown = (e) => {
     setIsDragging(true);
+    setHasDragged(false); // Reset drag state on fresh click
     setStartX(e.pageX - scrollRef.current.offsetLeft);
     setScrollLeft(scrollRef.current.scrollLeft);
   };
@@ -74,7 +79,8 @@ export default function HeroCarousel() {
 
   const handleMouseMove = (e) => {
     if (!isDragging) return;
-    e.preventDefault();
+    e.preventDefault(); // Prevent text selection/ghost drag
+    setHasDragged(true); // Mark that a drag is actively occurring
     const x = e.pageX - scrollRef.current.offsetLeft;
     const walk = (x - startX) * 2; // scroll speed multiplier
     scrollRef.current.scrollLeft = scrollLeft - walk;
@@ -97,10 +103,19 @@ export default function HeroCarousel() {
         {BANNERS.map((banner, index) => (
           <div 
             key={banner.id} 
-            className="w-[95%] sm:w-full shrink-0 snap-center relative aspect-video sm:aspect-video lg:aspect-21/9 xl:aspect-2.5/1 rounded-2xl sm:rounded-none overflow-hidden"
+            className="w-[95%] sm:w-full shrink-0 snap-center relative aspect-video sm:aspect-video lg:aspect-21/9 xl:aspect-2.5/1 rounded-2xl sm:rounded-none overflow-hidden block"
           >
             {/* Background Image */}
-            <div className="absolute inset-0">
+            <Link 
+              href={banner.href} 
+              className="absolute inset-0 block cursor-pointer"
+              onClick={(e) => {
+                if (hasDragged) {
+                  e.preventDefault(); // Don't navigate if user was dragging
+                }
+              }}
+              draggable={false}
+            >
               <Image 
                 src={banner.image} 
                 alt={`Hero Banner ${index + 1}`} 
@@ -109,8 +124,9 @@ export default function HeroCarousel() {
                 priority={index === 0}
                 quality={100}
                 unoptimized={true}
+                draggable={false}
               />
-            </div>
+            </Link>
           </div>
         ))}
       </div>

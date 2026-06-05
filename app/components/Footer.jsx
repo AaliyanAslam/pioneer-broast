@@ -19,7 +19,7 @@ const LINKS = {
   ],
   support: [
     { label: "Track Order",    href: "/my-orders" },
-    { label: "Cart",           href: "/cart" },
+    { label: "Bucket",           href: "/cart" },
     { label: "Privacy Policy", href: "#" },
     { label: "Terms of Use",   href: "#" },
   ],
