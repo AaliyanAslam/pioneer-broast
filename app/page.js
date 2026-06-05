@@ -83,7 +83,7 @@ export default async function HomePage() {
       <QuickFilters />
 
       {/* Menu Sections */}
-      <div className="py-10 sm:py-24 px-4 sm:px-12 max-w-420 mx-auto space-y-16">
+      <div className="py-10 sm:py-24 px-4 sm:px-12 max-w-[1400px] mx-auto space-y-16">
         {!menuItems || menuItems.length === 0 ? (
           <div className="text-center py-20 text-zinc-500 border border-dashed border-zinc-300 rounded-2xl bg-zinc-50">
             <p className="text-lg font-medium">
@@ -103,7 +103,7 @@ export default async function HomePage() {
                 <div className="h-px bg-zinc-200 flex-1 ml-6"></div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
                 {groupedItems[category].map((item) => (
                   <MenuItemCard key={item.id} item={item} />
                 ))}

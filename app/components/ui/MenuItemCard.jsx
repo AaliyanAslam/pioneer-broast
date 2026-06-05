@@ -39,51 +39,58 @@ export default function MenuItemCard({ item }) {
     <>
       <div
         onClick={() => setIsModalOpen(true)}
-        className="group block bg-white rounded-2xl border border-zinc-200 overflow-hidden  hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex-col h-full relative cursor-pointer max-w-[340px] mx-auto w-full"
+        className="group block bg-white rounded-[16px] sm:rounded-[20px] border border-zinc-100 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full relative cursor-pointer w-full"
       >
         {/* Badges */}
-        <div className="absolute top-3 left-3 flex flex-col gap-2 z-20 pointer-events-none">
+        <div className="absolute top-2 left-2 flex flex-col gap-2 z-20 pointer-events-none">
           {item.is_spicy && (
-            <span className="bg-[#e63946] text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm uppercase tracking-wider flex items-center gap-1">
+            <span className="bg-[#e63946] text-white text-[9px] sm:text-[10px] font-semibold px-2 py-1 rounded-md shadow-sm uppercase tracking-wider flex items-center gap-1 backdrop-blur-sm">
               🌶️ Spicy
             </span>
           )}
         </div>
 
         {/* Image Block */}
-        <div className="relative aspect-4/3 w-full overflow-hidden bg-zinc-50 border-b border-zinc-100 shrink-0">
+        <div className="relative aspect-[4/3] w-full overflow-hidden bg-zinc-50 shrink-0 border-b border-zinc-100">
           <Image
             src={imageUrl}
             alt={item.name}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            quality={80}
-            className="object-cover object-center transition-transform duration-500 ease-out"
+            quality={90}
+            className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
           />
         </div>
 
-        {/* Content layout */}
-        <div className="p-4 sm:p-5 flex flex-col flex-1">
-          <div className="mb-1">
-            <h3 className="text-[15px] sm:text-base font-bold text-black leading-tight capitalize line-clamp-1">
+        {/* Content layout below image */}
+        <div className="p-2.5 sm:p-4 flex flex-col flex-1 bg-[#edd6ac]">
+          <div className="mb-0.5 sm:mb-1">
+            <h3 className="text-[13px] sm:text-[16px] font-bold text-zinc-900 leading-tight capitalize line-clamp-1 group-hover:text-[#e63946] transition-colors">
               {item.name}
             </h3>
           </div>
 
-          <p className="text-[12px] sm:text-[13px] text-zinc-500 line-clamp-2 mb-4 leading-snug">
+          <p className="text-[10px] sm:text-[13px] text-zinc-700 line-clamp-2 mb-2 sm:mb-4 leading-snug font-medium">
             {item.description}
           </p>
 
-          <div className="mt-auto flex items-center justify-between pt-2">
-            <span className="text-lg sm:text-xl font-extrabold text-black">
-              Rs.{" "}
-              {item.discount_price && item.discount_price < item.price
-                ? item.discount_price
-                : item.price}
-            </span>
+          <div className="mt-auto flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2">
+            <div className="flex flex-col">
+              <span className="text-[14px] sm:text-[18px] font-bold text-zinc-900 tracking-tight">
+                Rs.{" "}
+                {item.discount_price && item.discount_price < item.price
+                  ? item.discount_price
+                  : item.price}
+              </span>
+              {item.discount_price && item.discount_price < item.price && (
+                <span className="text-[10px] sm:text-[12px] text-zinc-500 line-through font-medium mt-[-2px]">
+                  Rs. {item.price}
+                </span>
+              )}
+            </div>
 
             {quantityInCart > 0 ? (
-              <div className="flex items-center border border-[#e63946] rounded-lg overflow-hidden shadow-sm h-8 sm:h-9">
+              <div className="flex items-center justify-between w-full sm:w-auto border border-[#e63946] rounded-lg sm:rounded-xl overflow-hidden shadow-sm h-7 sm:h-9 bg-[#e63946]">
                 <button
                   onClick={(e) => {
                     e.preventDefault();
@@ -94,11 +101,11 @@ export default function MenuItemCard({ item }) {
                       updateQuantity(item.id, "decrease");
                     }
                   }}
-                  className="w-8 sm:w-9 h-full flex items-center justify-center bg-[#e63946] text-white hover:bg-[#d62828] text-lg font-medium transition-colors"
+                  className="w-7 sm:w-9 h-full flex items-center justify-center text-white hover:bg-[#d62828] text-sm sm:text-lg font-bold transition-colors"
                 >
                   -
                 </button>
-                <span className="tabular-nums font-black text-sm sm:text-base text-[#e63946] w-8 sm:w-9 h-full flex items-center justify-center bg-white select-none">
+                <span className="tabular-nums font-bold text-[12px] sm:text-base text-[#e63946] flex-1 sm:w-8 h-full flex items-center justify-center bg-white select-none text-center">
                   {quantityInCart}
                 </span>
                 <button
@@ -107,7 +114,7 @@ export default function MenuItemCard({ item }) {
                     e.stopPropagation();
                     updateQuantity(item.id, "increase");
                   }}
-                  className="w-8 sm:w-9 h-full flex items-center justify-center bg-[#e63946] text-white hover:bg-[#d62828] text-lg font-medium transition-colors"
+                  className="w-7 sm:w-9 h-full flex items-center justify-center text-white hover:bg-[#d62828] text-sm sm:text-lg font-bold transition-colors"
                 >
                   +
                 </button>
@@ -116,9 +123,17 @@ export default function MenuItemCard({ item }) {
               <button
                 onClick={handleQuickAdd}
                 disabled={isAdding}
-                className="bg-[#e63946] text-white font-black text-[13px] sm:text-sm uppercase tracking-wider px-5 sm:px-6 py-1.5 sm:py-2 rounded-lg transition-all duration-300 hover:bg-[#d62828] active:scale-[0.98] disabled:opacity-50 shadow-sm"
+                className="bg-[#e63946] text-white font-bold text-[10px] sm:text-[12px] uppercase tracking-widest px-3 sm:px-5 py-1.5 sm:py-2 rounded-lg sm:rounded-xl transition-all duration-300 hover:bg-[#d62828] active:scale-[0.96] disabled:opacity-50 shadow-sm flex items-center justify-center w-full sm:w-auto sm:min-w-[70px]"
               >
-                {isAdding ? "..." : "ADD"}
+                {isAdding ? (
+                  <span className="flex items-center gap-0.5 sm:gap-1">
+                    <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-white rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-white rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-white rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                  </span>
+                ) : (
+                  "ADD"
+                )}
               </button>
             )}
           </div>
