@@ -788,15 +788,16 @@ export default function GuestOrdersPage() {
       </div>
       {/* Processing Modal */}
       {showProcessingModal && (
-        <div className="fixed inset-0 z-[999] flex items-center justify-center px-4" onClick={() => setShowProcessingModal(false)}>
+        <div className="fixed inset-0 z-999 flex items-center justify-center px-4" onClick={() => setShowProcessingModal(false)}>
           <div className="absolute inset-0 bg-black/60 backdrop-blur-[6px] transition-opacity duration-300"></div>
           <div 
-            className="relative bg-white rounded-[2rem] shadow-2xl max-w-[400px] w-full overflow-hidden"
+            className="relative bg-white rounded-4xl shadow-2xl max-w-[400px] w-full overflow-hidden"
             onClick={(e) => e.stopPropagation()}
             style={{ animation: 'modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1)' }}
           >
             {/* Top accent bar */}
-            <div className="h-1.5 w-full bg-gradient-to-r from-amber-400 via-orange-400 to-red-400"></div>
+            <div className="h-1.5 w-full bg-linear-to-r from-amber-400 via-orange-400 to-red-400"></div>
+
             
             <div className="p-7 pb-6">
               <button 
@@ -807,7 +808,7 @@ export default function GuestOrdersPage() {
               </button>
 
               {/* Animated cooking icon */}
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-100 flex items-center justify-center mx-auto mb-5">
+              <div className="w-20 h-20 rounded-full bg-linear-to-br from-amber-50 to-orange-50 border-2 border-amber-100 flex items-center justify-center mx-auto mb-5">
                 <span className="text-4xl" style={{ animation: 'cookBounce 2s ease-in-out infinite' }}>👨‍🍳</span>
               </div>
 

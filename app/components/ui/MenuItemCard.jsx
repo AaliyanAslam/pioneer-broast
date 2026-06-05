@@ -39,7 +39,7 @@ export default function MenuItemCard({ item }) {
     <>
       <div
         onClick={() => setIsModalOpen(true)}
-        className="group block bg-white rounded-[16px] sm:rounded-[20px] border border-zinc-100 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full relative cursor-pointer w-full"
+        className="group block bg-white rounded-[16px] sm:rounded-[20px] border border-zinc-100 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex-col h-full relative cursor-pointer w-full"
       >
         {/* Badges */}
         <div className="absolute top-2 left-2 flex flex-col gap-2 z-20 pointer-events-none">
@@ -51,7 +51,7 @@ export default function MenuItemCard({ item }) {
         </div>
 
         {/* Image Block */}
-        <div className="relative aspect-[4/3] w-full overflow-hidden bg-zinc-50 shrink-0 border-b border-zinc-100">
+        <div className="relative aspect-4/3 w-full overflow-hidden bg-zinc-50 shrink-0 border-b border-zinc-100">
           <Image
             src={imageUrl}
             alt={item.name}
