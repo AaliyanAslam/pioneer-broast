@@ -83,15 +83,11 @@ const CATEGORIES = [
 
 export default function QuickFilters() {
   return (
-    <section className="py-6 sm:py-8 px-4 sm:px-12 max-w-420 mx-auto">
-      <div className="flex items-center justify-between mb-3 sm:mb-4">
-        <h2 className="text-lg sm:text-2xl font-extrabold text-black tracking-tight">
-          {/* Shop by Category */}
-        </h2>
-      </div>
+    <section className="py-4 sm:py-8 sm:px-12 max-w-[1400px] sm:max-w-420 mx-auto">
+   
 
       {/* Scrollable Container */}
-      <div className="flex overflow-x-auto flex justify-center gap-3 sm:gap-6 pb-2 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none">
+      <div className="flex overflow-x-auto sm:justify-center gap-2 sm:gap-6 pb-4 pt-2 px-4 sm:px-0 snap-x snap-mandatory touch-pan-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none">
         {CATEGORIES.map((cat) => (
           <Link
             href={`/category/${cat.slug}`}
