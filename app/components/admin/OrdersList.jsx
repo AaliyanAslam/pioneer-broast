@@ -9,6 +9,68 @@ import toast from "react-hot-toast";
 import { gsap } from "gsap";
 import fetcher from "@/app/lib/fetcher";
 
+const AdminCountdownTimer = ({ createdAt, status, estimatedTime }) => {
+  const [timeLeft, setTimeLeft] = useState(null);
+
+  useEffect(() => {
+    if (status !== "pending" && status !== "processing") return;
+
+    const calculateTimeLeft = () => {
+      const match = String(estimatedTime || "45").match(/\d+/);
+      const minutesToAdd = match ? parseInt(match[0]) : 45;
+
+      const orderTime = new Date(createdAt).getTime();
+      const targetTime = orderTime + minutesToAdd * 60 * 1000;
+      const now = new Date().getTime();
+      const diff = targetTime - now;
+
+      if (diff <= 0) return { minutes: 0, seconds: 0 };
+
+      return {
+        minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds: Math.floor((diff % (1000 * 60)) / 1000),
+      };
+    };
+
+    setTimeLeft(calculateTimeLeft());
+    const timerId = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+
+    return () => clearInterval(timerId);
+  }, [createdAt, status, estimatedTime]);
+
+  if (status !== "pending" && status !== "processing") return null;
+  if (!timeLeft) return null;
+
+  return (
+    <div className="mt-4 bg-[#1e1e24] text-white rounded-lg p-3 flex flex-col items-center justify-center w-full shadow-inner border border-zinc-800">
+      <p className="text-zinc-400 text-[9px] font-semibold uppercase tracking-widest mb-1.5 text-center">
+        Customer sees this countdown
+      </p>
+      <div className="flex items-center justify-center gap-4">
+        <div className="flex flex-col items-center">
+          <span className="text-2xl font-black tabular-nums tracking-tight">
+            {timeLeft.minutes.toString().padStart(2, "0")}
+          </span>
+          <span className="text-zinc-500 text-[8px] uppercase font-bold tracking-widest mt-0.5">
+            Mins
+          </span>
+        </div>
+        <div className="w-px h-6 bg-zinc-700"></div>
+        <div className="flex flex-col items-center">
+          <span className="text-2xl font-black tabular-nums tracking-tight">
+            {timeLeft.seconds.toString().padStart(2, "0")}
+          </span>
+          <span className="text-zinc-500 text-[8px] uppercase font-bold tracking-widest mt-0.5">
+            Secs
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const ExpandedRow = ({ order, onStatusChange }) => {
   const contentRef = React.useRef(null);
 
@@ -70,23 +132,31 @@ const ExpandedRow = ({ order, onStatusChange }) => {
                         const hasDiscount = item.discount_price && item.discount_price < item.price;
                         
                         return (
-                          <div key={i} className="flex flex-col border-b border-zinc-100 pb-3 mb-3 last:border-0 last:pb-0 last:mb-0">
-                            <div className="flex justify-between items-start">
-                              <div>
-                                <p className="text-sm font-semibold text-black">{item.name}</p>
-                                <p className="text-[11px] font-medium text-zinc-500 mt-0.5">
-                                  {item.quantity} pc × Rs. {activePrice}
-                                </p>
-                              </div>
-                              <p className="text-sm font-bold text-black">
-                                Rs. {activePrice * item.quantity}
-                              </p>
-                            </div>
-                            {item.specialInstructions && (
-                              <div className="mt-2 bg-amber-50 text-amber-700 text-xs p-2 rounded-md border border-amber-100 font-medium">
-                                Note: {item.specialInstructions}
+                          <div key={i} className="flex gap-3 border-b border-zinc-100 pb-3 mb-3 last:border-0 last:pb-0 last:mb-0">
+                            {item.image_url && (
+                              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg bg-zinc-50 border border-zinc-200 shrink-0 overflow-hidden relative">
+                                <img src={item.image_url} alt={item.name} className="w-full h-full object-cover" />
                               </div>
                             )}
+                            <div className="flex-1 flex flex-col">
+                              <div className="flex justify-between items-start">
+                                <div>
+                                  <p className="text-sm font-semibold text-black">{item.name}</p>
+                                  <p className="text-[11px] font-medium text-zinc-500 mt-0.5">
+                                    {item.category && <span className="uppercase text-[9px] bg-zinc-100 px-1 rounded mr-1">{item.category}</span>}
+                                    {item.quantity} pc × Rs. {activePrice}
+                                  </p>
+                                </div>
+                                <p className="text-sm font-bold text-black">
+                                  Rs. {activePrice * item.quantity}
+                                </p>
+                              </div>
+                              {item.specialInstructions && (
+                                <div className="mt-2 bg-amber-50 text-amber-700 text-xs p-2 rounded-md border border-amber-100 font-medium">
+                                  Note: {item.specialInstructions}
+                                </div>
+                              )}
+                            </div>
                           </div>
                         )
                       })
@@ -200,7 +270,7 @@ const ExpandedRow = ({ order, onStatusChange }) => {
                       type="text" 
                       value={time}
                       onChange={(e) => setTime(e.target.value)}
-                      placeholder="e.g. 45-50 mins" 
+                      placeholder="e.g. 45" 
                       className="flex-1 bg-zinc-50 border border-zinc-200 rounded-lg px-2.5 py-1.5 text-sm text-black font-medium focus:outline-none focus:border-zinc-400 transition-colors"
                     />
                     <button 
@@ -211,6 +281,11 @@ const ExpandedRow = ({ order, onStatusChange }) => {
                       {savingTime ? <PiCircleNotch className="w-4 h-4 animate-spin mx-auto" /> : "Save"}
                     </button>
                   </div>
+                  <AdminCountdownTimer 
+                    createdAt={order.created_at} 
+                    status={order.status} 
+                    estimatedTime={order.estimated_time} 
+                  />
                 </div>
 
                 {/* Bill Summary */}

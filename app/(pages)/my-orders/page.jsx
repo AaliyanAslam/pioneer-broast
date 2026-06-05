@@ -43,15 +43,18 @@ const formatOrderDate = (dateString) => {
   return `${day} ${month}, ${time}`;
 };
 
-const CountdownTimer = ({ createdAt, status }) => {
+const CountdownTimer = ({ createdAt, status, estimatedTime }) => {
   const [timeLeft, setTimeLeft] = useState(null);
 
   useEffect(() => {
     if (status !== "pending" && status !== "processing") return;
 
     const calculateTimeLeft = () => {
+      const match = String(estimatedTime || "45").match(/\d+/);
+      const minutesToAdd = match ? parseInt(match[0]) : 45;
+
       const orderTime = new Date(createdAt).getTime();
-      const targetTime = orderTime + 45 * 60 * 1000; // 45 minutes
+      const targetTime = orderTime + minutesToAdd * 60 * 1000;
       const now = new Date().getTime();
       const diff = targetTime - now;
 
@@ -531,6 +534,7 @@ export default function GuestOrdersPage() {
                             <CountdownTimer
                               createdAt={order.created_at}
                               status={order.status}
+                              estimatedTime={order.estimated_time}
                             />
 
                             {/* Timeline UI */}

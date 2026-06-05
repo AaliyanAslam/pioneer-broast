@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import useSWR from "swr";
 import fetcher from "@/app/lib/fetcher";
 import { PiCircleNotch, PiTrendUp, PiCurrencyDollar, PiTote, PiPackage, PiClock, PiUsers } from "react-icons/pi";
@@ -12,51 +12,61 @@ export default function AnalyticsDashboard({ onNavigate }) {
   const { data: orders = [], isLoading: loadingOrders } = useSWR("/api/orders", fetcher, { refreshInterval: 5000 });
   const { data: products = [], isLoading: loadingProducts } = useSWR("/api/products", fetcher, { refreshInterval: 30000 });
 
+  const [selectedDateStr, setSelectedDateStr] = useState(new Date().toISOString().split('T')[0]);
+
   const metrics = useMemo(() => {
     if (!orders.length) return null;
 
-    const now = new Date();
-    const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
-    const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const targetDate = new Date(selectedDateStr);
+    const startOfDay = new Date(targetDate);
+    startOfDay.setHours(0, 0, 0, 0);
+    
+    const endOfDay = new Date(targetDate);
+    endOfDay.setHours(23, 59, 59, 999);
 
-    let totalRevenue = 0;
-    let pastHourRevenue = 0;
-    let pastHourOrders = 0;
+    const sevenDaysAgo = new Date(endOfDay.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+    let selectedDayRevenue = 0;
+    let selectedDayOrders = 0;
     let pendingOrders = 0;
 
-    // Daily revenue for the last 7 days chart
+    // Daily revenue for the 7 days ending on target date
     const dailyMap = {};
     for (let i = 6; i >= 0; i--) {
-      const d = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
-      dailyMap[d.toLocaleDateString("en-US", { weekday: "short" })] = 0;
+      const d = new Date(endOfDay.getTime() - i * 24 * 60 * 60 * 1000);
+      dailyMap[d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })] = 0;
     }
+
+    const productSales = {};
 
     orders.forEach((order) => {
       const orderDate = new Date(order.created_at);
       const amount = Number(order.total_amount) || 0;
+      const isSelectedDay = orderDate >= startOfDay && orderDate <= endOfDay;
 
-      // Only count non-failed/non-cancelled for revenue
+      if (order.status === "pending" || order.status === "processing") {
+        pendingOrders++;
+      }
+
       if (order.status !== "failed" && order.status !== "cancelled") {
-        totalRevenue += amount;
+        if (isSelectedDay) {
+          selectedDayRevenue += amount;
+          selectedDayOrders++;
 
-        if (orderDate >= oneHourAgo) {
-          pastHourRevenue += amount;
+          if (order.items) {
+            order.items.forEach(item => {
+              if (!productSales[item.name]) productSales[item.name] = 0;
+              productSales[item.name] += item.quantity || 1;
+            });
+          }
         }
 
-        if (orderDate >= sevenDaysAgo) {
-          const dayStr = orderDate.toLocaleDateString("en-US", { weekday: "short" });
+        if (orderDate > sevenDaysAgo && orderDate <= endOfDay) {
+          const dayStr = orderDate.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
           if (dailyMap[dayStr] !== undefined) {
             dailyMap[dayStr] += amount;
           }
         }
-      }
-
-      if (orderDate >= oneHourAgo) {
-        pastHourOrders++;
-      }
-
-      if (order.status === "pending") {
-        pendingOrders++;
       }
     });
 
@@ -65,32 +75,19 @@ export default function AnalyticsDashboard({ onNavigate }) {
       revenue: dailyMap[day]
     }));
 
-    // Top selling products logic (dummy proxy: count frequency in items)
-    const productSales = {};
-    orders.forEach(order => {
-      if (order.status !== "failed" && order.status !== "cancelled" && order.items) {
-        order.items.forEach(item => {
-          if (!productSales[item.name]) productSales[item.name] = 0;
-          productSales[item.name] += item.quantity || 1;
-        });
-      }
-    });
-
     const topProducts = Object.keys(productSales)
       .map(name => ({ name: name.length > 15 ? name.substring(0, 15) + "..." : name, sales: productSales[name] }))
       .sort((a, b) => b.sales - a.sales)
       .slice(0, 5);
 
     return {
-      totalRevenue,
-      pastHourRevenue,
-      totalOrders: orders.length,
-      pastHourOrders,
+      selectedDayRevenue,
+      selectedDayOrders,
       pendingOrders,
       revenueChartData,
       topProducts
     };
-  }, [orders]);
+  }, [orders, selectedDateStr]);
 
   if (loadingOrders || loadingProducts) {
     return (
@@ -132,35 +129,41 @@ export default function AnalyticsDashboard({ onNavigate }) {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-semibold text-black mb-1">Analytics Dashboard</h2>
-        <p className="text-sm text-zinc-500">Real-time overview of your store's performance.</p>
+      <div className="flex flex-col sm:flex-row justify-between sm:items-end mb-6 gap-4">
+        <div>
+          <h2 className="text-2xl font-semibold text-black mb-1">Analytics Dashboard</h2>
+          <p className="text-sm text-zinc-500">Overview of your store's performance for the selected date.</p>
+        </div>
+        <div className="flex items-center gap-3 bg-white border border-zinc-200 p-2 rounded-xl shadow-sm">
+          <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest ml-2">Date:</label>
+          <input 
+            type="date" 
+            value={selectedDateStr}
+            onChange={(e) => setSelectedDateStr(e.target.value)}
+            className="bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-1.5 text-sm font-bold text-black focus:outline-none focus:border-black cursor-pointer"
+          />
+        </div>
       </div>
 
       {/* KPI Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 group">
         <StatCard 
-          title="Total Revenue" 
-          value={`Rs. ${metrics.totalRevenue.toLocaleString()}`} 
-          subtext={`+ Rs. ${metrics.pastHourRevenue.toLocaleString()} past hour`}
+          title="Revenue (Selected Day)" 
+          value={`Rs. ${metrics.selectedDayRevenue.toLocaleString()}`} 
           icon={PiCurrencyDollar}
-          trend="up"
           targetTab="orders"
         />
         <StatCard 
-          title="Total Orders" 
-          value={metrics.totalOrders} 
-          subtext={`+ ${metrics.pastHourOrders} orders past hour`}
+          title="Orders (Selected Day)" 
+          value={metrics.selectedDayOrders} 
           icon={PiTote}
-          trend="up"
           targetTab="orders"
         />
         <StatCard 
-          title="Pending Orders" 
+          title="Active Orders (Overall)" 
           value={metrics.pendingOrders} 
-          subtext="Requires attention"
+          subtext="Pending / Processing"
           icon={PiClock}
-          trend="neutral"
           targetTab="orders"
         />
         <StatCard 
