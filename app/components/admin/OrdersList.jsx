@@ -72,6 +72,28 @@ const AdminCountdownTimer = ({ createdAt, status, estimatedTime }) => {
   );
 };
 
+const NewOrderBadge = ({ createdAt }) => {
+  const [isNew, setIsNew] = useState(false);
+
+  useEffect(() => {
+    const checkNew = () => {
+      setIsNew(Date.now() - new Date(createdAt).getTime() < 5 * 60 * 1000);
+    };
+    checkNew();
+    const interval = setInterval(checkNew, 30000); // Check every 30 seconds
+    return () => clearInterval(interval);
+  }, [createdAt]);
+
+  if (!isNew) return null;
+
+  return (
+    <span className="inline-flex items-center gap-1.5 bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-[10px] font-bold border border-green-200 shadow-sm">
+      <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+      New Order
+    </span>
+  );
+};
+
 const ExpandedRow = ({ order, onStatusChange }) => {
   const contentRef = React.useRef(null);
 
@@ -377,6 +399,7 @@ export default function OrdersList() {
   const [updatingId, setUpdatingId]           = useState(null);
   const [searchQuery, setSearchQuery]         = useState("");
   const [adminStatusFilter, setAdminStatusFilter] = useState("All");
+  const [dateFilter, setDateFilter]           = useState("Today");
   const [currentPage, setCurrentPage]         = useState(1);
   const itemsPerPage = 10;
 
@@ -391,7 +414,7 @@ export default function OrdersList() {
   );
 
   // Reset to page 1 on search or filter
-  useEffect(() => { setCurrentPage(1); }, [searchQuery, adminStatusFilter]);
+  useEffect(() => { setCurrentPage(1); }, [searchQuery, adminStatusFilter, dateFilter]);
 
   // ── Status update with optimistic mutate ─────────────────────────────────
   const handleStatusChange = async (orderId, newStatus, cancelReason = null) => {
@@ -437,6 +460,16 @@ export default function OrdersList() {
   // ── Filter & Paginate ────────────────────────────────────────────────────
   const filteredOrders = orders.filter((o) => {
     if (adminStatusFilter !== "All" && o.status?.toLowerCase() !== adminStatusFilter.toLowerCase()) return false;
+    
+    if (dateFilter !== "All Time" && o.created_at) {
+      const orderDateStr = new Date(o.created_at).toDateString();
+      const todayStr = new Date().toDateString();
+      const yesterdayStr = new Date(Date.now() - 86400000).toDateString();
+      
+      if (dateFilter === "Today" && orderDateStr !== todayStr) return false;
+      if (dateFilter === "Yesterday" && orderDateStr !== yesterdayStr) return false;
+    }
+
     const q = searchQuery.toLowerCase();
     return (
       (o.id && o.id.toLowerCase().includes(q)) ||
@@ -485,20 +518,38 @@ export default function OrdersList() {
         <h2 className="text-2xl font-bold text-black">Recent Orders</h2>
 
         {/* Status Filters */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 w-full sm:w-auto no-scrollbar">
-          {["All", "Pending", "Processing", "Delivered", "Failed", "Cancelled"].map((status) => (
-            <button
-              key={status}
-              onClick={() => setAdminStatusFilter(status)}
-              className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors ${
-                adminStatusFilter === status 
-                  ? "bg-black text-white" 
-                  : "bg-white border border-zinc-200 text-zinc-600 hover:bg-zinc-50"
-              }`}
-            >
-              {status}
-            </button>
-          ))}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 overflow-x-auto pb-2 sm:pb-0 w-full lg:w-auto no-scrollbar">
+          <div className="flex items-center gap-2 pr-2 sm:border-r border-zinc-200">
+            {["Today", "Yesterday", "All Time"].map((range) => (
+              <button
+                key={range}
+                onClick={() => setDateFilter(range)}
+                className={`px-3 py-1.5 rounded-full text-[11px] font-black uppercase tracking-wider whitespace-nowrap transition-colors ${
+                  dateFilter === range 
+                    ? "bg-[#C0E212] text-black shadow-sm" 
+                    : "bg-white border border-zinc-200 text-zinc-600 hover:bg-zinc-50"
+                }`}
+              >
+                {range}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-2">
+            {["All", "Pending", "Processing", "Delivered", "Failed", "Cancelled"].map((status) => (
+              <button
+                key={status}
+                onClick={() => setAdminStatusFilter(status)}
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors ${
+                  adminStatusFilter === status 
+                    ? "bg-black text-white" 
+                    : "bg-white border border-zinc-200 text-zinc-600 hover:bg-zinc-50"
+                }`}
+              >
+                {status}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Search Bar & Refresh */}
@@ -554,7 +605,10 @@ export default function OrdersList() {
                       }
                     >
                       <td className="p-3 sm:p-4 text-[13px] font-mono text-zinc-500 whitespace-nowrap">
-                        <span className="font-semibold text-zinc-900 block">{order.id}</span>
+                        <div className="flex items-center gap-2">
+                          <span className="font-semibold text-zinc-900 block">{order.id}</span>
+                          <NewOrderBadge createdAt={order.created_at} />
+                        </div>
                         <span className="md:hidden flex items-center gap-1 mt-1 text-[11px]">
                           <PiCalendar className="w-3 h-3" /> {formatDateTime(order.created_at).split(',')[0]}
                         </span>
