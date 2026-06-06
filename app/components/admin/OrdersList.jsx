@@ -246,7 +246,9 @@ const ExpandedRow = ({ order, onStatusChange }) => {
                       <p className="text-sm text-zinc-600 leading-relaxed font-medium">
                         {order.customer_address}, {order.delivery_area || order.delivery_city}
                       </p>
-                      {order.customer_address && (
+
+                      {/* maps */}
+                      {/* {order.customer_address && (
                         <a 
                           href={`https://maps.google.com/?q=${encodeURIComponent(order.customer_address + " " + (order.delivery_area || order.delivery_city))}`}
                           target="_blank"
@@ -255,7 +257,7 @@ const ExpandedRow = ({ order, onStatusChange }) => {
                         >
                           Open in Google Maps
                         </a>
-                      )}
+                      )} */}
                     </div>
                   </div>
                 </div>
