@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import useSWR from "swr";
+import { FaWhatsapp } from "react-icons/fa";
 import {
   PiCircleNotch, PiCaretDown, PiCaretUp, PiMapPin, PiCalendar, PiCaretLeft, PiCaretRight, PiArrowsClockwise, PiPhone,
   PiCheckCircle, PiClock, PiTruck, PiPackage, PiXCircle, PiMagnifyingGlass, PiEye, PiFunnel
@@ -309,6 +310,36 @@ const ExpandedRow = ({ order, onStatusChange }) => {
                       <span className="text-lg font-bold text-[#C0E212]">Rs. {order.total_amount}</span>
                     </div>
                   </div>
+                </div>
+
+                <div className="flex flex-col gap-2 mt-2">
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const text = `*New Order - Pioneer Broast*\nOrder ID: ${order.id}\nCustomer: ${order.customer_name}\nPhone: ${order.customer_phone}\nAddress: ${order.customer_address}, ${order.delivery_area || order.delivery_city || "Karachi"}\n\n*Items:*\n${realItems.map(item => `- ${item.quantity}x ${item.name} (Rs. ${(item.discount_price || item.price) * item.quantity})`).join('\n')}\n\n*Total Amount:* Rs. ${order.total_amount}`;
+                      navigator.clipboard.writeText(text).then(() => {
+                        toast.success("Order details copied!");
+                      }).catch(() => {
+                        toast.error("Failed to copy");
+                      });
+                    }}
+                    className="w-full bg-white border border-zinc-200 text-black font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-zinc-50 active:scale-[0.98] transition-all shadow-sm"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    Copy Order Details
+                  </button>
+
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const text = `*New Order - Pioneer Broast*\nOrder ID: ${order.id}\nCustomer: ${order.customer_name}\nPhone: ${order.customer_phone}\nAddress: ${order.customer_address}, ${order.delivery_area || order.delivery_city || "Karachi"}\n\n*Items:*\n${realItems.map(item => `- ${item.quantity}x ${item.name} (Rs. ${(item.discount_price || item.price) * item.quantity})`).join('\n')}\n\n*Total Amount:* Rs. ${order.total_amount}`;
+                      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+                    }}
+                    className="w-full bg-[#25D366] text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-[#128C7E] active:scale-[0.98] transition-all shadow-sm"
+                  >
+                    <FaWhatsapp className="w-5 h-5" />
+                    Send Details to Rider
+                  </button>
                 </div>
 
               </div>
