@@ -7,6 +7,7 @@ import AnalyticsDashboard from "./AnalyticsDashboard";
 import CouponsManager from "./CouponsManager";
 import { PiPackage, PiTote, PiPlusCircle, PiSquaresFour, PiSignOut, PiList, PiX, PiChartBar, PiTicket } from "react-icons/pi";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 export default function AdminDashboardClient() {
@@ -38,9 +39,8 @@ export default function AdminDashboardClient() {
       
       {/* Mobile Header (Visible only on mobile) */}
       <div className="md:hidden bg-white border-b border-zinc-200 px-6 py-4 flex items-center justify-between sticky top-0 z-30 shadow-sm">
-        <Link href="/" className="text-xl font-black tracking-tighter text-black flex items-center gap-2">
-          <PiSquaresFour className="w-5 h-5" />
-          KOVA<span className="text-zinc-400">Admin</span>
+        <Link href="/" className="flex items-center gap-2 active:scale-95 transition-transform">
+          <Image src="/brandlogo.webp" alt="Pioneer Broast Admin" width={140} height={40} className="object-contain h-8 w-auto" />
         </Link>
         <button 
           onClick={() => setIsSidebarOpen(!isSidebarOpen)} 
@@ -61,9 +61,8 @@ export default function AdminDashboardClient() {
       {/* Left Sidebar */}
       <aside className={`w-64 bg-white border-r border-zinc-200 flex flex-col fixed h-full z-50 transition-transform duration-300 ease-in-out ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}>
         <div className="p-6 border-b border-zinc-200 hidden md:flex items-center justify-between">
-          <Link href="/" className="text-2xl font-black tracking-tighter text-black flex items-center gap-2">
-            <PiSquaresFour className="w-6 h-6 text-[#C0E212]" />
-            KOVA<span className="text-zinc-400">Admin</span>
+          <Link href="/" className="flex items-center gap-2 active:scale-95 transition-transform">
+            <Image src="/brandlogo.webp" alt="Pioneer Broast Admin" width={180} height={50} className="object-contain h-10 w-auto" />
           </Link>
         </div>
 

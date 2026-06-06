@@ -1,12 +1,13 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { PiTrash, PiPencil, PiCircleNotch } from "react-icons/pi";
+import { PiTrash, PiPencil, PiCircleNotch, PiMagnifyingGlass } from "react-icons/pi";
 import toast from "react-hot-toast";
 
 export default function ProductsList({ onEditItem }) {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const fetchItems = async () => {
     setLoading(true);
@@ -51,11 +52,29 @@ export default function ProductsList({ onEditItem }) {
     return <div className="flex justify-center p-12"><PiCircleNotch className="w-10 h-10 animate-spin text-[#C0E212]" /></div>;
   }
 
+  const filteredItems = items.filter(item => 
+    item.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    item.category?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <h2 className="text-2xl font-bold text-black">Manage Menu</h2>
-        <button onClick={fetchItems} className="text-sm text-zinc-500 hover:text-black underline">Refresh</button>
+        
+        <div className="flex w-full sm:w-auto items-center gap-3">
+          <div className="relative w-full sm:w-64">
+            <PiMagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 w-4 h-4" />
+            <input 
+              type="text" 
+              placeholder="Search items..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-white border border-zinc-200 rounded-lg pl-9 pr-4 py-2 text-sm focus:outline-none focus:border-black focus:ring-1 focus:ring-black"
+            />
+          </div>
+          <button onClick={fetchItems} className="text-sm text-zinc-500 hover:text-black underline shrink-0">Refresh</button>
+        </div>
       </div>
 
       <div className="bg-white border border-zinc-200 rounded-xl overflow-hidden shadow-sm">
@@ -71,12 +90,12 @@ export default function ProductsList({ onEditItem }) {
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-100">
-              {items.length === 0 ? (
+              {filteredItems.length === 0 ? (
                 <tr>
                   <td colSpan="5" className="p-8 text-center text-zinc-500">No menu items found.</td>
                 </tr>
               ) : (
-                items.map((item) => (
+                filteredItems.map((item) => (
                   <tr key={item.id} className="hover:bg-zinc-50 transition-colors">
                     <td className="p-3 sm:p-4">
                       <div className="relative w-10 h-10 sm:w-12 sm:h-12 rounded-md overflow-hidden bg-zinc-100 border border-zinc-200">
