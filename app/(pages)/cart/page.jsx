@@ -83,6 +83,8 @@ export default function CheckoutPage() {
     email: "",
     phone: "",
     address: "",
+    landmark: "",
+    riderNote: "",
   });
   const [hasMounted, setHasMounted] = useState(false);
 
@@ -96,6 +98,8 @@ export default function CheckoutPage() {
           name: parsed.name || "",
           phone: parsed.phone || "",
           address: parsed.address || "",
+          landmark: parsed.landmark || "",
+          riderNote: parsed.riderNote || "",
           email: "", // Keep email empty if it's not saved
         });
       } catch (err) {
@@ -203,7 +207,7 @@ export default function CheckoutPage() {
         body: JSON.stringify({
           customer_name: customerInfo.name,
           customer_phone: customerInfo.phone,
-          customer_address: customerInfo.address,
+          customer_address: `${customerInfo.address}${customerInfo.landmark ? ` (Landmark: ${customerInfo.landmark})` : ""}${customerInfo.riderNote ? ` | Note for Rider: ${customerInfo.riderNote}` : ""}`,
           order_type: orderType,
           delivery_city: deliveryCity,
           delivery_area: deliveryArea,
@@ -247,6 +251,8 @@ export default function CheckoutPage() {
             name: customerInfo.name,
             phone: customerInfo.phone,
             address: customerInfo.address,
+            landmark: customerInfo.landmark,
+            riderNote: customerInfo.riderNote,
           }),
         );
 
@@ -352,14 +358,14 @@ export default function CheckoutPage() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-[#f8f9fa] text-zinc-900 pb-36 sm:pb-32 lg:pb-24 pt-20 lg:pt-24 relative selection:bg-[#C0E212] selection:text-black font-sans">
+      <div className="min-h-screen bg-[#f8f9fa] text-zinc-900 pb-36 sm:pb-32 lg:pb-24 pt-16 lg:pt-24 relative selection:bg-[#C0E212] selection:text-black font-sans">
         {/* Header / Back Button */}
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-5 sm:mb-8 lg:mb-10 flex items-center justify-between z-10 relative">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-3 sm:mb-8 lg:mb-10 flex items-center justify-between z-10 relative">
           {checkoutStep === 2 ? (
             <button
               type="button"
               onClick={() => setCheckoutStep(1)}
-              className="group inline-flex items-center gap-2 text-[13px] sm:text-sm font-medium uppercase tracking-widest text-zinc-500 hover:text-black transition-colors bg-white lg:bg-transparent px-3.5 sm:px-4 py-2 sm:py-2.5 lg:p-0 rounded-xl lg:rounded-none shadow-sm lg:shadow-none border border-zinc-200 lg:border-transparent"
+              className="group inline-flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-sm font-bold uppercase tracking-widest text-zinc-500 hover:text-black transition-colors"
             >
               <PiArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:-translate-x-1 transition-transform" />
               Back to Details
@@ -367,7 +373,7 @@ export default function CheckoutPage() {
           ) : (
             <Link
               href="/"
-              className="group inline-flex items-center gap-2 text-[13px] sm:text-sm font-medium uppercase tracking-widest text-zinc-500 hover:text-black transition-colors bg-white lg:bg-transparent px-3.5 sm:px-4 py-2 sm:py-2.5 lg:p-0 rounded-xl lg:rounded-none shadow-sm lg:shadow-none border border-zinc-200 lg:border-transparent"
+              className="group inline-flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-sm font-bold uppercase tracking-widest text-zinc-500 hover:text-black transition-colors"
             >
               <PiArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:-translate-x-1 transition-transform" />
               Back to Store
@@ -381,8 +387,8 @@ export default function CheckoutPage() {
         >
           {/* Left: Checkout Form (7 columns) */}
           <div className="order-2 lg:order-1 lg:col-span-7 flex flex-col">
-            <div className="mb-5 sm:mb-8">
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold uppercase tracking-tighter text-black mb-1.5 sm:mb-2">
+            <div className="mb-4 sm:mb-8">
+              <h1 className="text-xl sm:text-3xl lg:text-4xl font-semibold uppercase tracking-tight text-black mb-1 sm:mb-2">
                 Checkout
               </h1>
               <p className="text-zinc-500 text-[13px] sm:text-sm font-medium">
@@ -486,6 +492,34 @@ export default function CheckoutPage() {
                           />
                         </div>
                       </div>
+
+                      <div className="space-y-1 sm:space-y-1.5">
+                        <label className="block text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-zinc-500 ml-1">
+                          Near Landmark <span className="normal-case text-zinc-400 font-medium">(Optional)</span>
+                        </label>
+                        <input
+                          type="text"
+                          name="landmark"
+                          value={customerInfo.landmark}
+                          onChange={handleChange}
+                          className="w-full bg-[#f4f5f7] border border-transparent hover:border-zinc-300 rounded-sm px-3.5 sm:px-4 py-3 sm:py-3.5 text-[13px] sm:text-sm text-black focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all font-medium"
+                          placeholder="e.g. Near ABC Mart"
+                        />
+                      </div>
+
+                      <div className="space-y-1 sm:space-y-1.5">
+                        <label className="block text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-zinc-500 ml-1">
+                          Note for Rider <span className="normal-case text-zinc-400 font-medium">(Optional)</span>
+                        </label>
+                        <textarea
+                          rows="2"
+                          name="riderNote"
+                          value={customerInfo.riderNote}
+                          onChange={handleChange}
+                          className="w-full bg-[#f4f5f7] border border-transparent hover:border-zinc-300 rounded-sm px-3.5 sm:px-4 py-3 sm:py-3.5 text-[13px] sm:text-sm text-black focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all font-medium resize-none leading-relaxed"
+                          placeholder="e.g. Call upon arrival..."
+                        />
+                      </div>
                     </>
                   )}
                 </div>
@@ -493,7 +527,7 @@ export default function CheckoutPage() {
                 <button
                   type="button"
                   onClick={handleNextStep}
-                  className="w-full bg-black text-white font-semibold uppercase tracking-widest py-3.5 sm:py-4 rounded-xl sm:rounded-2xl active:scale-[0.98] transition-all hover:bg-zinc-800 text-[13px] sm:text-sm mt-6 sm:mt-8 shadow-xl shadow-black/10 flex items-center justify-center gap-2 group"
+                  className="hidden lg:flex w-full bg-black text-white font-semibold uppercase tracking-widest py-3.5 sm:py-4 rounded-xl sm:rounded-2xl active:scale-[0.98] transition-all hover:bg-zinc-800 text-[13px] sm:text-sm mt-6 sm:mt-8 shadow-xl shadow-black/10 items-center justify-center gap-2 group"
                 >
                   Continue to Review
                   <PiArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 rotate-180 group-hover:translate-x-1 transition-transform" />
@@ -542,9 +576,19 @@ export default function CheckoutPage() {
                     <p className="text-[13px] sm:text-sm text-black font-medium leading-relaxed mb-0.5 sm:mb-1">
                       {customerInfo.address || "—"}
                     </p>
-                    <p className="text-[13px] sm:text-sm text-zinc-600 font-medium">
+                    <p className="text-[13px] sm:text-sm text-zinc-600 font-medium mb-1.5">
                       {deliveryCity}, {deliveryArea}
                     </p>
+                    {(customerInfo.landmark || customerInfo.riderNote) && (
+                      <div className="mt-2 pt-2 border-t border-zinc-200/60 space-y-1">
+                        {customerInfo.landmark && (
+                          <p className="text-[12px] text-zinc-500 font-medium"><span className="text-zinc-400">Landmark:</span> {customerInfo.landmark}</p>
+                        )}
+                        {customerInfo.riderNote && (
+                          <p className="text-[12px] text-zinc-500 font-medium"><span className="text-zinc-400">Note:</span> {customerInfo.riderNote}</p>
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -569,9 +613,9 @@ export default function CheckoutPage() {
           <div
             className={`order-1 lg:order-2 lg:col-span-5 h-fit lg:sticky lg:top-28 ${checkoutStep === 1 ? "hidden lg:block" : ""}`}
           >
-            <div className="bg-white p-5 sm:p-8 rounded-2xl sm:rounded-3xl border border-zinc-200/60 shadow-xl shadow-zinc-200/20">
-              <h2 className="text-lg sm:text-xl font-bold uppercase tracking-tighter mb-4 sm:mb-6 text-black flex items-center gap-2">
-                <PiShoppingCart className="w-5 h-5 sm:w-6 sm:h-6" /> Order Summary
+            <div className="bg-white p-4 sm:p-8 rounded-xl sm:rounded-3xl border border-zinc-200/60 shadow-xl shadow-zinc-200/20">
+              <h2 className="text-base sm:text-xl font-semibold uppercase tracking-tight mb-3 sm:mb-6 text-black flex items-center gap-1.5 sm:gap-2">
+                <PiShoppingCart className="w-4 h-4 sm:w-6 sm:h-6" /> Order Summary
               </h2>
               
               <div className="space-y-4 mb-5 sm:mb-6 max-h-[35vh] sm:max-h-[45vh] overflow-y-auto pr-1.5 sm:pr-2 custom-scrollbar">
@@ -734,12 +778,12 @@ export default function CheckoutPage() {
         </div>
 
         {/* Mobile Action Bar */}
-        <div className="fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-xl border-t border-zinc-200 p-3 sm:p-4 pb-5 sm:pb-6 shadow-[0_-20px_40px_rgba(0,0,0,0.08)] z-50 lg:hidden flex flex-col gap-2.5 sm:gap-3 rounded-t-3xl sm:rounded-t-[2rem]">
+        <div className="fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-xl border-t border-zinc-200 p-2.5 sm:p-4 pb-4 sm:pb-6 shadow-[0_-20px_40px_rgba(0,0,0,0.08)] z-50 lg:hidden flex flex-col gap-2 sm:gap-3 rounded-t-2xl sm:rounded-t-[2rem]">
           <div className="flex justify-between items-center px-1 sm:px-2">
-            <span className="font-semibold text-zinc-500 uppercase tracking-widest text-[10px] sm:text-xs">
+            <span className="font-semibold text-zinc-500 uppercase tracking-widest text-[9px] sm:text-xs">
               Total to pay
             </span>
-            <span className="font-bold text-lg sm:text-xl text-black">
+            <span className="font-bold text-base sm:text-xl text-black">
               Rs. {total.toLocaleString()}
             </span>
           </div>
@@ -747,7 +791,7 @@ export default function CheckoutPage() {
             <button
               type="button"
               onClick={handleNextStep}
-              className="w-full bg-black text-white font-semibold uppercase tracking-widest py-3 sm:py-4 rounded-xl sm:rounded-2xl active:scale-[0.98] transition-all text-[12px] sm:text-[13px] lg:text-sm shadow-xl flex items-center justify-center gap-1.5 sm:gap-2 group shrink-0"
+              className="w-full bg-black text-white font-semibold uppercase tracking-widest py-2.5 sm:py-4 rounded-xl sm:rounded-2xl active:scale-[0.98] transition-all text-[11px] sm:text-[13px] lg:text-sm shadow-xl flex items-center justify-center gap-1.5 sm:gap-2 group shrink-0"
             >
               Continue to Review
               <PiArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 rotate-180 group-hover:translate-x-1 transition-transform" />
@@ -757,7 +801,7 @@ export default function CheckoutPage() {
               type="submit"
               form="checkout-form"
               disabled={loading}
-              className="w-full bg-[#C0E212] text-black font-bold uppercase tracking-widest py-3 sm:py-4 rounded-xl sm:rounded-2xl active:scale-[0.98] transition-all disabled:opacity-50 flex justify-center items-center text-[12px] sm:text-[13px] lg:text-sm shadow-xl shadow-[#C0E212]/20 gap-1.5 sm:gap-2 border border-[#9ab50e]/30 shrink-0"
+              className="w-full bg-[#C0E212] text-black font-semibold uppercase tracking-widest py-2.5 sm:py-4 rounded-xl sm:rounded-2xl active:scale-[0.98] transition-all disabled:opacity-50 flex justify-center items-center text-[11px] sm:text-[13px] lg:text-sm shadow-xl shadow-[#C0E212]/20 gap-1.5 sm:gap-2 border border-[#9ab50e]/30 shrink-0"
             >
               {loading ? (
                 <PiCircleNotch className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
