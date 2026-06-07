@@ -131,8 +131,22 @@ const ExpandedRow = ({ order, onStatusChange }) => {
   };
 
   const isDelivery = order.order_type === 'Delivery';
-  const subtotal = order.total_amount - (isDelivery ? 150 : 0);
   const realItems = order.items?.filter(item => !item.isMetadata) || [];
+  const discountItem = order.items?.find(item => item.isMetadata && item.type === "discount");
+  const discountAmount = discountItem ? discountItem.discount_amount : 0;
+  const subtotal = order.total_amount - (isDelivery ? 150 : 0) + discountAmount;
+
+  const addressStr = order.customer_address || "";
+  const landmarkMatch = addressStr.match(/\(Landmark: (.*?)\)/);
+  const riderNoteMatch = addressStr.match(/\| Note for Rider: (.*?)$/);
+  
+  const rawAddress = addressStr
+    .replace(/\(Landmark: .*?\)/, "")
+    .replace(/\| Note for Rider: .*$/, "")
+    .trim();
+  
+  const landmark = landmarkMatch ? landmarkMatch[1] : null;
+  const riderNote = riderNoteMatch ? riderNoteMatch[1] : null;
 
   return (
     <tr className="bg-zinc-50 border-t-0">
@@ -266,9 +280,25 @@ const ExpandedRow = ({ order, onStatusChange }) => {
                     
                     <div className="pt-2 border-t border-zinc-100">
                       <p className="text-xs text-zinc-500 uppercase tracking-wider font-semibold mb-1">Address</p>
-                      <p className="text-sm text-zinc-600 leading-relaxed font-medium">
-                        {order.customer_address}, {order.delivery_area || order.delivery_city}
+                      <p className="text-sm text-zinc-800 font-medium">
+                        {rawAddress}, {order.delivery_area || order.delivery_city}
                       </p>
+                      
+                      {landmark && (
+                        <div className="mt-2">
+                          <p className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold mb-0.5">Near Landmark</p>
+                          <p className="text-sm text-zinc-700 font-medium">{landmark}</p>
+                        </div>
+                      )}
+                      
+                      {riderNote && (
+                        <div className="mt-2 bg-amber-50 p-2.5 rounded-lg border border-amber-200 shadow-sm">
+                          <p className="text-[10px] text-amber-600 uppercase tracking-widest font-bold mb-1 flex items-center gap-1.5">
+                            <PiClock className="w-3.5 h-3.5" /> Note for Rider
+                          </p>
+                          <p className="text-[13px] text-amber-900 font-semibold leading-snug">{riderNote}</p>
+                        </div>
+                      )}
 
                       {/* maps */}
                       {/* {order.customer_address && (
@@ -323,6 +353,12 @@ const ExpandedRow = ({ order, onStatusChange }) => {
                       <span>Subtotal</span>
                       <span>Rs. {subtotal}</span>
                     </div>
+                    {discountItem && (
+                      <div className="flex justify-between items-center text-[#ff1900] font-semibold">
+                        <span>Discount ({discountItem.code})</span>
+                        <span>- Rs. {discountAmount}</span>
+                      </div>
+                    )}
                     <div className="flex justify-between items-center text-zinc-300">
                       <span>Delivery Fee</span>
                       <span>Rs. {isDelivery ? 150 : 0}</span>
@@ -338,7 +374,7 @@ const ExpandedRow = ({ order, onStatusChange }) => {
                   <button 
                     onClick={(e) => {
                       e.stopPropagation();
-                      const text = `*New Order - Pioneer Broast*\nOrder ID: ${order.id}\nCustomer: ${order.customer_name}\nPhone: ${order.customer_phone}\nAddress: ${order.customer_address}, ${order.delivery_area || order.delivery_city || "Karachi"}\n\n*Items:*\n${realItems.map(item => `- ${item.quantity}x ${item.name} (Rs. ${(item.discount_price || item.price) * item.quantity})`).join('\n')}\n\n*Total Amount:* Rs. ${order.total_amount}`;
+                      const text = `*New Order - Pioneer Broast*\nOrder ID: ${order.id}\nCustomer: ${order.customer_name}\nPhone: ${order.customer_phone}\nAddress: ${rawAddress}, ${order.delivery_area || order.delivery_city || "Karachi"}${landmark ? `\nLandmark: ${landmark}` : ""}${riderNote ? `\nNote for Rider: ${riderNote}` : ""}\n\n*Items:*\n${realItems.map(item => `- ${item.quantity}x ${item.name} (Rs. ${(item.discount_price || item.price) * item.quantity})`).join('\n')}${discountItem ? `\n- Discount (${discountItem.code}): -Rs. ${discountAmount}` : ""}\n\n*Total Amount:* Rs. ${order.total_amount}`;
                       navigator.clipboard.writeText(text).then(() => {
                         toast.success("Order details copied!");
                       }).catch(() => {
@@ -354,7 +390,7 @@ const ExpandedRow = ({ order, onStatusChange }) => {
                   <button 
                     onClick={(e) => {
                       e.stopPropagation();
-                      const text = `*New Order - Pioneer Broast*\nOrder ID: ${order.id}\nCustomer: ${order.customer_name}\nPhone: ${order.customer_phone}\nAddress: ${order.customer_address}, ${order.delivery_area || order.delivery_city || "Karachi"}\n\n*Items:*\n${realItems.map(item => `- ${item.quantity}x ${item.name} (Rs. ${(item.discount_price || item.price) * item.quantity})`).join('\n')}\n\n*Total Amount:* Rs. ${order.total_amount}`;
+                      const text = `*New Order - Pioneer Broast*\nOrder ID: ${order.id}\nCustomer: ${order.customer_name}\nPhone: ${order.customer_phone}\nAddress: ${rawAddress}, ${order.delivery_area || order.delivery_city || "Karachi"}${landmark ? `\nLandmark: ${landmark}` : ""}${riderNote ? `\nNote for Rider: ${riderNote}` : ""}\n\n*Items:*\n${realItems.map(item => `- ${item.quantity}x ${item.name} (Rs. ${(item.discount_price || item.price) * item.quantity})`).join('\n')}${discountItem ? `\n- Discount (${discountItem.code}): -Rs. ${discountAmount}` : ""}\n\n*Total Amount:* Rs. ${order.total_amount}`;
                       window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
                     }}
                     className="w-full bg-[#25D366] text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-[#128C7E] active:scale-[0.98] transition-all shadow-sm"

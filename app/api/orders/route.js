@@ -22,6 +22,7 @@ export async function POST(req) {
       delivery_area,
       total_amount,
       items,
+      coupon_code,
     } = body;
 
     if (!items || items.length === 0) {
@@ -60,7 +61,47 @@ export async function POST(req) {
     }
 
     let deliveryCharges = order_type === "Delivery" ? 150 : 0;
-    const finalTotal = calculatedTotal + deliveryCharges;
+    let finalTotal = calculatedTotal + deliveryCharges;
+    let appliedDiscount = 0;
+
+    // Validate Coupon if provided
+    if (coupon_code) {
+      const { data: coupon, error: couponError } = await supabase
+        .from("coupons")
+        .select("*")
+        .eq("code", coupon_code.toUpperCase())
+        .single();
+
+      if (!couponError && coupon && coupon.is_active && (!coupon.usage_limit || coupon.times_used < coupon.usage_limit)) {
+        if (coupon.discount_type === "percentage") {
+          appliedDiscount = Math.round((calculatedTotal * coupon.discount_value) / 100);
+        } else if (coupon.discount_type === "fixed") {
+          appliedDiscount = coupon.discount_value;
+        } else if (coupon.discount_type === "free_delivery") {
+          appliedDiscount = deliveryCharges;
+        }
+
+        finalTotal = Math.max(0, finalTotal - appliedDiscount);
+
+        // Push metadata item for Admin Panel rendering
+        items.push({
+          id: `discount-${coupon.code}`,
+          name: `Discount (${coupon.code})`,
+          isMetadata: true,
+          type: "discount",
+          code: coupon.code,
+          discount_amount: appliedDiscount,
+          price: -appliedDiscount,
+          quantity: 1,
+        });
+
+        // Increment times_used
+        await supabase
+          .from("coupons")
+          .update({ times_used: (coupon.times_used || 0) + 1 })
+          .eq("id", coupon.id);
+      }
+    }
 
     // Supabase ki orders table mein data insert karein
     const { data: newOrder, error: orderError } = await supabase
@@ -107,6 +148,13 @@ export async function POST(req) {
       // Build HTML for items
       const itemsHtml = items
         .map((item) => {
+          if (item.isMetadata && item.type === "discount") {
+            return `
+            <li style="margin-bottom: 10px; font-family: sans-serif; color: #ff1900;">
+              <strong>${item.name}</strong> - Rs. ${item.price}
+            </li>
+          `;
+          }
           const price = item.discount_price || item.price;
           return `
           <li style="margin-bottom: 10px; font-family: sans-serif;">

@@ -213,6 +213,7 @@ export default function CheckoutPage() {
           delivery_area: deliveryArea,
           total_amount: total,
           items: cart,
+          coupon_code: appliedCoupon?.code || null,
         }),
       });
 
