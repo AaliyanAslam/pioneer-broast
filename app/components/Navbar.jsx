@@ -14,6 +14,8 @@ import {
 import { useCartStore, useLocationStore } from "@/app/lib/store";
 import CartDrawer from "./ui/CartDrawer";
 import { usePathname } from "next/navigation";
+import toast from "react-hot-toast";
+import React from "react";
 
 export default function Navbar() {
   const { cart, isCartOpen, setCartOpen } = useCartStore();
@@ -23,6 +25,8 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeOrder, setActiveOrder] = useState(null);
   const pathname = usePathname();
+
+  const previousStatusRef = React.useRef(null);
 
   useEffect(() => {
     setHasMounted(true);
@@ -49,6 +53,17 @@ export default function Navbar() {
           const result = await res.json();
           if (result.success && result.data) {
             const status = result.data.status?.toLowerCase();
+            
+            // Show toast if status changed
+            if (previousStatusRef.current && previousStatusRef.current !== status) {
+              if (status === "processing") {
+                toast.success("Great news! Your order has been ACCEPTED and is being prepared.", { duration: 5000 });
+              } else if (status === "cancelled") {
+                toast.error(`Order Cancelled: ${result.data.cancel_reason || "Restaurant declined the order."}`, { duration: 6000 });
+              }
+            }
+            previousStatusRef.current = status;
+
             if (status !== "delivered" && status !== "failed") {
               setActiveOrder(result.data);
             } else {
@@ -62,7 +77,7 @@ export default function Navbar() {
     };
 
     checkActiveOrder();
-    const interval = setInterval(checkActiveOrder, 30000); // Check every 30s
+    const interval = setInterval(checkActiveOrder, 10000); // Check every 10s
     return () => clearInterval(interval);
   }, []);
 

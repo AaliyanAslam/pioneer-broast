@@ -149,78 +149,178 @@ const ExpandedRow = ({ order, onStatusChange }) => {
   const riderNote = riderNoteMatch ? riderNoteMatch[1] : null;
 
   return (
-    <tr className="bg-zinc-50 border-t-0">
-      <td colSpan="7" className="p-0 border-b border-zinc-200">
+    <tr className="bg-zinc-50/50 border-t-0">
+      <td colSpan="7" className="p-0 border-b-2 border-zinc-200 shadow-inner">
         <div ref={contentRef} className="overflow-hidden">
-          <div className="p-4 sm:p-5">
-            <div className="flex flex-col lg:flex-row gap-4">
+          <div className="p-4 sm:p-6 bg-zinc-50 border-t border-zinc-200/50">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr_1fr] gap-5 items-start">
               
-              {/* LEFT COLUMN: Items (60%) */}
-              <div className="flex-1 lg:w-[60%] space-y-3">
-                <div className="bg-white border border-zinc-200 rounded-xl p-4 shadow-sm">
-                  <h4 className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 mb-3 flex items-center gap-1.5">
-                    <PiPackage className="w-3.5 h-3.5" /> Purchased Items
+              {/* COLUMN 1: Fulfillment Details */}
+              <div className="space-y-4">
+                <div className="bg-white border border-zinc-200 rounded-xl p-4 sm:p-5 shadow-sm">
+                  <h4 className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 mb-4 flex items-center gap-1.5">
+                    <PiMapPin className="w-4 h-4" /> Fulfillment Details
                   </h4>
-                  <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2">
-                    {realItems.length > 0 ? (
-                      realItems.map((item, i) => {
-                        const originalPrice = item.price;
-                        const activePrice = item.discount_price || item.price;
-                        const hasDiscount = item.discount_price && item.discount_price < item.price;
-                        
-                        return (
-                          <div key={i} className="flex gap-3 border-b border-zinc-100 pb-3 mb-3 last:border-0 last:pb-0 last:mb-0">
-                            {item.image_url && (
-                              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg bg-zinc-50 border border-zinc-200 shrink-0 overflow-hidden relative">
-                                <img src={item.image_url} alt={item.name} className="w-full h-full object-cover" />
-                              </div>
-                            )}
-                            <div className="flex-1 flex flex-col">
-                              <div className="flex justify-between items-start">
-                                <div>
-                                  <p className="text-sm font-semibold text-black">{item.name}</p>
-                                  <p className="text-[11px] font-medium text-zinc-500 mt-0.5">
-                                    {item.category && <span className="uppercase text-[9px] bg-zinc-100 px-1 rounded mr-1">{item.category}</span>}
-                                    {item.quantity} pc × Rs. {activePrice}
-                                  </p>
-                                </div>
-                                <p className="text-sm font-bold text-black">
-                                  Rs. {activePrice * item.quantity}
-                                </p>
-                              </div>
-                              {item.specialInstructions && (
-                                <div className="mt-2 bg-amber-50 text-amber-700 text-xs p-2 rounded-md border border-amber-100 font-medium">
-                                  Note: {item.specialInstructions}
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        )
-                      })
-                    ) : (
-                      <p className="text-sm text-zinc-500">No items recorded.</p>
-                    )}
+                  
+                  <div className="bg-green-50 text-green-700 border border-green-200 font-bold text-center py-2 rounded-lg text-xs tracking-wide uppercase mb-4">
+                    Cash on Delivery
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <div>
+                      <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-bold mb-1">Customer</p>
+                      <p className="text-[15px] font-bold text-black">{order.customer_name}</p>
+                      <p className="text-sm font-medium text-zinc-600 flex items-center gap-1.5 mt-1">
+                        <PiPhone className="w-4 h-4 text-zinc-400" /> {order.customer_phone}
+                      </p>
+                    </div>
+                    
+                    <div className="pt-3 border-t border-zinc-100">
+                      <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-bold mb-1">Delivery Address</p>
+                      <p className="text-sm font-semibold text-zinc-800 leading-snug">
+                        {rawAddress}, {order.delivery_area || order.delivery_city}
+                      </p>
+                      
+                      {landmark && (
+                        <div className="mt-2.5">
+                          <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-bold mb-0.5">Near Landmark</p>
+                          <p className="text-[13px] font-medium text-zinc-600">{landmark}</p>
+                        </div>
+                      )}
+                      
+                      {riderNote && (
+                        <div className="mt-3 bg-amber-50/80 p-3 rounded-lg border border-amber-200/60">
+                          <p className="text-[10px] text-amber-600 uppercase tracking-widest font-bold mb-1.5 flex items-center gap-1.5">
+                            <PiClock className="w-3.5 h-3.5" /> Note for Rider
+                          </p>
+                          <p className="text-sm text-amber-900 font-semibold leading-snug">{riderNote}</p>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
 
-                <div className="bg-white border border-zinc-200 rounded-xl p-4 shadow-sm flex flex-col gap-3">
+                <div className="bg-white border border-zinc-200 rounded-xl p-4 sm:p-5 shadow-sm">
+                  <h4 className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 mb-3 flex items-center gap-1.5">
+                    <PiClock className="w-4 h-4" /> Estimated Time
+                  </h4>
+                  <div className="flex items-center gap-2 mb-3">
+                    <input 
+                      type="text" 
+                      value={time}
+                      onChange={(e) => setTime(e.target.value)}
+                      placeholder="e.g. 45 mins" 
+                      className="flex-1 bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-sm text-black font-semibold focus:outline-none focus:border-zinc-400 transition-colors"
+                    />
+                    <button 
+                      onClick={saveEstimatedTime}
+                      disabled={savingTime}
+                      className="bg-zinc-100 border border-zinc-200 text-black px-4 py-2 rounded-lg text-sm font-bold hover:bg-zinc-200 disabled:opacity-50 transition-colors"
+                    >
+                      {savingTime ? <PiCircleNotch className="w-4 h-4 animate-spin mx-auto" /> : "Save"}
+                    </button>
+                  </div>
+                  <AdminCountdownTimer 
+                    createdAt={order.created_at} 
+                    status={order.status} 
+                    estimatedTime={order.estimated_time} 
+                  />
+                </div>
+              </div>
+              
+              {/* COLUMN 2: Purchased Items */}
+              <div className="bg-white border border-zinc-200 rounded-xl p-4 sm:p-5 shadow-sm">
+                <h4 className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 mb-4 flex items-center gap-1.5">
+                  <PiPackage className="w-4 h-4" /> Purchased Items
+                </h4>
+                <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
+                  {realItems.length > 0 ? (
+                    realItems.map((item, i) => {
+                      const activePrice = item.discount_price || item.price;
+                      return (
+                        <div key={i} className="flex gap-3 border-b border-zinc-100 pb-3 mb-3 last:border-0 last:pb-0 last:mb-0">
+                          {item.image_url && (
+                            <div className="w-14 h-14 rounded-lg bg-zinc-50 border border-zinc-200 shrink-0 overflow-hidden">
+                              <img src={item.image_url} alt={item.name} className="w-full h-full object-cover" />
+                            </div>
+                          )}
+                          <div className="flex-1 flex flex-col justify-center">
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <p className="text-sm font-bold text-black leading-tight">{item.name}</p>
+                                <p className="text-[12px] font-medium text-zinc-500 mt-1">
+                                  {item.category && <span className="uppercase text-[9px] font-bold bg-zinc-100 text-zinc-600 px-1.5 py-0.5 rounded-sm mr-1.5">{item.category}</span>}
+                                  {item.quantity} x Rs. {activePrice}
+                                </p>
+                              </div>
+                              <p className="text-[15px] font-black text-black">
+                                Rs. {activePrice * item.quantity}
+                              </p>
+                            </div>
+                            {item.specialInstructions && (
+                              <div className="mt-2 bg-amber-50 text-amber-700 text-xs p-2 rounded border border-amber-100/50 font-medium">
+                                Note: {item.specialInstructions}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )
+                    })
+                  ) : (
+                    <p className="text-sm text-zinc-500 font-medium">No items recorded.</p>
+                  )}
+                </div>
+              </div>
+
+              {/* COLUMN 3: Order Summary & Actions */}
+              <div className="space-y-4">
+                <div className="bg-white border border-zinc-200 rounded-xl p-4 sm:p-5 shadow-sm">
+                  <h4 className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 mb-4 flex items-center gap-1.5">
+                    Order Summary
+                  </h4>
+                  <div className="space-y-2.5 text-[13px] font-medium">
+                    <div className="flex justify-between items-center text-zinc-600">
+                      <span>Subtotal</span>
+                      <span className="text-zinc-900 font-bold">Rs. {subtotal}</span>
+                    </div>
+                    {discountItem && (
+                      <div className="flex justify-between items-center text-[#ff1900] font-bold bg-red-50 px-2 py-1 -mx-2 rounded">
+                        <span>Discount ({discountItem.code})</span>
+                        <span>- Rs. {discountAmount}</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between items-center text-zinc-600">
+                      <span>Delivery Fee</span>
+                      <span className="text-zinc-900 font-bold">Rs. {isDelivery ? 150 : 0}</span>
+                    </div>
+                    <div className="pt-3 mt-3 border-t border-zinc-100 flex justify-between items-center">
+                      <span className="text-sm font-black text-black uppercase tracking-wide">Total Amount</span>
+                      <span className="text-lg font-black text-[#ff1900]">Rs. {order.total_amount}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white border border-zinc-200 rounded-xl p-4 sm:p-5 shadow-sm flex flex-col gap-3">
+                   <h4 className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 mb-1 flex items-center gap-1.5">
+                    Actions
+                   </h4>
                    {order.status !== 'cancelled' && (
                      <div className="flex gap-2">
                        <button 
                          onClick={() => onStatusChange(order.id, 'processing')}
-                         className="flex-1 bg-black text-white py-2.5 rounded-lg text-sm font-bold hover:bg-zinc-800 transition-all flex items-center justify-center gap-1.5"
+                         className="flex-1 bg-black text-white py-3 rounded-lg text-sm font-bold hover:bg-zinc-800 transition-all flex items-center justify-center gap-2 shadow-md active:scale-95"
                        >
-                         <PiCheckCircle className="w-4 h-4" /> Accept Order
+                         <PiCheckCircle className="w-5 h-5" /> Accept Order
                        </button>
                      </div>
                    )}
                    {order.status !== 'cancelled' ? (
-                     <div className="flex flex-col gap-2 p-3 bg-red-50 rounded-lg border border-red-100">
-                       <p className="text-[11px] font-bold text-red-600 uppercase tracking-widest">Cancel Order</p>
-                       <div className="flex flex-col sm:flex-row gap-2">
+                     <div className="flex flex-col gap-2 p-3.5 bg-red-50 rounded-lg border border-red-100 mt-2">
+                       <p className="text-[10px] font-bold text-red-600 uppercase tracking-widest">Decline Order</p>
+                       <div className="flex flex-col gap-2">
                          <select 
                            id={`cancel-reason-${order.id}`}
-                           className="flex-1 bg-white border border-red-200 text-sm text-red-900 rounded-md px-2.5 py-1.5 outline-none focus:ring-1 focus:ring-red-400"
+                           className="w-full bg-white border border-red-200 text-sm font-medium text-red-900 rounded-md px-3 py-2 outline-none focus:ring-1 focus:ring-red-400"
                            defaultValue=""
                          >
                            <option value="" disabled>Select Reason...</option>
@@ -239,168 +339,48 @@ const ExpandedRow = ({ order, onStatusChange }) => {
                              }
                              onStatusChange(order.id, 'cancelled', reason);
                            }}
-                           className="bg-red-600 text-white px-4 rounded-md font-bold hover:bg-red-700 transition-colors"
+                           className="bg-red-600 text-white w-full py-2 rounded-md font-bold hover:bg-red-700 transition-colors shadow-sm active:scale-95"
                          >
-                           Confirm
+                           Confirm Decline
                          </button>
                        </div>
                      </div>
                    ) : (
-                     <div className="p-3 bg-zinc-100 rounded-lg border border-zinc-200 text-center">
-                       <p className="text-sm font-bold text-zinc-600">Order is Cancelled</p>
+                     <div className="p-4 bg-zinc-50 rounded-lg border border-zinc-200 text-center">
+                       <p className="text-sm font-black text-zinc-600">Order Cancelled</p>
                        {order.cancel_reason && (
-                         <p className="text-xs text-zinc-500 mt-1">Reason: {order.cancel_reason}</p>
+                         <p className="text-xs font-semibold text-zinc-500 mt-1">{order.cancel_reason}</p>
                        )}
                      </div>
                    )}
                 </div>
-              </div>
 
-              {/* RIGHT COLUMN: Fulfillment & Bill (40%) */}
-              <div className="w-full lg:w-[40%] space-y-3">
-                
-                {/* Customer Details */}
-                <div className="bg-white border border-zinc-200 rounded-xl p-4 shadow-sm space-y-4">
-                  <h4 className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 mb-2 flex items-center gap-1.5">
-                    <PiMapPin className="w-3.5 h-3.5" /> Fulfillment Details
-                  </h4>
-                  
-                  <div className="bg-green-50 text-green-700 border border-green-200 font-bold text-center py-2 rounded-lg text-xs tracking-wide uppercase">
-                    Cash on Delivery
-                  </div>
-                  
-                  <div className="space-y-2.5 pt-1">
-                    <div>
-                      <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold mb-0.5">Customer</p>
-                      <p className="text-sm font-semibold text-black">{order.customer_name}</p>
-                      <p className="text-sm text-zinc-600 flex items-center gap-1.5 mt-1">
-                        <PiPhone className="w-4 h-4 text-zinc-400" /> {order.customer_phone}
-                      </p>
-                    </div>
-                    
-                    <div className="pt-2 border-t border-zinc-100">
-                      <p className="text-xs text-zinc-500 uppercase tracking-wider font-semibold mb-1">Address</p>
-                      <p className="text-sm text-zinc-800 font-medium">
-                        {rawAddress}, {order.delivery_area || order.delivery_city}
-                      </p>
-                      
-                      {landmark && (
-                        <div className="mt-2">
-                          <p className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold mb-0.5">Near Landmark</p>
-                          <p className="text-sm text-zinc-700 font-medium">{landmark}</p>
-                        </div>
-                      )}
-                      
-                      {riderNote && (
-                        <div className="mt-2 bg-amber-50 p-2.5 rounded-lg border border-amber-200 shadow-sm">
-                          <p className="text-[10px] text-amber-600 uppercase tracking-widest font-bold mb-1 flex items-center gap-1.5">
-                            <PiClock className="w-3.5 h-3.5" /> Note for Rider
-                          </p>
-                          <p className="text-[13px] text-amber-900 font-semibold leading-snug">{riderNote}</p>
-                        </div>
-                      )}
-
-                      {/* maps */}
-                      {/* {order.customer_address && (
-                        <a 
-                          href={`https://maps.google.com/?q=${encodeURIComponent(order.customer_address + " " + (order.delivery_area || order.delivery_city))}`}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-xs text-blue-600 font-semibold mt-2 inline-flex items-center gap-1 hover:underline"
-                        >
-                          Open in Google Maps
-                        </a>
-                      )} */}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Estimated Time */}
-                <div className="bg-white border border-zinc-200 rounded-xl p-4 shadow-sm">
-                  <p className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 mb-2 flex items-center gap-1.5">
-                    <PiClock className="w-3.5 h-3.5" /> Estimated Time
-                  </p>
-                  <div className="flex items-center gap-2">
-                    <input 
-                      type="text" 
-                      value={time}
-                      onChange={(e) => setTime(e.target.value)}
-                      placeholder="e.g. 45" 
-                      className="flex-1 bg-zinc-50 border border-zinc-200 rounded-lg px-2.5 py-1.5 text-sm text-black font-medium focus:outline-none focus:border-zinc-400 transition-colors"
-                    />
-                    <button 
-                      onClick={saveEstimatedTime}
-                      disabled={savingTime}
-                      className="bg-zinc-100 text-black px-4 py-2 rounded-lg text-sm font-bold hover:bg-zinc-200 disabled:opacity-50 transition-colors"
-                    >
-                      {savingTime ? <PiCircleNotch className="w-4 h-4 animate-spin mx-auto" /> : "Save"}
-                    </button>
-                  </div>
-                  <AdminCountdownTimer 
-                    createdAt={order.created_at} 
-                    status={order.status} 
-                    estimatedTime={order.estimated_time} 
-                  />
-                </div>
-
-                {/* Bill Summary */}
-                <div className="bg-zinc-900 text-white rounded-xl p-4 shadow-md">
-                  <h4 className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 mb-3 flex items-center gap-1.5">
-                    Order Summary
-                  </h4>
-                  <div className="space-y-1.5 text-sm">
-                    <div className="flex justify-between items-center text-zinc-300">
-                      <span>Subtotal</span>
-                      <span>Rs. {subtotal}</span>
-                    </div>
-                    {discountItem && (
-                      <div className="flex justify-between items-center text-[#ff1900] font-semibold">
-                        <span>Discount ({discountItem.code})</span>
-                        <span>- Rs. {discountAmount}</span>
-                      </div>
-                    )}
-                    <div className="flex justify-between items-center text-zinc-300">
-                      <span>Delivery Fee</span>
-                      <span>Rs. {isDelivery ? 150 : 0}</span>
-                    </div>
-                    <div className="pt-2 mt-2 border-t border-zinc-700 flex justify-between items-center">
-                      <span className="font-semibold">Total Amount</span>
-                      <span className="text-lg font-bold text-[#C0E212]">Rs. {order.total_amount}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-2 mt-2">
+                <div className="flex flex-col sm:flex-row gap-2 pt-2">
                   <button 
                     onClick={(e) => {
                       e.stopPropagation();
                       const text = `*New Order - Pioneer Broast*\nOrder ID: ${order.id}\nCustomer: ${order.customer_name}\nPhone: ${order.customer_phone}\nAddress: ${rawAddress}, ${order.delivery_area || order.delivery_city || "Karachi"}${landmark ? `\nLandmark: ${landmark}` : ""}${riderNote ? `\nNote for Rider: ${riderNote}` : ""}\n\n*Items:*\n${realItems.map(item => `- ${item.quantity}x ${item.name} (Rs. ${(item.discount_price || item.price) * item.quantity})`).join('\n')}${discountItem ? `\n- Discount (${discountItem.code}): -Rs. ${discountAmount}` : ""}\n\n*Total Amount:* Rs. ${order.total_amount}`;
-                      navigator.clipboard.writeText(text).then(() => {
-                        toast.success("Order details copied!");
-                      }).catch(() => {
-                        toast.error("Failed to copy");
-                      });
+                      navigator.clipboard.writeText(text).then(() => toast.success("Copied!")).catch(() => toast.error("Failed"));
                     }}
-                    className="w-full bg-white border border-zinc-200 text-black font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-zinc-50 active:scale-[0.98] transition-all shadow-sm"
+                    className="flex-1 bg-white border border-zinc-200 text-zinc-700 font-bold py-2.5 rounded-lg flex items-center justify-center gap-1.5 hover:bg-zinc-50 transition-all text-xs shadow-sm active:scale-95"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
-                    Copy Order Details
+                    Copy Text
                   </button>
-
                   <button 
                     onClick={(e) => {
                       e.stopPropagation();
                       const text = `*New Order - Pioneer Broast*\nOrder ID: ${order.id}\nCustomer: ${order.customer_name}\nPhone: ${order.customer_phone}\nAddress: ${rawAddress}, ${order.delivery_area || order.delivery_city || "Karachi"}${landmark ? `\nLandmark: ${landmark}` : ""}${riderNote ? `\nNote for Rider: ${riderNote}` : ""}\n\n*Items:*\n${realItems.map(item => `- ${item.quantity}x ${item.name} (Rs. ${(item.discount_price || item.price) * item.quantity})`).join('\n')}${discountItem ? `\n- Discount (${discountItem.code}): -Rs. ${discountAmount}` : ""}\n\n*Total Amount:* Rs. ${order.total_amount}`;
                       window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
                     }}
-                    className="w-full bg-[#25D366] text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-[#128C7E] active:scale-[0.98] transition-all shadow-sm"
+                    className="flex-1 bg-[#25D366] text-white font-bold py-2.5 rounded-lg flex items-center justify-center gap-1.5 hover:bg-[#128C7E] transition-all text-xs shadow-sm active:scale-95"
                   >
-                    <FaWhatsapp className="w-5 h-5" />
-                    Send Details to Rider
+                    <FaWhatsapp className="w-4 h-4" />
+                    WhatsApp
                   </button>
                 </div>
-
               </div>
+
             </div>
           </div>
         </div>
@@ -613,13 +593,13 @@ export default function OrdersList() {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse min-w-[900px]">
             <thead>
-              <tr className="bg-zinc-50 border-b border-zinc-200 text-[13px] text-zinc-500">
-                <th className="p-3 sm:p-4 font-medium whitespace-nowrap">Order ID</th>
-                <th className="hidden md:table-cell p-3 sm:p-4 font-medium whitespace-nowrap">Date & Time</th>
-                <th className="p-4 font-medium whitespace-nowrap">Customer</th>
-                <th className="p-4 font-medium whitespace-nowrap">Total</th>
-                <th className="p-4 font-medium whitespace-nowrap">Status</th>
-                <th className="p-4 font-medium whitespace-nowrap w-16 text-center">Action</th>
+              <tr className="bg-zinc-50 border-b border-zinc-200 text-[13px] text-zinc-500 uppercase tracking-wide">
+                <th className="p-3 sm:p-4 font-semibold whitespace-nowrap text-left">Order ID</th>
+                <th className="hidden md:table-cell p-3 sm:p-4 font-semibold whitespace-nowrap text-left">Date & Time</th>
+                <th className="p-3 sm:p-4 font-semibold whitespace-nowrap text-left">Customer</th>
+                <th className="p-3 sm:p-4 font-semibold whitespace-nowrap text-left">Total</th>
+                <th className="p-3 sm:p-4 font-semibold whitespace-nowrap text-left">Status</th>
+                <th className="p-3 sm:p-4 font-semibold whitespace-nowrap w-16 text-center">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-100">
@@ -633,8 +613,8 @@ export default function OrdersList() {
                 paginatedOrders.map((order) => (
                   <React.Fragment key={order.id}>
                     <tr
-                      className={`hover:bg-zinc-50 transition-colors cursor-pointer ${
-                        expandedOrderId === order.id ? "bg-zinc-50" : ""
+                      className={`transition-colors cursor-pointer ${
+                        expandedOrderId === order.id ? "bg-zinc-50/50" : "hover:bg-zinc-50 bg-white"
                       }`}
                       onClick={() =>
                         setExpandedOrderId(expandedOrderId === order.id ? null : order.id)
@@ -659,7 +639,7 @@ export default function OrdersList() {
                         <p className="font-semibold text-[13px] text-black">{order.customer_name}</p>
                         <p className="text-xs text-zinc-500 mt-0.5">{order.delivery_city || order.delivery_area || order.city || "Karachi"}</p>
                       </td>
-                      <td className="p-4 text-sm text-black font-bold whitespace-nowrap">
+                      <td className="p-3 sm:p-4 text-sm text-black font-bold whitespace-nowrap">
                         Rs. {order.total_amount}
                       </td>
 
