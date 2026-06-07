@@ -427,7 +427,7 @@ export default function CheckoutPage() {
                       name="name"
                       value={customerInfo.name}
                       onChange={handleChange}
-                      className="w-full bg-[#f4f5f7] border border-transparent hover:border-zinc-300 rounded-xl sm:rounded-2xl px-3.5 sm:px-4 py-3 sm:py-3.5 text-[13px] sm:text-sm text-black focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all font-medium"
+                      className="w-full bg-[#f4f5f7] border border-transparent hover:border-zinc-300 rounded-sm px-3.5 sm:px-4 py-3 sm:py-3.5 text-[13px] sm:text-sm text-black focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all font-medium"
                       placeholder="e.g. John Doe"
                     />
                   </div>
@@ -442,7 +442,7 @@ export default function CheckoutPage() {
                       name="phone"
                       value={customerInfo.phone}
                       onChange={handleChange}
-                      className="w-full bg-[#f4f5f7] border border-transparent hover:border-zinc-300 rounded-xl sm:rounded-2xl px-3.5 sm:px-4 py-3 sm:py-3.5 text-[13px] sm:text-sm text-black focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all font-medium"
+                      className="w-full bg-[#f4f5f7] border border-transparent hover:border-zinc-300 rounded-sm px-3.5 sm:px-4 py-3 sm:py-3.5 text-[13px] sm:text-sm text-black focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all font-medium"
                       placeholder="03XX-XXXXXXX"
                     />
                   </div>
@@ -451,7 +451,7 @@ export default function CheckoutPage() {
                     <>
                       <div className="space-y-1 sm:space-y-1.5">
                         <label className="block text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-zinc-500 ml-1">
-                          Delivery Address
+                         Complete Delivery Address
                         </label>
                         <textarea
                           required
@@ -459,7 +459,7 @@ export default function CheckoutPage() {
                           name="address"
                           value={customerInfo.address}
                           onChange={handleChange}
-                          className="w-full bg-[#f4f5f7] border border-transparent hover:border-zinc-300 rounded-xl sm:rounded-2xl px-3.5 sm:px-4 py-3 sm:py-3.5 text-[13px] sm:text-sm text-black focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all font-medium resize-none leading-relaxed"
+                          className="w-full bg-[#f4f5f7] border border-transparent hover:border-zinc-300 rounded-sm px-3.5 sm:px-4 py-3 sm:py-3.5 text-[13px] sm:text-sm text-black focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all font-medium resize-none leading-relaxed"
                           placeholder="House, Street, Area details..."
                         />
                       </div>
@@ -472,7 +472,7 @@ export default function CheckoutPage() {
                           <input
                             readOnly
                             value={deliveryCity || "Karachi"}
-                            className="w-full bg-zinc-100 border border-transparent rounded-xl sm:rounded-2xl px-3.5 sm:px-4 py-3 sm:py-3.5 text-[13px] sm:text-sm text-zinc-500 focus:outline-none cursor-not-allowed font-medium"
+                            className="w-full bg-zinc-100 border border-transparent rounded-sm px-3.5 sm:px-4 py-3 sm:py-3.5 text-[13px] sm:text-sm text-zinc-500 focus:outline-none cursor-not-allowed font-medium"
                           />
                         </div>
                         <div className="space-y-1 sm:space-y-1.5">
@@ -482,7 +482,7 @@ export default function CheckoutPage() {
                           <input
                             readOnly
                             value={deliveryArea || ""}
-                            className="w-full bg-zinc-100 border border-transparent rounded-xl sm:rounded-2xl px-3.5 sm:px-4 py-3 sm:py-3.5 text-[13px] sm:text-sm text-zinc-500 focus:outline-none cursor-not-allowed font-medium"
+                            className="w-full bg-zinc-100 border border-transparent rounded-sm px-3.5 sm:px-4 py-3 sm:py-3.5 text-[13px] sm:text-sm text-zinc-500 focus:outline-none cursor-not-allowed font-medium"
                           />
                         </div>
                       </div>
