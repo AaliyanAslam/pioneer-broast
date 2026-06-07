@@ -208,7 +208,7 @@ export default function AddMenuItemForm({ initialData, onItemAdded }) {
               name="is_available"
               checked={formData.is_available}
               onChange={handleChange}
-              className="w-4 h-4 accent-[#e63946] cursor-pointer rounded"
+              className="w-4 h-4 accent-[#ff1900] cursor-pointer rounded"
             />
             <label
               htmlFor="is_available"
@@ -225,13 +225,13 @@ export default function AddMenuItemForm({ initialData, onItemAdded }) {
               name="is_spicy"
               checked={formData.is_spicy}
               onChange={handleChange}
-              className="w-4 h-4 accent-[#e63946] cursor-pointer rounded"
+              className="w-4 h-4 accent-[#ff1900] cursor-pointer rounded"
             />
             <label
               htmlFor="is_spicy"
               className="text-[13px] font-medium text-zinc-800 cursor-pointer select-none flex items-center gap-1"
             >
-              🌶️ Is Spicy
+              ðŸŒ¶ï¸ Is Spicy
             </label>
           </div>
         </div>

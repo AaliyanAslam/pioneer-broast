@@ -34,7 +34,7 @@ export default function DeleteConfirmModal() {
         <div className="bg-white w-full max-w-[300px] sm:max-w-[340px] rounded-3xl overflow-hidden shadow-2xl animate-success-pop relative pointer-events-auto border border-zinc-100">
           
           <div className="px-5 pt-6 pb-2 sm:px-6 sm:pt-7 sm:pb-3 text-center relative z-10 flex flex-col items-center">
-            <div className="w-14 h-14 bg-red-50 text-[#e63946] rounded-full flex items-center justify-center mb-4 ring-8 ring-red-50/50">
+            <div className="w-14 h-14 bg-red-50 text-[#ff1900] rounded-full flex items-center justify-center mb-4 ring-8 ring-red-50/50">
               <PiWarningCircle className="w-7 h-7 animate-pulse" weight="bold" />
             </div>
             
@@ -53,7 +53,7 @@ export default function DeleteConfirmModal() {
             </button>
             <button
               onClick={handleConfirm}
-              className="flex-1 px-2 py-3 rounded-2xl text-white font-bold bg-[#e63946] hover:bg-[#d62828] active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 shadow-md shadow-red-500/20 text-[13px] sm:text-[14px] uppercase tracking-wider"
+              className="flex-1 px-2 py-3 rounded-2xl text-white font-bold bg-[#ff1900] hover:bg-[#cc1400] active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 shadow-md shadow-red-500/20 text-[13px] sm:text-[14px] uppercase tracking-wider"
             >
               <PiTrash className="w-4 h-4" weight="bold" />
               Remove

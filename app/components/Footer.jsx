@@ -35,7 +35,7 @@ const SOCIALS = [
 export default function Footer() {
   return (
     <footer className="bg-white text-zinc-600 relative pt-12 border-t border-zinc-200">
-      {/* ── Main Footer Grid ── */}
+      {/* â”€â”€ Main Footer Grid â”€â”€ */}
       <div className="max-w-[1440px] mx-auto px-5 sm:px-6 lg:px-8 py-10 lg:py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
           
@@ -59,7 +59,7 @@ export default function Footer() {
                   key={label}
                   href={href}
                   aria-label={label}
-                  className="w-10 h-10 rounded-full bg-zinc-50 border border-zinc-100 flex items-center justify-center text-zinc-500 hover:bg-[#D21716] hover:text-white hover:border-[#D21716] transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1"
+                  className="w-10 h-10 rounded-full bg-zinc-50 border border-zinc-100 flex items-center justify-center text-zinc-500 hover:bg-[#ff1900] hover:text-white hover:border-[#ff1900] transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1"
                 >
                   <Icon className="w-5 h-5" weight="fill" />
                 </Link>
@@ -76,8 +76,8 @@ export default function Footer() {
             <ul className="space-y-4">
               {LINKS.menu.map(({ label, href }) => (
                 <li key={label}>
-                  <Link href={href} className="text-[14px] text-zinc-500 hover:text-[#D21716] font-bold transition-colors flex items-center gap-2 group">
-                    <span className="w-0 group-hover:w-2 h-[2px] bg-[#D21716] transition-all duration-300 rounded-full" />
+                  <Link href={href} className="text-[14px] text-zinc-500 hover:text-[#ff1900] font-bold transition-colors flex items-center gap-2 group">
+                    <span className="w-0 group-hover:w-2 h-[2px] bg-[#ff1900] transition-all duration-300 rounded-full" />
                     {label}
                   </Link>
                 </li>
@@ -88,14 +88,14 @@ export default function Footer() {
           {/* Column 3: Support & Legal */}
           <div className="flex flex-col">
             <h3 className="text-black text-[16px] font-black tracking-widest uppercase mb-6 flex items-center gap-2">
-              <span className="w-2 h-2 bg-[#D21716] rounded-full"></span>
+              <span className="w-2 h-2 bg-[#ff1900] rounded-full"></span>
               Support
             </h3>
             <ul className="space-y-4">
               {LINKS.support.map(({ label, href }) => (
                 <li key={label}>
-                  <Link href={href} className="text-[14px] text-zinc-500 hover:text-[#D21716] font-bold transition-colors flex items-center gap-2 group">
-                    <span className="w-0 group-hover:w-2 h-[2px] bg-[#D21716] transition-all duration-300 rounded-full" />
+                  <Link href={href} className="text-[14px] text-zinc-500 hover:text-[#ff1900] font-bold transition-colors flex items-center gap-2 group">
+                    <span className="w-0 group-hover:w-2 h-[2px] bg-[#ff1900] transition-all duration-300 rounded-full" />
                     {label}
                   </Link>
                 </li>
@@ -112,16 +112,16 @@ export default function Footer() {
             <ul className="space-y-5 mb-8">
               <li className="flex items-start gap-4 text-[14px] text-zinc-600 font-medium">
                 <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center shrink-0 shadow-sm border border-red-100">
-                  <PiPhone className="w-5 h-5 text-[#D21716]" weight="fill" />
+                  <PiPhone className="w-5 h-5 text-[#ff1900]" weight="fill" />
                 </div>
                 <div className="flex flex-col pt-0.5">
                   <span className="text-[11px] text-zinc-400 uppercase font-black tracking-wider mb-0.5">Helpline</span>
-                  <a href="tel:021111666111" className="hover:text-[#D21716] transition-colors font-bold text-black">021-111-666-111</a>
+                  <a href="tel:021111666111" className="hover:text-[#ff1900] transition-colors font-bold text-black">021-111-666-111</a>
                 </div>
               </li>
               <li className="flex items-start gap-4 text-[14px] text-zinc-600 font-medium">
                 <div className="w-10 h-10 rounded-full bg-yellow-50 flex items-center justify-center shrink-0 shadow-sm border border-yellow-100">
-                  <PiMapPin className="w-5 h-5 text-[#D21716]" weight="fill" />
+                  <PiMapPin className="w-5 h-5 text-[#ff1900]" weight="fill" />
                 </div>
                 <div className="flex flex-col pt-0.5">
                   <span className="text-[11px] text-zinc-400 uppercase font-black tracking-wider mb-0.5">Location</span>
@@ -133,7 +133,7 @@ export default function Footer() {
             {/* Newsletter */}
             <div className="w-full">
               <h4 className="text-[12px] font-black text-black uppercase tracking-widest mb-3">Subscribe for Deals</h4>
-              <form className="flex items-center bg-zinc-50 border border-zinc-200 rounded-xl overflow-hidden focus-within:border-[#D21716] focus-within:ring-1 focus-within:ring-[#D21716] transition-all shadow-inner">
+              <form className="flex items-center bg-zinc-50 border border-zinc-200 rounded-xl overflow-hidden focus-within:border-[#ff1900] focus-within:ring-1 focus-within:ring-[#ff1900] transition-all shadow-inner">
                 <input
                   type="email"
                   placeholder="Enter your email"
@@ -154,21 +154,21 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* ── Bottom Bar ── */}
+      {/* â”€â”€ Bottom Bar â”€â”€ */}
       <div className="border-t border-zinc-100 bg-white">
         <div className="max-w-[1440px] mx-auto px-5 sm:px-6 lg:px-8 py-5 sm:py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-[13px] font-bold text-zinc-400 text-center sm:text-left">
-            © {new Date().getFullYear()} <span className="text-zinc-700">Pioneer Broast</span>. All rights reserved.
+            Â© {new Date().getFullYear()} <span className="text-zinc-700">Pioneer Broast</span>. All rights reserved.
           </p>
           <div className="flex items-center gap-2 justify-center">
             <span className="text-[13px] font-bold text-zinc-500 flex items-center gap-1.5">
-              Made with <span className="text-[#D21716] animate-pulse">❤️</span> in Pakistan
+              Made with <span className="text-[#ff1900] animate-pulse">â¤ï¸</span> in Pakistan
             </span>
           </div>
         </div>
       </div>
 
-      {/* Decorative Bunting / Scalloped Bottom — alternating gold & white */}
+      {/* Decorative Bunting / Scalloped Bottom â€” alternating gold & white */}
       <div
         className="w-full shrink-0"
         style={{ filter: "drop-shadow(0 -3px 4px rgba(0,0,0,0.10))" }}

@@ -103,7 +103,7 @@ export default function ProductsList({ onEditItem }) {
                       </div>
                     </td>
                     <td className="p-3 sm:p-4 min-w-[140px] sm:min-w-[200px]">
-                      <p className="font-semibold text-[13px] text-black line-clamp-1">{item.name} {item.is_spicy && "🌶️"}</p>
+                      <p className="font-semibold text-[13px] text-black line-clamp-1">{item.name} {item.is_spicy && "ðŸŒ¶ï¸"}</p>
                       <p className="text-[11px] text-zinc-400 line-clamp-1">{item.slug}</p>
                       
                       {/* Mobile Status */}
@@ -120,7 +120,7 @@ export default function ProductsList({ onEditItem }) {
                       {item.discount_price && item.discount_price < item.price ? (
                         <div className="flex flex-col">
                           <span className="text-[10px] text-zinc-400 line-through font-normal">Rs. {item.price}</span>
-                          <span className="text-[#e63946]">Rs. {item.discount_price}</span>
+                          <span className="text-[#ff1900]">Rs. {item.discount_price}</span>
                         </div>
                       ) : (
                         <span>Rs. {item.price}</span>

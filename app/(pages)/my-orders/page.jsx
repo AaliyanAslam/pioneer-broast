@@ -706,8 +706,8 @@ export default function GuestOrdersPage() {
                                 {order.customer_address},{" "}
                                 {order.delivery_area || order.delivery_city}
                               </p>
-                              <div className="mt-2.5 inline-flex items-center gap-1.5 bg-[#e63946]/10 border border-[#e63946]/20 px-2 py-1 rounded-md">
-                                <span className="text-[#e63946] text-[10px] font-black uppercase tracking-widest">COD</span>
+                              <div className="mt-2.5 inline-flex items-center gap-1.5 bg-[#ff1900]/10 border border-[#ff1900]/20 px-2 py-1 rounded-md">
+                                <span className="text-[#ff1900] text-[10px] font-black uppercase tracking-widest">COD</span>
                                 <span className="text-zinc-700 text-[11px] font-bold">Cash on Delivery</span>
                               </div>
                             </div>
@@ -824,7 +824,7 @@ export default function GuestOrdersPage() {
 
               {/* Animated cooking icon */}
               <div className="w-20 h-20 rounded-full bg-linear-to-br from-amber-50 to-orange-50 border-2 border-amber-100 flex items-center justify-center mx-auto mb-5">
-                <span className="text-4xl" style={{ animation: 'cookBounce 2s ease-in-out infinite' }}>👨‍🍳</span>
+                <span className="text-4xl" style={{ animation: 'cookBounce 2s ease-in-out infinite' }}>ðŸ‘¨â€ðŸ³</span>
               </div>
 
               <h3 className="text-[20px] font-bold text-black mb-2 leading-tight">Order Preparation Started!</h3>
@@ -832,13 +832,13 @@ export default function GuestOrdersPage() {
                 Our kitchen team is already preparing your delicious order. Online cancellation is not available at this stage.
               </p>
 
-              {/* Contact Card — matching Navbar style */}
+              {/* Contact Card â€” matching Navbar style */}
               <a
                 href="tel:021111666111"
-                className="flex items-center gap-4 p-4 bg-white border-2 border-zinc-200 rounded-2xl hover:border-[#D21716]/30 hover:bg-red-50/30 transition-all duration-200 active:scale-[0.98] group"
+                className="flex items-center gap-4 p-4 bg-white border-2 border-zinc-200 rounded-2xl hover:border-[#ff1900]/30 hover:bg-red-50/30 transition-all duration-200 active:scale-[0.98] group"
               >
                 <div className="w-12 h-12 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center shrink-0 group-hover:bg-red-100 transition-colors">
-                  <PiPhoneCall className="w-6 h-6 text-[#D21716]" weight="fill" />
+                  <PiPhoneCall className="w-6 h-6 text-[#ff1900]" weight="fill" />
                 </div>
                 <div className="flex flex-col">
                   <span className="text-[15px] font-bold text-black leading-tight">Contact us</span>

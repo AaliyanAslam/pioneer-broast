@@ -95,7 +95,7 @@ export default function Navbar() {
   return (
     <>
       <header className="relative z-40 w-full flex flex-col bg-white border-b border-zinc-100">
-        {/* Decorative Bunting / Scalloped Top — alternating gold & white */}
+        {/* Decorative Bunting / Scalloped Top â€” alternating gold & white */}
         <div
           className="w-full shrink-0"
           style={{ filter: "drop-shadow(0 3px 4px rgba(0,0,0,0.10))" }}
@@ -117,7 +117,7 @@ export default function Navbar() {
             className={`py-2 sm:py-2.5 px-4 flex justify-between items-center text-[10px] sm:text-xs font-bold uppercase tracking-widest relative z-50 transition-colors ${
               activeOrder.status?.toLowerCase() === "cancelled"
                 ? "bg-zinc-900 text-white border-b border-zinc-800"
-                : "bg-[#e63946] text-white hover:bg-[#d62828]"
+                : "bg-[#ff1900] text-white hover:bg-[#cc1400]"
             }`}
           >
             <Link
@@ -137,7 +137,7 @@ export default function Navbar() {
                     </span>
                     {activeOrder.cancel_reason && (
                       <span className="hidden sm:inline text-zinc-400 normal-case tracking-normal ml-2 font-medium">
-                        • {activeOrder.cancel_reason}
+                        â€¢ {activeOrder.cancel_reason}
                       </span>
                     )}
                   </>
@@ -190,7 +190,7 @@ export default function Navbar() {
                 onClick={() => setLocationModalOpen(true)}
                 className="flex xl:hidden items-center gap-1 active:scale-95 transition-transform overflow-hidden min-w-0"
               >
-                <PiMapPin className="text-[#D21716] w-5 h-5 sm:w-6 sm:h-6 shrink-0" weight="fill" />
+                <PiMapPin className="text-[#ff1900] w-5 h-5 sm:w-6 sm:h-6 shrink-0" weight="fill" />
                 <div className="flex flex-col text-left overflow-hidden min-w-0">
                   <span className="text-[11px] sm:text-[13px] font-bold text-black leading-tight truncate">
                     {orderType === "Delivery" ? "Delivery" : orderType === "Pickup" ? "Pickup" : "Location"}
@@ -209,7 +209,7 @@ export default function Navbar() {
                   className="flex items-center gap-3 px-4 py-2 bg-white border border-zinc-200 rounded-md hover:bg-zinc-50 transition-all duration-200 active:scale-95 text-left"
                 >
                   <PiMapPin
-                    className="text-[#D21716] w-7 h-7 shrink-0"
+                    className="text-[#ff1900] w-7 h-7 shrink-0"
                     weight="fill"
                   />
                   <div className="flex flex-col">
@@ -228,7 +228,7 @@ export default function Navbar() {
                   className="flex items-center gap-3 px-4 py-2 bg-white border border-zinc-200 rounded-md hover:bg-zinc-50 transition-all duration-200 active:scale-95 text-left"
                 >
                   <PiDeviceMobile
-                    className="text-[#D21716] w-7 h-7 shrink-0"
+                    className="text-[#ff1900] w-7 h-7 shrink-0"
                     weight="fill"
                   />
                   <div className="flex flex-col">
@@ -259,7 +259,7 @@ export default function Navbar() {
                   </span>
                 </div>
                 <PiNewspaper
-                  className="text-[#D21716] w-7 h-7 shrink-0"
+                  className="text-[#ff1900] w-7 h-7 shrink-0"
                   weight="fill"
                 />
               </Link>
@@ -267,7 +267,7 @@ export default function Navbar() {
               {/* Cart Bucket */}
               <button
                 onClick={() => setCartOpen(true)}
-                className="relative flex items-center justify-center p-1 text-zinc-800 hover:text-[#D21716] transition-all duration-200 active:scale-95"
+                className="relative flex items-center justify-center p-1 text-zinc-800 hover:text-[#ff1900] transition-all duration-200 active:scale-95"
               >
                 <PiTote className="w-9 h-9 sm:w-11 sm:h-11" weight="fill" />
                 <span className="absolute bottom-0 left-0 bg-[#FFD700] text-black border border-white shadow-sm text-[11px] sm:text-[12px] font-black w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center translate-y-1 -translate-x-1">

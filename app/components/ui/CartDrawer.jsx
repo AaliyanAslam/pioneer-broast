@@ -236,7 +236,7 @@ export default function CartDrawer({ isOpen, onClose }) {
           </h2>
           <button
             onClick={onClose}
-            className="p-1 text-white bg-[#e63946] hover:bg-red-600 transition-colors rounded-full"
+            className="p-1 text-white bg-[#ff1900] hover:bg-red-600 transition-colors rounded-full"
           >
             <PiX className="w-5 h-5 sm:w-6 sm:h-6" weight="bold" />
           </button>
@@ -248,7 +248,7 @@ export default function CartDrawer({ isOpen, onClose }) {
             <div className="flex flex-col h-full overflow-y-auto pb-6 custom-scrollbar">
               <div className="flex flex-col items-center justify-center py-16 text-center px-4">
                 <div className="w-24 h-24 bg-red-50 rounded-full flex items-center justify-center mb-6 border border-red-100">
-                  <PiTote className="w-10 h-10 text-[#e63946]" weight="bold" />
+                  <PiTote className="w-10 h-10 text-[#ff1900]" weight="bold" />
                 </div>
                 <h3 className="text-[20px] font-black text-black mb-2 tracking-tight uppercase">
                   Your bucket is empty
@@ -259,7 +259,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                 <Link
                   href="/#broast"
                   onClick={onClose}
-                  className="group flex items-center justify-center gap-2 bg-[#e63946] text-white font-black px-8 py-4 rounded-xl hover:bg-red-600 transition-colors active:scale-95 text-[14px] uppercase tracking-widest w-full max-w-[240px]"
+                  className="group flex items-center justify-center gap-2 bg-[#ff1900] text-white font-black px-8 py-4 rounded-xl hover:bg-red-600 transition-colors active:scale-95 text-[14px] uppercase tracking-widest w-full max-w-[240px]"
                 >
                   Order Now
                   <PiArrowRight
@@ -284,7 +284,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                       className="flex items-center justify-between py-4 border-b border-zinc-100 relative overflow-hidden bg-white"
                     >
                       <div className="flex gap-4 items-center flex-1 pr-4">
-                        <div className="w-[60px] h-[60px] sm:w-[70px] sm:h-[70px] bg-[#e63946] shrink-0 flex items-center justify-center rounded-xl relative overflow-hidden pointer-events-none">
+                        <div className="w-[60px] h-[60px] sm:w-[70px] sm:h-[70px] bg-[#ff1900] shrink-0 flex items-center justify-center rounded-xl relative overflow-hidden pointer-events-none">
                           <Image
                             src={
                               item.image_url ||
@@ -305,23 +305,23 @@ export default function CartDrawer({ isOpen, onClose }) {
                         </div>
                       </div>
 
-                      <div className="flex items-center border border-[#e63946] rounded-full bg-white px-2 py-1 min-w-[80px] justify-between shrink-0">
+                      <div className="flex items-center border border-[#ff1900] rounded-full bg-white px-2 py-1 min-w-[80px] justify-between shrink-0">
                         <button
                           onClick={() =>
                             handleQtyChange(uniqueId, item.quantity, "decrease")
                           }
-                          className="text-[#e63946] p-1"
+                          className="text-[#ff1900] p-1"
                         >
                           <PiMinus className="w-3 h-3" weight="bold" />
                         </button>
-                        <span className="text-[14px] font-medium text-[#e63946]">
+                        <span className="text-[14px] font-medium text-[#ff1900]">
                           {item.quantity}
                         </span>
                         <button
                           onClick={() =>
                             handleQtyChange(uniqueId, item.quantity, "increase")
                           }
-                          className="text-[#e63946] p-1"
+                          className="text-[#ff1900] p-1"
                         >
                           <PiPlus className="w-3 h-3" weight="bold" />
                         </button>
@@ -348,14 +348,14 @@ export default function CartDrawer({ isOpen, onClose }) {
                 </div>
               ) : (
                 <div className="px-4 sm:px-6">
-                  <div className="mt-6 bg-[#e63946] rounded-xl pt-4 pb-1.5 px-1.5 relative">
+                  <div className="mt-6 bg-[#ff1900] rounded-xl pt-4 pb-1.5 px-1.5 relative">
                     <h3 className="text-white text-center text-[13px] font-bold mb-4">
                       Place a quick order using the Info Below
                     </h3>
 
                     <div className="bg-white rounded-lg p-3 sm:p-4 relative pt-5">
                       <div className="absolute -top-4 left-1/2 -translate-x-1/2 flex bg-white rounded-full shadow-sm p-1 border border-zinc-100 whitespace-nowrap">
-                        <button className="bg-[#e63946] text-white px-4 py-1.5 rounded-full text-[10px] font-bold tracking-wide">
+                        <button className="bg-[#ff1900] text-white px-4 py-1.5 rounded-full text-[10px] font-bold tracking-wide">
                           CASH
                         </button>
                         <button
@@ -376,7 +376,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                               type="text"
                               value={customerName}
                               onChange={(e) => setCustomerName(e.target.value)}
-                              className="w-full border border-zinc-200 rounded px-2 py-1.5 text-[12px] focus:outline-none focus:border-[#e63946]"
+                              className="w-full border border-zinc-200 rounded px-2 py-1.5 text-[12px] focus:outline-none focus:border-[#ff1900]"
                               placeholder="Your Full Name"
                             />
                           </div>
@@ -388,7 +388,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                               type="tel"
                               value={customerPhone}
                               onChange={(e) => setCustomerPhone(e.target.value)}
-                              className="w-full border border-zinc-200 rounded px-2 py-1.5 text-[12px] focus:outline-none focus:border-[#e63946]"
+                              className="w-full border border-zinc-200 rounded px-2 py-1.5 text-[12px] focus:outline-none focus:border-[#ff1900]"
                               placeholder="03XX-XXXXXXX"
                             />
                           </div>
@@ -402,7 +402,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                               onChange={(e) =>
                                 setCustomerAddress(e.target.value)
                               }
-                              className="w-full border border-zinc-200 rounded px-2 py-1.5 text-[12px] focus:outline-none focus:border-[#e63946]"
+                              className="w-full border border-zinc-200 rounded px-2 py-1.5 text-[12px] focus:outline-none focus:border-[#ff1900]"
                               placeholder="House 123, Street 4"
                             />
                           </div>
@@ -505,7 +505,7 @@ export default function CartDrawer({ isOpen, onClose }) {
 
                 {isLoadingSuggestions ? (
                   <div className="flex justify-center py-8">
-                    <PiCircleNotch className="w-6 h-6 animate-spin text-[#e63946]" />
+                    <PiCircleNotch className="w-6 h-6 animate-spin text-[#ff1900]" />
                   </div>
                 ) : (
                   <div className="flex gap-3 overflow-x-auto no-scrollbar pb-2">
@@ -515,7 +515,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                         className="min-w-[120px] max-w-[120px] flex-shrink-0 cursor-pointer"
                         onClick={onClose}
                       >
-                        <div className="w-full h-[120px] bg-[#e63946] rounded-xl relative overflow-hidden flex items-center justify-center p-2">
+                        <div className="w-full h-[120px] bg-[#ff1900] rounded-xl relative overflow-hidden flex items-center justify-center p-2">
                           <Image
                             src={
                               item.image_url ||
@@ -525,7 +525,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                             className="object-contain drop-shadow-lg"
                             alt={item.name}
                           />
-                          <button className="absolute bottom-2 right-2 bg-white rounded-full p-1.5 shadow-md text-[#e63946] hover:scale-110 transition-transform">
+                          <button className="absolute bottom-2 right-2 bg-white rounded-full p-1.5 shadow-md text-[#ff1900] hover:scale-110 transition-transform">
                             <PiPlus className="w-4 h-4" weight="bold" />
                           </button>
                         </div>
@@ -592,10 +592,10 @@ export default function CartDrawer({ isOpen, onClose }) {
             <Link
               href="/cart"
               onClick={onClose}
-              className="w-full bg-[#e63946] text-white text-[16px] font-bold tracking-wide py-4 rounded-xl active:scale-[0.98] transition-transform shadow-lg shadow-red-500/20 flex items-center justify-center gap-2 relative"
+              className="w-full bg-[#ff1900] text-white text-[16px] font-bold tracking-wide py-4 rounded-xl active:scale-[0.98] transition-transform shadow-lg shadow-red-500/20 flex items-center justify-center gap-2 relative"
             >
               Checkout
-              <div className="absolute right-4 bg-white text-[#e63946] rounded-full p-0.5">
+              <div className="absolute right-4 bg-white text-[#ff1900] rounded-full p-0.5">
                 <PiArrowRight className="w-4 h-4" weight="bold" />
               </div>
             </Link>

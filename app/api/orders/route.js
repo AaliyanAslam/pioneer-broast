@@ -121,11 +121,11 @@ export async function POST(req) {
       const adminMailOptions = {
         from: process.env.SMTP_USER,
         to: process.env.ADMIN_RECEIVER_EMAIL,
-        subject: `🚨 New Order from ${customer_name}! - Pioneer Broast`,
+        subject: `ðŸš¨ New Order from ${customer_name}! - Pioneer Broast`,
         html: `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eaeaea; border-radius: 10px; overflow: hidden;">
-            <div style="background-color: #e63946; padding: 20px; text-align: center;">
-              <h2 style="color: white; margin: 0;">New Order Received! 🍔</h2>
+            <div style="background-color: #ff1900; padding: 20px; text-align: center;">
+              <h2 style="color: white; margin: 0;">New Order Received! ðŸ”</h2>
             </div>
             <div style="padding: 20px;">
               <p><strong>Order ID:</strong> ${newOrder.id.slice(0, 8)}</p>

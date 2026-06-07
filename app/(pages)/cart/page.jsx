@@ -552,10 +552,10 @@ export default function CheckoutPage() {
                     </button>
                   </div>
                   <p className="text-[13px] sm:text-base text-black font-medium mb-0.5 sm:mb-1">
-                    {customerInfo.name || "—"}
+                    {customerInfo.name || "â€”"}
                   </p>
                   <p className="text-[13px] sm:text-sm text-zinc-600 font-medium">
-                    {customerInfo.phone || "—"}
+                    {customerInfo.phone || "â€”"}
                   </p>
                 </div>
 
@@ -574,7 +574,7 @@ export default function CheckoutPage() {
                       </button>
                     </div>
                     <p className="text-[13px] sm:text-sm text-black font-medium leading-relaxed mb-0.5 sm:mb-1">
-                      {customerInfo.address || "—"}
+                      {customerInfo.address || "â€”"}
                     </p>
                     <p className="text-[13px] sm:text-sm text-zinc-600 font-medium mb-1.5">
                       {deliveryCity}, {deliveryArea}
@@ -648,7 +648,7 @@ export default function CheckoutPage() {
                       <div className="mt-1 sm:mt-2 flex items-center justify-between">
                         {item.discount_price && item.discount_price < item.price ? (
                           <div className="flex items-center gap-2">
-                            <p className="font-bold text-[13px] sm:text-sm text-[#e63946]">
+                            <p className="font-bold text-[13px] sm:text-sm text-[#ff1900]">
                               Rs. {item.discount_price * item.quantity}
                             </p>
                             <p className="text-[10px] sm:text-[11px] lg:text-xs text-zinc-400 line-through font-medium">

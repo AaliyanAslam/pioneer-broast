@@ -28,7 +28,7 @@ export default function FloatingCartWidget() {
     <div className="fixed bottom-0 left-0 right-0 px-0 sm:px-0 flex justify-center z-45 animate-slide-up-fade">
       <button
         onClick={() => setCartOpen(true)}
-        className="w-full sm:w-[360px] bg-[#D21716] text-white rounded-t-3xl sm:rounded-t-2xl p-3.5 sm:p-4 shadow-[0_10px_40px_rgba(230,57,70,0.3)] flex items-center justify-between hover:bg-[#d62828] hover:shadow-[0_15px_50px_rgba(230,57,70,0.4)] transition-all duration-300 active:scale-95 group"
+        className="w-full sm:w-[360px] bg-[#ff1900] text-white rounded-t-3xl sm:rounded-t-2xl p-3.5 sm:p-4 shadow-[0_10px_40px_rgba(230,57,70,0.3)] flex items-center justify-between hover:bg-[#cc1400] hover:shadow-[0_15px_50px_rgba(230,57,70,0.4)] transition-all duration-300 active:scale-95 group"
       >
         <div className="flex items-center gap-2.5 sm:gap-3 px-1 sm:px-0">
           <div className="w-8 h-8 sm:w-8 sm:h-8 bg-white/20 rounded-full flex items-center justify-center font-bold text-[13px] sm:text-sm relative shrink-0">
@@ -43,7 +43,7 @@ export default function FloatingCartWidget() {
 
         <div className="flex items-center gap-2.5 sm:gap-3 px-1 sm:px-0">
           <span className="text-base sm:text-lg font-bold tracking-tight">Rs. {totalPrice.toLocaleString()}</span>
-          <div className="w-8 h-8 sm:w-8 sm:h-8 bg-white text-[#D21716] rounded-full flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform shrink-0">
+          <div className="w-8 h-8 sm:w-8 sm:h-8 bg-white text-[#ff1900] rounded-full flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform shrink-0">
             <PiTote className="w-4 h-4 sm:w-4 sm:h-4 font-bold" />
           </div>
         </div>

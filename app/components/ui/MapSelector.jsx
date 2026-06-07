@@ -80,7 +80,7 @@ export default function MapSelector({ initialPosition, onConfirm, onCancel }) {
         
         {/* Center fixed pin */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-full z-400 pointer-events-none drop-shadow-md">
-          <PiMapPinFill className="w-10 h-10 text-[#e63946] animate-bounce" />
+          <PiMapPinFill className="w-10 h-10 text-[#ff1900] animate-bounce" />
         </div>
       </div>
       

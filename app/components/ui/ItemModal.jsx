@@ -88,8 +88,8 @@ export default function ItemModal({ isOpen, onClose, item }) {
             {/* Badges Overlay */}
             <div className="absolute top-4 left-4 flex flex-col gap-2">
               {item.is_spicy && (
-                <span className="bg-[#e63946] text-white text-[10px] font-bold px-2.5 py-1.5 rounded-md shadow-sm uppercase tracking-wider flex items-center gap-1 backdrop-blur-md">
-                  🌶️ Spicy
+                <span className="bg-[#ff1900] text-white text-[10px] font-bold px-2.5 py-1.5 rounded-md shadow-sm uppercase tracking-wider flex items-center gap-1 backdrop-blur-md">
+                  ðŸŒ¶ï¸ Spicy
                 </span>
               )}
             </div>
@@ -106,12 +106,12 @@ export default function ItemModal({ isOpen, onClose, item }) {
                     <span className="text-[12px] sm:text-sm text-zinc-400 line-through font-medium">
                       Rs. {originalPrice}
                     </span>
-                    <span className="text-[18px] sm:text-xl font-bold text-[#e63946]">
+                    <span className="text-[18px] sm:text-xl font-bold text-[#ff1900]">
                       Rs. {activePrice}
                     </span>
                   </div>
                 ) : (
-                  <span className="text-[18px] sm:text-xl font-bold text-[#e63946]">
+                  <span className="text-[18px] sm:text-xl font-bold text-[#ff1900]">
                     Rs. {originalPrice}
                   </span>
                 )}
@@ -140,7 +140,7 @@ export default function ItemModal({ isOpen, onClose, item }) {
                 value={specialInstructions}
                 onChange={(e) => setSpecialInstructions(e.target.value)}
                 placeholder="E.g. Extra mayo, no pickles..."
-                className="w-full bg-zinc-50 border border-zinc-200 rounded-xl p-2.5 sm:p-3 text-[13px] sm:text-sm text-black focus:outline-none focus:border-[#e63946] focus:ring-1 focus:ring-[#e63946] transition-colors resize-none placeholder:text-zinc-400"
+                className="w-full bg-zinc-50 border border-zinc-200 rounded-xl p-2.5 sm:p-3 text-[13px] sm:text-sm text-black focus:outline-none focus:border-[#ff1900] focus:ring-1 focus:ring-[#ff1900] transition-colors resize-none placeholder:text-zinc-400"
                 rows="2"
               />
             </div>
@@ -172,13 +172,13 @@ export default function ItemModal({ isOpen, onClose, item }) {
           <button
             onClick={handleAddToCart}
             disabled={isAdding}
-            className="flex-1 bg-[#e63946] text-white font-bold text-[12px] sm:text-sm uppercase tracking-wide py-3 sm:py-4 rounded-xl transition-all duration-300 hover:bg-[#d62828] active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-70 shadow-lg shadow-[#e63946]/20"
+            className="flex-1 bg-[#ff1900] text-white font-bold text-[12px] sm:text-sm uppercase tracking-wide py-3 sm:py-4 rounded-xl transition-all duration-300 hover:bg-[#cc1400] active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-70 shadow-lg shadow-[#ff1900]/20"
           >
             {isAdding ? (
               "Adding..."
             ) : (
               <span>
-                Add to Bucket • Rs. {(activePrice * quantity).toLocaleString()}
+                Add to Bucket â€¢ Rs. {(activePrice * quantity).toLocaleString()}
               </span>
             )}
           </button>

@@ -44,8 +44,8 @@ export default function MenuItemCard({ item }) {
         {/* Badges */}
         <div className="absolute top-2 left-2 flex flex-col gap-2 z-20 pointer-events-none">
           {item.is_spicy && (
-            <span className="bg-[#e63946] text-white text-[9px] sm:text-[10px] font-semibold px-2 py-1 rounded-md shadow-sm uppercase tracking-wider flex items-center gap-1 backdrop-blur-sm">
-              🌶️ Spicy
+            <span className="bg-[#ff1900] text-white text-[9px] sm:text-[10px] font-semibold px-2 py-1 rounded-md shadow-sm uppercase tracking-wider flex items-center gap-1 backdrop-blur-sm">
+              ðŸŒ¶ï¸ Spicy
             </span>
           )}
         </div>
@@ -71,7 +71,7 @@ export default function MenuItemCard({ item }) {
         {/* Content layout below image */}
         <div className="p-2.5 sm:p-4 flex flex-col flex-1 bg-white">
           <div className="mb-0.5 sm:mb-1">
-            <h3 className="text-[13px] sm:text-[16px] font-bold text-zinc-900 leading-tight capitalize line-clamp-1 group-hover:text-[#e63946] transition-colors">
+            <h3 className="text-[13px] sm:text-[16px] font-bold text-zinc-900 leading-tight capitalize line-clamp-1 group-hover:text-[#ff1900] transition-colors">
               {item.name}
             </h3>
           </div>
@@ -96,7 +96,7 @@ export default function MenuItemCard({ item }) {
             </div>
 
             {quantityInCart > 0 ? (
-              <div className="flex items-center justify-between w-full sm:w-auto border border-[#e63946] rounded-lg sm:rounded-xl overflow-hidden shadow-sm h-7 sm:h-9 bg-[#e63946]">
+              <div className="flex items-center justify-between w-full sm:w-auto border border-[#ff1900] rounded-lg sm:rounded-xl overflow-hidden shadow-sm h-7 sm:h-9 bg-[#ff1900]">
                 <button
                   onClick={(e) => {
                     e.preventDefault();
@@ -107,11 +107,11 @@ export default function MenuItemCard({ item }) {
                       updateQuantity(item.id, "decrease");
                     }
                   }}
-                  className="w-7 sm:w-9 h-full flex items-center justify-center text-white hover:bg-[#d62828] text-sm sm:text-lg font-bold transition-colors"
+                  className="w-7 sm:w-9 h-full flex items-center justify-center text-white hover:bg-[#cc1400] text-sm sm:text-lg font-bold transition-colors"
                 >
                   -
                 </button>
-                <span className="tabular-nums font-bold text-[12px] sm:text-base text-[#e63946] flex-1 sm:w-8 h-full flex items-center justify-center bg-white select-none text-center">
+                <span className="tabular-nums font-bold text-[12px] sm:text-base text-[#ff1900] flex-1 sm:w-8 h-full flex items-center justify-center bg-white select-none text-center">
                   {quantityInCart}
                 </span>
                 <button
@@ -120,7 +120,7 @@ export default function MenuItemCard({ item }) {
                     e.stopPropagation();
                     updateQuantity(item.id, "increase");
                   }}
-                  className="w-7 sm:w-9 h-full flex items-center justify-center text-white hover:bg-[#d62828] text-sm sm:text-lg font-bold transition-colors"
+                  className="w-7 sm:w-9 h-full flex items-center justify-center text-white hover:bg-[#cc1400] text-sm sm:text-lg font-bold transition-colors"
                 >
                   +
                 </button>
@@ -129,7 +129,7 @@ export default function MenuItemCard({ item }) {
               <button
                 onClick={handleQuickAdd}
                 disabled={isAdding}
-                className="bg-[#e63946] text-white font-bold text-[10px] sm:text-[12px] uppercase tracking-widest px-3 sm:px-5 py-1.5 sm:py-2 rounded-lg sm:rounded-xl transition-all duration-300 hover:bg-[#d62828] active:scale-[0.96] disabled:opacity-50 shadow-sm flex items-center justify-center w-full sm:w-auto sm:min-w-[70px]"
+                className="bg-[#ff1900] text-white font-bold text-[10px] sm:text-[12px] uppercase tracking-widest px-3 sm:px-5 py-1.5 sm:py-2 rounded-lg sm:rounded-xl transition-all duration-300 hover:bg-[#cc1400] active:scale-[0.96] disabled:opacity-50 shadow-sm flex items-center justify-center w-full sm:w-auto sm:min-w-[70px]"
               >
                 {isAdding ? (
                   <span className="flex items-center gap-0.5 sm:gap-1">
