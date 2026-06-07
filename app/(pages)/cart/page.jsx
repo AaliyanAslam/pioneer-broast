@@ -351,136 +351,74 @@ export default function CheckoutPage() {
 
   return (
     <>
-      <div className="min-h-screen overflow-x-hidden bg-white text-zinc-950 px-4 sm:px-6 lg:p-12 pb-48 lg:pb-12 pt-20 sm:pt-24 lg:pt-12 relative">
-        {/* Mobile / Desktop Absolute Back Button */}
-        <div className="w-full max-w-420 mx-auto absolute top-4 sm:top-6 left-0 right-0 px-4 sm:px-6 lg:top-8 lg:px-8 flex justify-start z-10">
+      <Navbar />
+      <div className="min-h-screen bg-[#f8f9fa] text-zinc-900 pb-36 sm:pb-32 lg:pb-24 pt-20 lg:pt-24 relative selection:bg-[#C0E212] selection:text-black font-sans">
+        {/* Header / Back Button */}
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-5 sm:mb-8 lg:mb-10 flex items-center justify-between z-10 relative">
           {checkoutStep === 2 ? (
             <button
               type="button"
               onClick={() => setCheckoutStep(1)}
-              className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-black transition-colors bg-zinc-50 lg:bg-transparent px-3 py-2 lg:p-0 rounded-lg lg:rounded-none"
+              className="group inline-flex items-center gap-2 text-[13px] sm:text-sm font-medium uppercase tracking-widest text-zinc-500 hover:text-black transition-colors bg-white lg:bg-transparent px-3.5 sm:px-4 py-2 sm:py-2.5 lg:p-0 rounded-xl lg:rounded-none shadow-sm lg:shadow-none border border-zinc-200 lg:border-transparent"
             >
-              <PiArrowLeft className="w-4 h-4" />
+              <PiArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:-translate-x-1 transition-transform" />
               Back to Details
             </button>
           ) : (
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-black transition-colors bg-zinc-50 lg:bg-transparent px-3 py-2 lg:p-0 rounded-lg lg:rounded-none"
+              className="group inline-flex items-center gap-2 text-[13px] sm:text-sm font-medium uppercase tracking-widest text-zinc-500 hover:text-black transition-colors bg-white lg:bg-transparent px-3.5 sm:px-4 py-2 sm:py-2.5 lg:p-0 rounded-xl lg:rounded-none shadow-sm lg:shadow-none border border-zinc-200 lg:border-transparent"
             >
-              <PiArrowLeft className="w-4 h-4" />
+              <PiArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:-translate-x-1 transition-transform" />
               Back to Store
             </Link>
           )}
         </div>
 
-        {/* Stepper Header */}
-        <div className="w-full max-w-[280px] sm:max-w-sm mx-auto mb-6 sm:mb-14 mt-4 flex items-center justify-between relative px-2 sm:px-4">
-          {/* Background Line */}
-          <div className="absolute top-5 sm:top-6 left-16 right-16 sm:left-20 sm:right-20 h-[3px] bg-zinc-200 z-0 rounded-full overflow-hidden">
-            {checkoutStep === 1 && (
-              <div
-                className="absolute top-0 left-0 w-1/2 h-full opacity-50 bg-linear-to-r from-transparent via-[#3b82f6] to-transparent"
-                style={{ animation: "slideGradient 1.5s linear infinite" }}
-              />
-            )}
-          </div>
-          {/* Active Line */}
-          <div
-            className="absolute top-5 sm:top-6 left-16 right-16 sm:left-20 sm:right-20 h-[3px] bg-[#10b981] z-0 transition-all duration-700 ease-in-out rounded-full overflow-hidden origin-left"
-            style={{
-              transform: checkoutStep === 2 ? "scaleX(1)" : "scaleX(0)",
-            }}
-          >
-            {checkoutStep === 2 && (
-              <div
-                className="absolute top-0 left-0 w-[40%] h-full opacity-80 bg-linear-to-r from-transparent via-white to-transparent rounded-full"
-                style={{ animation: "slideGradient 1.5s ease-in-out infinite" }}
-              />
-            )}
-          </div>
-          <style>{`
-          @keyframes slideGradient {
-            0% { transform: translateX(-200%); }
-            100% { transform: translateX(300%); }
-          }
-        `}</style>
-
-          {/* Step 1 */}
-          <div
-            onClick={() => {
-              if (checkoutStep === 2) setCheckoutStep(1);
-            }}
-            className={`flex flex-col items-center gap-2.5 bg-white group relative z-10 ${checkoutStep === 2 ? "cursor-pointer hover:opacity-80 transition-opacity" : ""}`}
-          >
-            <div
-              ref={step1Ref}
-              className={`relative flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full transition-all duration-500 ${checkoutStep === 1 ? "bg-[#3b82f6] text-white shadow-[0_0_15px_rgba(59,130,246,0.4)] ring-4 ring-[#3b82f6]/20" : checkoutStep > 1 ? "bg-[#10b981] text-white ring-4 ring-[#10b981]/20" : "bg-white text-zinc-300 border-2 border-zinc-200"}`}
-            >
-              {checkoutStep > 1 ? (
-                <PiCheck className="w-5 h-5 sm:w-6 sm:h-6" />
-              ) : (
-                <PiTruck className="w-5 h-5 sm:w-6 sm:h-6" />
-              )}
-              {checkoutStep === 1 && (
-                <div
-                  className="absolute inset-0 rounded-full border-2 border-[#3b82f6] animate-ping opacity-30"
-                  style={{ animationDuration: "2s" }}
-                ></div>
-              )}
-            </div>
-            <span
-              className={`text-[10px] sm:text-[11px] font-bold uppercase tracking-widest transition-colors duration-500 mt-1 whitespace-nowrap ${checkoutStep === 1 ? "text-[#3b82f6]" : checkoutStep > 1 ? "text-[#10b981]" : "text-zinc-400"}`}
-            >
-              Delivery
-            </span>
-          </div>
-
-          {/* Step 2 */}
-          <div className="flex flex-col items-center gap-2.5 bg-white relative z-10">
-            <div
-              ref={step2Ref}
-              className={`relative flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full transition-all duration-500 ${checkoutStep === 2 ? "bg-[#3b82f6] text-white shadow-[0_0_15px_rgba(59,130,246,0.4)] ring-4 ring-[#3b82f6]/20" : "bg-white text-zinc-400 border-2 border-zinc-200"}`}
-            >
-              <PiListChecks className="w-5 h-5 sm:w-6 sm:h-6" />
-              {checkoutStep === 2 && (
-                <div
-                  className="absolute inset-0 rounded-full border-2 border-[#3b82f6] animate-ping opacity-30"
-                  style={{ animationDuration: "2s" }}
-                ></div>
-              )}
-            </div>
-            <span
-              className={`text-[10px] sm:text-[11px] font-bold uppercase tracking-widest transition-colors duration-500 mt-1 whitespace-nowrap ${checkoutStep === 2 ? "text-[#3b82f6]" : "text-zinc-400"}`}
-            >
-              Review
-            </span>
-          </div>
-        </div>
-
         <div
           ref={stepContainerRef}
-          className="max-w-420 mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 mt-2 sm:mt-0"
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-16"
         >
-          {/* Left: Checkout Form */}
-          <div className="order-2 lg:order-1">
-            <div className="flex items-center justify-between mb-4 sm:mb-6 leading-none">
-              <h1 className="text-xl sm:text-2xl font-bold uppercase tracking-tight text-black px-1 sm:px-0">
-                {orderType === "Delivery"
-                  ? "Delivery Details"
-                  : "Pickup Details"}
+          {/* Left: Checkout Form (7 columns) */}
+          <div className="order-2 lg:order-1 lg:col-span-7 flex flex-col">
+            <div className="mb-5 sm:mb-8">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold uppercase tracking-tighter text-black mb-1.5 sm:mb-2">
+                Checkout
               </h1>
+              <p className="text-zinc-500 text-[13px] sm:text-sm font-medium">
+                {checkoutStep === 1 ? "Please enter your delivery details below." : "Review your order details."}
+              </p>
+            </div>
+
+            {/* Premium Stepper inline */}
+            <div className="flex items-center gap-2 sm:gap-4 mb-6 sm:mb-10 w-full overflow-hidden">
+              <div className={`flex items-center gap-1.5 sm:gap-3 shrink-0 ${checkoutStep >= 1 ? "opacity-100" : "opacity-50"}`}>
+                <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-semibold text-[10px] sm:text-sm shrink-0 ${checkoutStep === 1 ? "bg-black text-white" : "bg-[#10b981] text-white"}`}>
+                  {checkoutStep > 1 ? <PiCheck className="w-3.5 h-3.5 sm:w-5 sm:h-5" /> : "1"}
+                </div>
+                <span className={`font-semibold uppercase tracking-widest text-[9px] sm:text-xs whitespace-nowrap ${checkoutStep === 1 ? "text-black" : "text-[#10b981]"}`}>Details</span>
+              </div>
+              <div className={`h-[2px] flex-1 bg-zinc-200 relative overflow-hidden min-w-[30px] sm:min-w-[40px] rounded-full`}>
+                <div className={`absolute top-0 left-0 h-full bg-[#10b981] transition-all duration-700 ${checkoutStep === 2 ? "w-full" : "w-0"}`} />
+              </div>
+              <div className={`flex items-center gap-1.5 sm:gap-3 shrink-0 ${checkoutStep === 2 ? "opacity-100" : "opacity-40"}`}>
+                <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-semibold text-[10px] sm:text-sm shrink-0 ${checkoutStep === 2 ? "bg-black text-white" : "bg-zinc-200 text-zinc-500"}`}>
+                  2
+                </div>
+                <span className={`font-semibold uppercase tracking-widest text-[9px] sm:text-xs whitespace-nowrap ${checkoutStep === 2 ? "text-black" : "text-zinc-500"}`}>Review</span>
+              </div>
             </div>
 
             <form
               id="checkout-form"
               onSubmit={handleCheckout}
-              className="space-y-4 sm:space-y-5 bg-transparent sm:bg-zinc-50 p-0 sm:p-6 sm:pb-6 rounded-none sm:rounded-xl border-none sm:border border-zinc-200 sm:shadow-sm"
+              className="bg-white p-4 sm:p-8 rounded-2xl sm:rounded-3xl border border-zinc-200/60 shadow-xl shadow-zinc-200/20 relative overflow-hidden"
             >
+              {/* Form Content */}
               <div className={`${checkoutStep === 2 && "hidden"}`}>
-                <div className="space-y-2.5 sm:space-y-4">
-                  <div>
-                    <label className="block text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-0.5 ml-1">
+                <div className="space-y-4 sm:space-y-6">
+                  <div className="space-y-1 sm:space-y-1.5">
+                    <label className="block text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-zinc-500 ml-1">
                       Full Name
                     </label>
                     <input
@@ -489,13 +427,14 @@ export default function CheckoutPage() {
                       name="name"
                       value={customerInfo.name}
                       onChange={handleChange}
-                      className="w-full bg-slate-100 border-none rounded-xl px-3 py-2.5 sm:px-3.5 sm:py-3 text-[13px] sm:text-sm text-black focus:outline-none focus:ring-1 focus:ring-black transition-colors shadow-sm"
+                      className="w-full bg-[#f4f5f7] border border-transparent hover:border-zinc-300 rounded-xl sm:rounded-2xl px-3.5 sm:px-4 py-3 sm:py-3.5 text-[13px] sm:text-sm text-black focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all font-medium"
+                      placeholder="e.g. John Doe"
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-0.5 ml-1">
-                      Phone Number or Whatsapp
+                  <div className="space-y-1 sm:space-y-1.5">
+                    <label className="block text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-zinc-500 ml-1">
+                      Phone / WhatsApp
                     </label>
                     <input
                       required
@@ -503,47 +442,47 @@ export default function CheckoutPage() {
                       name="phone"
                       value={customerInfo.phone}
                       onChange={handleChange}
-                      className="w-full bg-slate-100 border-none rounded-xl px-3 py-2.5 sm:px-3.5 sm:py-3 text-[13px] sm:text-sm text-black focus:outline-none focus:ring-1 focus:ring-black transition-colors shadow-sm"
+                      className="w-full bg-[#f4f5f7] border border-transparent hover:border-zinc-300 rounded-xl sm:rounded-2xl px-3.5 sm:px-4 py-3 sm:py-3.5 text-[13px] sm:text-sm text-black focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all font-medium"
                       placeholder="03XX-XXXXXXX"
                     />
                   </div>
 
                   {orderType === "Delivery" && (
                     <>
-                      <div>
-                        <label className="block text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-0.5 ml-1">
-                          Complete Delivery Address
+                      <div className="space-y-1 sm:space-y-1.5">
+                        <label className="block text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-zinc-500 ml-1">
+                          Delivery Address
                         </label>
                         <textarea
                           required
-                          rows="4"
+                          rows="3"
                           name="address"
                           value={customerInfo.address}
                           onChange={handleChange}
-                          className="w-full bg-slate-100 border-none rounded-xl px-3 py-2.5 sm:px-3.5 sm:py-3 text-[13px] sm:text-sm text-black focus:outline-none focus:ring-1 focus:ring-black transition-colors resize-none shadow-sm leading-relaxed"
-                          placeholder="House no, Street, Area..."
+                          className="w-full bg-[#f4f5f7] border border-transparent hover:border-zinc-300 rounded-xl sm:rounded-2xl px-3.5 sm:px-4 py-3 sm:py-3.5 text-[13px] sm:text-sm text-black focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all font-medium resize-none leading-relaxed"
+                          placeholder="House, Street, Area details..."
                         />
                       </div>
 
-                      <div className="flex gap-3">
-                        <div className="flex-1">
-                          <label className="block text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-0.5 ml-1">
+                      <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                        <div className="space-y-1 sm:space-y-1.5">
+                          <label className="block text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-zinc-500 ml-1">
                             City
                           </label>
                           <input
                             readOnly
                             value={deliveryCity || "Karachi"}
-                            className="w-full bg-slate-200 border-none rounded-xl px-3 py-2.5 sm:px-3.5 sm:py-3 text-[13px] sm:text-sm text-zinc-600 focus:outline-none cursor-not-allowed shadow-sm"
+                            className="w-full bg-zinc-100 border border-transparent rounded-xl sm:rounded-2xl px-3.5 sm:px-4 py-3 sm:py-3.5 text-[13px] sm:text-sm text-zinc-500 focus:outline-none cursor-not-allowed font-medium"
                           />
                         </div>
-                        <div className="flex-1">
-                          <label className="block text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-0.5 ml-1">
+                        <div className="space-y-1 sm:space-y-1.5">
+                          <label className="block text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-zinc-500 ml-1">
                             Area
                           </label>
                           <input
                             readOnly
                             value={deliveryArea || ""}
-                            className="w-full bg-slate-200 border-none rounded-xl px-3 py-2.5 sm:px-3.5 sm:py-3 text-[13px] sm:text-sm text-zinc-600 focus:outline-none cursor-not-allowed shadow-sm"
+                            className="w-full bg-zinc-100 border border-transparent rounded-xl sm:rounded-2xl px-3.5 sm:px-4 py-3 sm:py-3.5 text-[13px] sm:text-sm text-zinc-500 focus:outline-none cursor-not-allowed font-medium"
                           />
                         </div>
                       </div>
@@ -554,90 +493,71 @@ export default function CheckoutPage() {
                 <button
                   type="button"
                   onClick={handleNextStep}
-                  className="hidden lg:flex w-full bg-black text-white font-semibold uppercase tracking-widest py-3.5 sm:py-4 rounded-xl sm:rounded-full active:scale-[0.98] transition-all hover:bg-zinc-800 text-[12px] sm:text-sm mt-5 sm:mt-6 shadow-md shadow-black/10 hover:shadow-lg items-center justify-center gap-2"
+                  className="w-full bg-black text-white font-semibold uppercase tracking-widest py-3.5 sm:py-4 rounded-xl sm:rounded-2xl active:scale-[0.98] transition-all hover:bg-zinc-800 text-[13px] sm:text-sm mt-6 sm:mt-8 shadow-xl shadow-black/10 flex items-center justify-center gap-2 group"
                 >
-                  Next: Review Order{" "}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M5 12h14" />
-                    <path d="m12 5 7 7-7 7" />
-                  </svg>
+                  Continue to Review
+                  <PiArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 rotate-180 group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
 
-              {/* Step 2 Form view (Readonly summary of details) */}
+              {/* Step 2 Form view (Review) */}
               <div
-                className={`${checkoutStep === 1 ? "hidden" : "block"} space-y-3 sm:space-y-4`}
+                className={`${checkoutStep === 1 ? "hidden" : "block"} space-y-3 sm:space-y-5 animate-in fade-in slide-in-from-bottom-4 duration-500`}
               >
-                <div className="bg-zinc-50 border border-zinc-200 rounded-xl p-3.5 sm:p-5 mt-4 sm:mt-0">
-                  <div className="flex items-center justify-between mb-2 sm:mb-3 border-b border-zinc-200 pb-2 sm:pb-3">
-                    <h3 className="font-semibold text-[11px] sm:text-xs text-black uppercase tracking-wider">
+                <div className="group relative bg-[#f4f5f7] rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-transparent hover:border-zinc-300 transition-colors">
+                  <div className="flex items-center justify-between mb-1.5 sm:mb-3">
+                    <h3 className="font-semibold text-[10px] sm:text-xs text-zinc-500 uppercase tracking-widest">
                       Contact Info
                     </h3>
-                    {checkoutStep === 2 && (
-                      <button
-                        type="button"
-                        onClick={() => setCheckoutStep(1)}
-                        className="text-[10px] sm:text-[11px] font-semibold underline text-zinc-500 uppercase tracking-wider hover:text-black"
-                      >
-                        Edit
-                      </button>
-                    )}
+                    <button
+                      type="button"
+                      onClick={() => setCheckoutStep(1)}
+                      className="text-[10px] sm:text-[11px] font-semibold text-black uppercase tracking-widest hover:underline shrink-0 pl-4"
+                    >
+                      Edit
+                    </button>
                   </div>
-                  <p className="text-[12px] sm:text-sm text-zinc-700 font-medium mb-0.5">
+                  <p className="text-[13px] sm:text-base text-black font-medium mb-0.5 sm:mb-1">
                     {customerInfo.name || "—"}
                   </p>
-                  <p className="text-[12px] sm:text-sm text-zinc-700 font-medium">
+                  <p className="text-[13px] sm:text-sm text-zinc-600 font-medium">
                     {customerInfo.phone || "—"}
                   </p>
                 </div>
 
                 {orderType === "Delivery" && (
-                  <div className="bg-zinc-50 border border-zinc-200 rounded-xl p-3.5 sm:p-5">
-                    <div className="flex items-center justify-between mb-2 sm:mb-3 border-b border-zinc-200 pb-2 sm:pb-3">
-                      <h3 className="font-semibold text-[11px] sm:text-xs text-black uppercase tracking-wider">
+                  <div className="group relative bg-[#f4f5f7] rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-transparent hover:border-zinc-300 transition-colors">
+                    <div className="flex items-center justify-between mb-1.5 sm:mb-3">
+                      <h3 className="font-semibold text-[10px] sm:text-xs text-zinc-500 uppercase tracking-widest">
                         Delivery Address
                       </h3>
-                      {checkoutStep === 2 && (
-                        <button
-                          type="button"
-                          onClick={() => setCheckoutStep(1)}
-                          className="text-[10px] sm:text-[11px] font-semibold underline text-zinc-500 uppercase tracking-wider hover:text-black"
-                        >
-                          Edit
-                        </button>
-                      )}
+                      <button
+                        type="button"
+                        onClick={() => setCheckoutStep(1)}
+                        className="text-[10px] sm:text-[11px] font-semibold text-black uppercase tracking-widest hover:underline shrink-0 pl-4"
+                      >
+                        Edit
+                      </button>
                     </div>
-                    <p className="text-[12px] sm:text-sm text-zinc-700 font-medium mb-0.5 line-clamp-2">
+                    <p className="text-[13px] sm:text-sm text-black font-medium leading-relaxed mb-0.5 sm:mb-1">
                       {customerInfo.address || "—"}
                     </p>
-                    <p className="text-[12px] sm:text-sm text-zinc-700 font-medium">
+                    <p className="text-[13px] sm:text-sm text-zinc-600 font-medium">
                       {deliveryCity}, {deliveryArea}
                     </p>
                   </div>
                 )}
 
-                <div
-                  className={`${checkoutStep === 1 ? "hidden" : "flex"} bg-zinc-50 sm:bg-white p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border border-zinc-200 items-center gap-3 mt-3 sm:mt-4`}
-                >
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white sm:bg-zinc-100 rounded-full flex items-center justify-center shrink-0 border border-zinc-100 sm:border-none shadow-sm sm:shadow-none">
-                    <PiTruck className="w-4 h-4 sm:w-5 sm:h-5 text-black" />
+                <div className="bg-[#f0f9ff] border border-[#bae6fd] p-3.5 sm:p-5 rounded-xl sm:rounded-2xl flex items-center gap-3 sm:gap-4 mt-2">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm text-[#0ea5e9]">
+                    <PiTruck className="w-5 h-5 sm:w-6 sm:h-6" />
                   </div>
                   <div>
-                    <p className="font-semibold text-[12px] sm:text-sm text-black uppercase tracking-wide">
+                    <p className="font-semibold text-[13px] sm:text-sm text-[#0369a1] uppercase tracking-wider mb-0.5">
                       Cash on Delivery
                     </p>
-                    <p className="text-zinc-500 text-[10px] sm:text-[11px] mt-0.5">
-                      Pay when you receive your order.
+                    <p className="text-[#0ea5e9] text-[10px] sm:text-xs font-medium leading-tight">
+                      Pay via cash when you receive your order.
                     </p>
                   </div>
                 </div>
@@ -645,181 +565,181 @@ export default function CheckoutPage() {
             </form>
           </div>
 
-          {/* Right: Order Summary */}
+          {/* Right: Order Summary (5 columns) */}
           <div
-            className={`order-1 lg:order-2 bg-transparent sm:bg-zinc-50 p-0 sm:p-8 rounded-none sm:rounded-xl border-none sm:border border-zinc-200 h-fit lg:sticky lg:top-24 sm:shadow-sm mb-4 sm:mb-0 ${checkoutStep === 1 && "hidden lg:block"}`}
+            className={`order-1 lg:order-2 lg:col-span-5 h-fit lg:sticky lg:top-28 ${checkoutStep === 1 ? "hidden lg:block" : ""}`}
           >
-            <h2 className="text-lg sm:text-xl font-bold uppercase tracking-tight mb-3 sm:mb-6 text-black">
-              Order Summary
-            </h2>
-            <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6 max-h-[40vh] lg:max-h-none overflow-y-auto pr-2 custom-scrollbar">
-              {cart.map((item) => (
-                <div
-                  key={item.cartItemId || item.id}
-                  className="flex gap-3 sm:gap-4 items-center border-b border-zinc-200 pb-3 sm:pb-4"
-                >
-                  <Link
-                    href={`/product/${item.slug}`}
-                    className="relative w-12 h-12 sm:w-16 sm:h-16 rounded overflow-hidden bg-white border border-zinc-200 shrink-0 block transition-transform hover:scale-105"
+            <div className="bg-white p-5 sm:p-8 rounded-2xl sm:rounded-3xl border border-zinc-200/60 shadow-xl shadow-zinc-200/20">
+              <h2 className="text-lg sm:text-xl font-bold uppercase tracking-tighter mb-4 sm:mb-6 text-black flex items-center gap-2">
+                <PiShoppingCart className="w-5 h-5 sm:w-6 sm:h-6" /> Order Summary
+              </h2>
+              
+              <div className="space-y-4 mb-5 sm:mb-6 max-h-[35vh] sm:max-h-[45vh] overflow-y-auto pr-1.5 sm:pr-2 custom-scrollbar">
+                {cart.map((item) => (
+                  <div
+                    key={item.cartItemId || item.id}
+                    className="flex gap-3 sm:gap-4 items-start group"
                   >
-                    <Image
-                      src={item.image_url || "https://via.placeholder.com/100"}
-                      alt={item.name}
-                      fill
-                      className="object-cover"
-                    />
-                  </Link>
-                  <div className="flex-1 min-w-0">
-                    <Link href={`/product/${item.slug}`}>
-                      <h3 className="text-[12px] sm:text-sm font-semibold text-black line-clamp-2 sm:line-clamp-1 hover:underline cursor-pointer leading-snug">
+                    <div className="relative w-14 h-14 sm:w-20 sm:h-20 rounded-xl sm:rounded-2xl overflow-hidden bg-[#f8f9fa] shrink-0 border border-zinc-100 group-hover:border-zinc-300 transition-colors">
+                      <Image
+                        src={item.image_url || "https://via.placeholder.com/100"}
+                        alt={item.name}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute top-0 right-0 bg-black text-white w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center rounded-bl-lg font-semibold text-[9px] sm:text-[10px]">
+                        {item.quantity}
+                      </div>
+                    </div>
+                    <div className="flex-1 min-w-0 pt-0.5 sm:pt-1">
+                      <h3 className="text-[13px] sm:text-sm font-semibold text-black line-clamp-2 leading-snug">
                         {item.name}
                       </h3>
-                    </Link>
-                    {item.specialInstructions && (
-                      <p className="text-[9px] sm:text-[11px] font-semibold text-zinc-500 mt-0.5">
-                        Note: {item.specialInstructions}
-                      </p>
-                    )}
-                    <p className="text-zinc-500 text-[11px] sm:text-sm mt-0.5 font-medium">
-                      Qty: {item.quantity}
-                    </p>
-                  </div>
-                  <div className="text-right shrink-0 ml-2">
-                    {item.discount_price && item.discount_price < item.price ? (
-                      <div className="flex flex-col items-end">
-                        <p className="text-[10px] sm:text-xs text-zinc-400 line-through font-medium">
-                          Rs. {item.price * item.quantity}
+                      {item.specialInstructions && (
+                        <p className="text-[9px] sm:text-[10px] font-medium text-zinc-500 mt-1 line-clamp-1 bg-zinc-100 inline-block px-1.5 sm:px-2 py-0.5 rounded-full">
+                          Note: {item.specialInstructions}
                         </p>
-                        <p className="font-semibold text-[13px] sm:text-base text-[#e63946]">
-                          Rs. {item.discount_price * item.quantity}
+                      )}
+                      
+                      <div className="mt-1 sm:mt-2 flex items-center justify-between">
+                        {item.discount_price && item.discount_price < item.price ? (
+                          <div className="flex items-center gap-2">
+                            <p className="font-bold text-[13px] sm:text-sm text-[#e63946]">
+                              Rs. {item.discount_price * item.quantity}
+                            </p>
+                            <p className="text-[10px] sm:text-[11px] lg:text-xs text-zinc-400 line-through font-medium">
+                              Rs. {item.price * item.quantity}
+                            </p>
+                          </div>
+                        ) : (
+                          <p className="font-semibold text-[13px] sm:text-sm text-black">
+                            Rs. {item.price * item.quantity}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Coupon Area */}
+              <div className="mb-4 sm:mb-6 pt-4 sm:pt-6 border-t border-zinc-100">
+                <h3 className="text-[10px] sm:text-xs font-semibold text-zinc-500 uppercase tracking-widest mb-2 sm:mb-3">
+                  Promo Code
+                </h3>
+                {appliedCoupon ? (
+                  <div className="flex justify-between items-center bg-[#fcf8f2] rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-[#f0e6d6]">
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <div className="text-[#d4b383] bg-white shadow-sm p-1.5 sm:p-2 rounded-lg sm:rounded-xl border border-[#f0e6d6] shrink-0">
+                        <PiTag className="w-4 h-4 sm:w-5 sm:h-5" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-[13px] sm:text-sm font-semibold text-black truncate">
+                          {appliedCoupon.discount_type === "free_delivery"
+                            ? "Free Delivery Applied!"
+                            : `Rs. ${discountAmount.toLocaleString()} Saved!`}
+                        </p>
+                        <p className="text-[9px] sm:text-[10px] lg:text-xs text-zinc-500 font-medium mt-0.5 truncate">
+                          Code: <span className="uppercase text-black font-semibold">{appliedCoupon.code}</span>
                         </p>
                       </div>
-                    ) : (
-                      <p className="font-semibold text-[13px] sm:text-base text-black">
-                        Rs. {item.price * item.quantity}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Coupon Input Area */}
-            <div className="mb-5 pt-3 sm:mb-6 sm:pt-4 border-t border-zinc-200">
-              <h3 className="text-[13px] font-bold text-zinc-900 mb-2.5">
-                Promo Code
-              </h3>
-              {appliedCoupon ? (
-                <div className="flex justify-between items-center bg-[#fcfcfc] rounded-xl p-3 border border-zinc-100/60 shadow-sm">
-                  <div className="flex items-center gap-3">
-                    <div className="text-[#d4b383] bg-[#fcf8f2] p-1.5 rounded-lg border border-[#f0e6d6]">
-                      <PiTag className="w-5 h-5" />
                     </div>
-                    <div>
-                      <p className="text-[13px] font-bold text-zinc-900">
-                        {appliedCoupon.discount_type === "free_delivery"
-                          ? "YAY! Free Delivery"
-                          : `YAY! You saved Rs. ${discountAmount.toLocaleString()}`}
-                      </p>
-                      <p className="text-[11px] text-zinc-500 mt-0.5">
-                        {appliedCoupon.code} Applied
-                      </p>
-                    </div>
+                    <button
+                      onClick={handleRemoveCoupon}
+                      className="text-zinc-400 hover:text-red-500 transition-colors p-1.5 sm:p-2 bg-white rounded-full shadow-sm shrink-0 ml-2"
+                      title="Remove Coupon"
+                    >
+                      <PiXCircle className="w-4 h-4 sm:w-5 h-5" />
+                    </button>
                   </div>
-                  <button
-                    onClick={handleRemoveCoupon}
-                    className="text-zinc-400 hover:text-red-500 transition-colors p-1"
-                    title="Remove Coupon"
-                  >
-                    <PiXCircle className="w-5 h-5" />
-                  </button>
-                </div>
-              ) : (
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    placeholder="Have a coupon code?"
-                    value={couponCode}
-                    onChange={(e) =>
-                      setCouponCode(e.target.value.toUpperCase())
-                    }
-                    className="flex-1 bg-zinc-50 sm:bg-white border border-zinc-200 rounded-xl p-3 sm:p-3 text-[12px] sm:text-sm uppercase focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-colors shadow-sm"
-                  />
-                  <button
-                    onClick={handleApplyCoupon}
-                    disabled={couponLoading || !couponCode}
-                    className="bg-black text-white px-5 sm:px-6 py-3 rounded-xl text-[11px] sm:text-sm font-semibold uppercase tracking-widest hover:bg-zinc-800 disabled:opacity-50 transition-colors flex items-center justify-center min-w-[80px] sm:min-w-[90px] shadow-sm"
-                  >
-                    {couponLoading ? (
-                      <PiCircleNotch className="w-4 h-4 animate-spin" />
-                    ) : (
-                      "Apply"
-                    )}
-                  </button>
-                </div>
-              )}
-            </div>
-
-            <div className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-zinc-600 font-medium">
-              <div className="flex justify-between">
-                <span>Subtotal</span>
-                <span>Rs. {subtotal}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span>Delivery</span>
-                {appliedCoupon &&
-                appliedCoupon.discount_type === "free_delivery" ? (
-                  <span className="flex items-center gap-2">
-                    <span className="line-through text-zinc-400">Rs. 150</span>
-                    <span className="text-green-600 font-bold uppercase text-[10px] bg-green-100 px-2 py-0.5 rounded-full">
-                      Free
-                    </span>
-                  </span>
                 ) : (
-                  <span>Rs. {deliveryCharges}</span>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      placeholder="Have a promo code?"
+                      value={couponCode}
+                      onChange={(e) =>
+                        setCouponCode(e.target.value.toUpperCase())
+                      }
+                      className="flex-1 min-w-[100px] bg-[#f4f5f7] border border-transparent rounded-xl sm:rounded-2xl p-2.5 sm:p-3.5 text-[12px] sm:text-[13px] lg:text-sm uppercase focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all font-medium placeholder:normal-case"
+                    />
+                    <button
+                      onClick={handleApplyCoupon}
+                      disabled={couponLoading || !couponCode}
+                      className="bg-black text-white px-4 sm:px-6 py-2.5 sm:py-3.5 rounded-xl sm:rounded-2xl text-[12px] sm:text-[13px] lg:text-sm font-semibold uppercase tracking-widest hover:bg-zinc-800 disabled:opacity-50 transition-colors flex items-center justify-center min-w-[70px] sm:min-w-[100px] shadow-lg shadow-black/10 shrink-0"
+                    >
+                      {couponLoading ? (
+                        <PiCircleNotch className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+                      ) : (
+                        "Apply"
+                      )}
+                    </button>
+                  </div>
                 )}
               </div>
-              {discountAmount > 0 && (
-                <div className="flex justify-between text-[#9ab50e] font-bold">
-                  <span>Discount ({appliedCoupon.code})</span>
-                  <span>- Rs. {discountAmount}</span>
-                </div>
-              )}
-              <div className="hidden lg:flex justify-between text-base sm:text-xl font-bold text-black pt-3 border-t border-zinc-200">
-                <span className="uppercase tracking-wider">Total</span>
-                <span>Rs. {total}</span>
-              </div>
 
-              {/* Desktop Place Order Button */}
-              {checkoutStep === 2 && (
-                <div className="hidden lg:block mt-6">
-                  <button
-                    type="submit"
-                    form="checkout-form"
-                    disabled={loading}
-                    className="w-full bg-[#C0E212] text-black font-semibold uppercase tracking-widest py-4 rounded-full active:scale-[0.98] transition-all hover:bg-[#a6c40e] disabled:opacity-50 flex justify-center items-center text-sm shadow-md border border-[#9ab50e]/30 shadow-[#C0E212]/10 hover:shadow-lg hover:shadow-[#C0E212]/20 gap-2"
-                  >
-                    {loading ? (
-                      <PiCircleNotch className="w-5 h-5 animate-spin" />
-                    ) : (
-                      <>
-                        <PiLockKey className="w-5 h-5" /> Place Order
-                      </>
-                    )}
-                  </button>
+              {/* Totals */}
+              <div className="space-y-2 sm:space-y-3 pt-4 sm:pt-6 border-t border-zinc-100">
+                <div className="flex justify-between text-[12px] sm:text-[13px] lg:text-sm text-zinc-600 font-medium">
+                  <span>Subtotal</span>
+                  <span className="text-black font-medium">Rs. {subtotal}</span>
                 </div>
-              )}
+                <div className="flex justify-between text-[12px] sm:text-[13px] lg:text-sm text-zinc-600 font-medium items-center">
+                  <span>Delivery Fee</span>
+                  {appliedCoupon &&
+                  appliedCoupon.discount_type === "free_delivery" ? (
+                    <span className="flex items-center gap-1.5 sm:gap-2">
+                      <span className="line-through text-zinc-400 text-[10px] sm:text-[11px] lg:text-xs">Rs. 150</span>
+                      <span className="text-green-600 font-semibold uppercase text-[8px] sm:text-[9px] lg:text-[10px] bg-green-100 px-1.5 sm:px-2 lg:px-2.5 py-0.5 sm:py-1 rounded-full">
+                        Free
+                      </span>
+                    </span>
+                  ) : (
+                    <span className="text-black font-medium">Rs. {deliveryCharges}</span>
+                  )}
+                </div>
+                {discountAmount > 0 && (
+                  <div className="flex justify-between text-[12px] sm:text-[13px] lg:text-sm text-[#9ab50e] font-semibold">
+                    <span>Discount</span>
+                    <span>- Rs. {discountAmount}</span>
+                  </div>
+                )}
+                <div className="flex justify-between text-base sm:text-lg lg:text-xl xl:text-2xl font-bold text-black pt-3 sm:pt-4 mt-1.5 sm:mt-2 border-t border-zinc-200">
+                  <span className="uppercase tracking-tight">Total</span>
+                  <span>Rs. {total}</span>
+                </div>
+
+                {/* Desktop Place Order Button */}
+                {checkoutStep === 2 && (
+                  <div className="hidden lg:block pt-4 sm:pt-6">
+                    <button
+                      type="submit"
+                      form="checkout-form"
+                      disabled={loading}
+                      className="w-full bg-[#C0E212] text-black font-bold uppercase tracking-widest py-3.5 sm:py-4 rounded-xl sm:rounded-2xl active:scale-[0.98] transition-all hover:bg-[#a6c40e] disabled:opacity-50 flex justify-center items-center text-[13px] sm:text-sm shadow-xl shadow-[#C0E212]/20 hover:shadow-2xl hover:shadow-[#C0E212]/30 gap-2 border border-[#9ab50e]/30 group"
+                    >
+                      {loading ? (
+                        <PiCircleNotch className="w-5 h-5 animate-spin" />
+                      ) : (
+                        <>
+                          Confirm Order <PiLockKey className="w-4 h-4 sm:w-5 sm:h-5 group-hover:scale-110 transition-transform" />
+                        </>
+                      )}
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Sticky Bottom Action Bar for Mobile (App-like) */}
-        <div className="fixed bottom-0 left-0 w-full bg-white/85 backdrop-blur-2xl border-t border-zinc-200 p-3 pb-5 shadow-[0_-20px_40px_rgba(0,0,0,0.06)] z-50 lg:hidden flex-col gap-2.5 rounded-t-3xl flex">
-          <div className="flex justify-between items-center px-2">
-            <span className="font-semibold text-zinc-500 uppercase tracking-wider text-[10px]">
+        {/* Mobile Action Bar */}
+        <div className="fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-xl border-t border-zinc-200 p-3 sm:p-4 pb-5 sm:pb-6 shadow-[0_-20px_40px_rgba(0,0,0,0.08)] z-50 lg:hidden flex flex-col gap-2.5 sm:gap-3 rounded-t-3xl sm:rounded-t-[2rem]">
+          <div className="flex justify-between items-center px-1 sm:px-2">
+            <span className="font-semibold text-zinc-500 uppercase tracking-widest text-[10px] sm:text-xs">
               Total to pay
             </span>
-            <span className="font-black text-xl text-black">
+            <span className="font-bold text-lg sm:text-xl text-black">
               Rs. {total.toLocaleString()}
             </span>
           </div>
@@ -827,36 +747,23 @@ export default function CheckoutPage() {
             <button
               type="button"
               onClick={handleNextStep}
-              className="w-full bg-black text-white font-semibold uppercase tracking-widest py-3.5 rounded-xl active:scale-[0.98] transition-all hover:bg-zinc-800 text-[13px] shadow-md hover:shadow-lg flex items-center justify-center gap-1.5"
+              className="w-full bg-black text-white font-semibold uppercase tracking-widest py-3 sm:py-4 rounded-xl sm:rounded-2xl active:scale-[0.98] transition-all text-[12px] sm:text-[13px] lg:text-sm shadow-xl flex items-center justify-center gap-1.5 sm:gap-2 group shrink-0"
             >
-              Next: Review Order{" "}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M5 12h14" />
-                <path d="m12 5 7 7-7 7" />
-              </svg>
+              Continue to Review
+              <PiArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 rotate-180 group-hover:translate-x-1 transition-transform" />
             </button>
           ) : (
             <button
               type="submit"
               form="checkout-form"
               disabled={loading}
-              className="w-full bg-[#C0E212] text-black font-semibold uppercase tracking-widest py-3.5 rounded-xl active:scale-[0.98] transition-all hover:bg-[#a6c40e] disabled:opacity-50 flex justify-center items-center text-[13px] shadow-md border border-[#9ab50e]/30 hover:shadow-lg gap-1.5"
+              className="w-full bg-[#C0E212] text-black font-bold uppercase tracking-widest py-3 sm:py-4 rounded-xl sm:rounded-2xl active:scale-[0.98] transition-all disabled:opacity-50 flex justify-center items-center text-[12px] sm:text-[13px] lg:text-sm shadow-xl shadow-[#C0E212]/20 gap-1.5 sm:gap-2 border border-[#9ab50e]/30 shrink-0"
             >
               {loading ? (
-                <PiCircleNotch className="w-5 h-5 animate-spin" />
+                <PiCircleNotch className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
               ) : (
                 <>
-                  <PiLockKey className="w-4 h-4" /> Place Order
+                  <PiLockKey className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> Confirm Order
                 </>
               )}
             </button>
